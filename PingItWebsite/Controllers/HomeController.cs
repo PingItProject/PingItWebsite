@@ -18,6 +18,9 @@ namespace PingItWebsite.Controllers
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
+            //Testing Purposes Only
+            Database dm = new Database();
+            dm.Initialize();
 
             return View();
         }
