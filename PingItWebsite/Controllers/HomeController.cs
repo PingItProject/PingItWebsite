@@ -23,7 +23,8 @@ namespace PingItWebsite.Controllers
             //Database db = new Database();
             //db.Initialize();
             Driver driver = new Driver();
-            driver.LoadChromeDriver("https://www.facebook.com/brighton.trugman", "ie");
+            driver.LoadChromeDriver("https://www.facebook.com/brighton.trugman", "phantom JS");
+
 
             return View();
         }

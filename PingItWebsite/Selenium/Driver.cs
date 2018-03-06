@@ -7,6 +7,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.PhantomJS;
+using PingItWebsite.Models;
 
 namespace PingItWebsite.Selenium
 {
@@ -46,18 +47,22 @@ namespace PingItWebsite.Selenium
         /// <param name="url"></param>
         public void LoadChromeDriver(string url, string browser)
         {
+            DateTime now = DateTime.Now;
+
             IWebDriver driver;
             if (browser.Equals("chrome"))
             {
                 ChromeOptions options = new ChromeOptions();
                 options.AddArguments(new List<string>() { "headless" });
                 driver = new ChromeDriver(Directory.GetCurrentDirectory(), options);
-            } else if (browser.Equals("firefox"))
+            }
+            else if (browser.Equals("firefox"))
             {
                 FirefoxOptions options = new FirefoxOptions();
                 options.AddArguments("--headless");
                 driver = new FirefoxDriver(Directory.GetCurrentDirectory(), options);
-            } else
+            }
+            else
             {
                 driver = new PhantomJSDriver(Directory.GetCurrentDirectory());
             }
@@ -75,9 +80,14 @@ namespace PingItWebsite.Selenium
 
             _loadtime = timer.Elapsed;
             driver.Close();
+
+            //Add to database
+            Database db = new Database();
+            db.Initialize();
+            Webtests tests = new Webtests("tester", now, url, _loadtime, _pageSize, 1, null, browser, Guid.NewGuid(), db);
         }
 
-        
+
         #endregion
 
 

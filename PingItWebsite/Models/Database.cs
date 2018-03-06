@@ -84,6 +84,10 @@ namespace PingItWebsite.Models
             }
             else if (_connection.State != ConnectionState.Open)
             {
+                if (_db == null)
+                {
+                    _db = new Database();
+                }
                 _connection = _db.Initialize();
             }
         }

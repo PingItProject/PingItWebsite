@@ -35,7 +35,6 @@ namespace PingItWebsite.Models
             {
                 string insert = "INSERT INTO users VALUES ('" + username + "','" + fname + "','" + lname + "','" + email + "','" + password + "','" + type + "');";
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
-                Debug.WriteLine("HERE IS MY COMMAND " + insert + " GGGGGGGGGGGGGGGGGGGG");
                 command.ExecuteNonQuery();
             }
             catch (MySqlException)
