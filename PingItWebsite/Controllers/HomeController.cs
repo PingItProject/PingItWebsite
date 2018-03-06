@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PingItWebsite.Models;
+using PingItWebsite.Selenium;
 
 namespace PingItWebsite.Controllers
 {
@@ -19,8 +20,10 @@ namespace PingItWebsite.Controllers
         {
             ViewData["Message"] = "Your application description page.";
             //Testing Purposes Only
-            Database dm = new Database();
-            dm.Initialize();
+            //Database db = new Database();
+            //db.Initialize();
+            Driver driver = new Driver();
+            driver.LoadChromeDriver("https://www.facebook.com/brighton.trugman", "ie");
 
             return View();
         }

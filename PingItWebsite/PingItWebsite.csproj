@@ -5,8 +5,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="chromedriver.exe" />
+    <None Remove="geckodriver.exe" />
+    <None Remove="phantomjs.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="chromedriver.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="geckodriver.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="phantomjs.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="MySql.Data" Version="8.0.10-rc" />
+    <PackageReference Include="Selenium.WebDriver" Version="3.10.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,6 +9,7 @@ namespace PingItWebsite.Models
 {
     public class User
     {
+        #region Constructors
         /// <summary>
         /// Class constructor
         /// </summary>
@@ -32,9 +33,9 @@ namespace PingItWebsite.Models
             database.CheckConnection();
             try
             {
-                string insert = "INSERT INTO uers VALUES ('" + username + "','" + password + "','" + lname
-                + "','" + fname + "'," + email + ",'" + password + "','" + type +"');";
+                string insert = "INSERT INTO users VALUES ('" + username + "','" + fname + "','" + lname + "','" + email + "','" + password + "','" + type + "');";
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
+                Debug.WriteLine("HERE IS MY COMMAND " + insert + " GGGGGGGGGGGGGGGGGGGG");
                 command.ExecuteNonQuery();
             }
             catch (MySqlException)
@@ -42,20 +43,22 @@ namespace PingItWebsite.Models
                 Debug.WriteLine("Database Error (Users): Cannot enter a new user in database");
             }
         }
+        #endregion
 
+        #region Queries
         /// <summary>
-        /// Get the password from the database
+        /// Get the value from the database
         /// </summary>
         /// <param name="username"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public string GetPassword(string username, string col, Database database)
+        public string GetValue(string username, string col, Database database)
         {
             string result = null;
             database.CheckConnection();
             try
             {
-                string query = "SELECT " + col + " FROM users WHERE username = '" + username + "'; ";
+                string query = "SELECT " + col + " FROM users WHERE username = '" + username + "';";
                 MySqlCommand command = new MySqlCommand(query, database.Connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
@@ -70,5 +73,6 @@ namespace PingItWebsite.Models
             }
             return result;
         }
+        #endregion
     }
 }
