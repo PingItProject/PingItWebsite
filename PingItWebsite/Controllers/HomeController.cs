@@ -13,11 +13,13 @@ namespace PingItWebsite.Controllers
     {
         public IActionResult Index()
         {
+      
             return View();
         }
 
         public IActionResult About()
         {
+  
             ViewData["Message"] = "Your application description page.";
             //Testing Purposes Only
             //Database db = new Database();
@@ -27,6 +29,11 @@ namespace PingItWebsite.Controllers
 
 
             return View();
+        }
+        
+        public void Test()
+        {
+            Debug.WriteLine("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
         }
 
         public IActionResult Contact()
