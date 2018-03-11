@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,14 @@ namespace PingItWebsite.Models
 {
     public class User
     {
+        [Required]
+        [Display(Name = "username")]
+        public string Username { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "password")]
+        public string Password { get; set; }
         #region Constructors
         /// <summary>
         /// Class constructor
@@ -44,34 +53,40 @@ namespace PingItWebsite.Models
         }
         #endregion
 
-        #region Queries
+        #region Queries   
         /// <summary>
-        /// Get the value from the database
+        /// Checks if the user is valid
         /// </summary>
         /// <param name="username"></param>
+        /// <param name="password"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public string GetValue(string username, string col, Database database)
+        public bool IsValid(string username, string password, Database database)
         {
             string result = null;
             database.CheckConnection();
             try
             {
-                string query = "SELECT " + col + " FROM users WHERE username = '" + username + "';";
+                string query = "SELECT password FROM users WHERE username = '" + username + "';";
                 MySqlCommand command = new MySqlCommand(query, database.Connection);
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    result = reader.GetString(col);
+                    result = reader.GetString("password");
                 }
                 reader.Close();
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Database Error (Users): Cannot get user's " + col + ".");
+                Debug.WriteLine("Database Error (Users): Cannot get user's password.");
             }
-            return result;
+            if (result.Equals(password))
+            {
+                return true;
+            }
+            return false;
         }
         #endregion
+
     }
 }

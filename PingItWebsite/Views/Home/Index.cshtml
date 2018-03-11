@@ -114,13 +114,13 @@
         function Login() {
             $.ajax({
                 type: "POST",
-                url: "/Home/IsMatchingPassword",
+                url: "/Home/ValidateLogin",
                 async: true,
                 dataType: "json",
                 data: { username: $("#login_username").val(), password: $("#login_password").val()},
                 success: function (data) {
-                    if (data.match) {
-                        window.location.href = '/Home/Test';
+                    if (data.valid) {
+                        window.location.href = '/User/Index';
                     } else {
                         alert("Password did not match.");
                     }
@@ -137,6 +137,6 @@
     <script src="js/skel.min.js"></script>
     <script src="js/util.js"></script>
     <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
-    <script src="assets/js/main.js"></script>
+    <script src="js/main.js"></script>
 
 </body>

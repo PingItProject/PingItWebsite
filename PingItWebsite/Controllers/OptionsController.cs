@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace PingItWebsite.Controllers
 {
-    public class TestController : Controller
+    public class OptionsController : Controller
     {
-        public IActionResult Test()
+        public IActionResult Index()
         {
             return View();
         }
