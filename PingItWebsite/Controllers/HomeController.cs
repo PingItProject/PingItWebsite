@@ -11,6 +11,8 @@ namespace PingItWebsite.Controllers
 {
     public class HomeController : Controller
     {
+        public Database _database;
+
         public IActionResult Index()
         {
       
@@ -30,10 +32,35 @@ namespace PingItWebsite.Controllers
 
             return View();
         }
-        
-        public void Test()
+
+        public IActionResult Test()
         {
-            Debug.WriteLine("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+            return View();
+        }
+
+        public IActionResult IsMatchingPassword(string username, string password)
+        {
+            Debug.WriteLine("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRSSSS");
+            //initialize database
+            if (_database == null)
+            {
+                _database = new Database();
+                _database.CheckConnection();
+            }
+    
+            //check password to see if it matches
+            User user = new User();
+            string dbPassword = user.GetValue(username, "password", _database);
+            Debug.WriteLine("TTTTTTTTTTTTTTTTT " + dbPassword); 
+            if (dbPassword.Equals(password))
+            {
+                Debug.WriteLine("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRrr");
+                return Json(new { match = true });
+            } else
+            {
+                return Json(new { match = false });
+            }
+
         }
 
         public IActionResult Contact()

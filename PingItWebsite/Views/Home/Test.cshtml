@@ -1,7 +1,6 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "TestPerformance";
 }
-
 <head>
     <title>Ping It</title>
     <meta charset="utf-8" />
@@ -98,41 +97,18 @@
                                 <td alignment="center"><input type="password" name="password" id="login_password" style="width: 200px" /></td>
                             </tr>
                             <tr>
-                                <td align="center"><input type="button" value="Create Account" id="create_btn" style="width: 200px" runat="server" onclick="Submit"/></td>
-                                <td align="center"><input type="button" value="Login" id="login_btn" onclick="Login()" style="width: 200px" /></td>
+                                <td align="center"><input type="button" value="Create Account" id="create_btn" style="width: 200px" runat="server" onclick="Submit" /></td>
+                                <td align="center"><input type="submit" runat="server" value="Login" id="login_btn" style="width: 200px" /></td>
                             </tr>
                         </table>
                     </form>
+                    <button type="button" value="TEST" onclick="Test()">
+                        Click me!
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Scripts -->
-    <script>
-        //Runs the login function
-        function Login() {
-            $.ajax({
-                type: "POST",
-                url: "/Home/IsMatchingPassword",
-                async: true,
-                dataType: "json",
-                data: { username: $("#login_username").val(), password: $("#login_password").val()},
-                success: function (data) {
-                    if (data.match) {
-                        window.location.href = '/Home/Test';
-                    } else {
-                        alert("Password did not match.");
-                    }
-
-                },
-                error: function () {
-                    return "error";
-                }
-            });
-
-        }
-    </script>
     <script src="js/jquery.min.js"></script>
     <script src="js/skel.min.js"></script>
     <script src="js/util.js"></script>
@@ -140,3 +116,4 @@
     <script src="assets/js/main.js"></script>
 
 </body>
+
