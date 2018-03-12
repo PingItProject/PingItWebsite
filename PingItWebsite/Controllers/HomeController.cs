@@ -12,14 +12,23 @@ namespace PingItWebsite.Controllers
 {
     public class HomeController : Controller
     {
-        public Database _database;
+        public static Database _database;
+        public static string _username;
 
+        /// <summary>
+        /// View Home Index
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
       
             return View();
         }
 
+        /// <summary>
+        /// View About
+        /// </summary>
+        /// <returns></returns>
         public IActionResult About()
         {
   
@@ -27,29 +36,48 @@ namespace PingItWebsite.Controllers
             //Testing Purposes Only
             //Database db = new Database();
             //db.Initialize();
-            Driver driver = new Driver();
-            driver.LoadChromeDriver("https://www.facebook.com/brighton.trugman", "phantom JS");
+            
 
             return View();
         }
 
-        /*[HttpGet]
-        public IActionResult Login()
+        /// <summary>
+        /// View Contact 
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Contact()
         {
-            return View();
-        }*/
+            ViewData["Message"] = "Your contact page.";
 
+            return View();
+        }
+
+        /// <summary>
+        /// View Error
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        /// <summary>
+        /// Validate Login
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public IActionResult ValidateLogin(string username, string password)
         {
-            //initialize database
+            _username = username;
+
+            //check password to see if it matches
+            User user = new User();
             if (_database == null)
             {
                 _database = new Database();
-                _database.CheckConnection();
             }
-    
-            //check password to see if it matches
-            User user = new User();
+            _database.Initialize();
             bool valid = user.IsValid(username, password, _database);
             if (valid)
             {
@@ -59,22 +87,6 @@ namespace PingItWebsite.Controllers
 
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
 
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public void Testing()
-        {
-            Debug.WriteLine(Directory.GetCurrentDirectory());
-            Debug.WriteLine("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr");
-        }
     }
 }

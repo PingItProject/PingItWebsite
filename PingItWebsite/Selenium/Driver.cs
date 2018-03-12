@@ -8,6 +8,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.PhantomJS;
 using PingItWebsite.Models;
+using PingItWebsite.Controllers;
 
 namespace PingItWebsite.Selenium
 {
@@ -45,7 +46,7 @@ namespace PingItWebsite.Selenium
         /// Loads a web driver
         /// </summary>
         /// <param name="url"></param>
-        public void LoadChromeDriver(string url, string browser)
+        public void LoadDriver(string url, string browser)
         {
             DateTime now = DateTime.Now;
 
@@ -82,9 +83,7 @@ namespace PingItWebsite.Selenium
             driver.Close();
 
             //Add to database
-            Database db = new Database();
-            db.Initialize();
-            Webtests tests = new Webtests("tester", now, url, _loadtime, _pageSize, 1, null, browser, Guid.NewGuid(), db);
+            WebTest tests = new WebTest(HomeController._username, now, url, _loadtime, _pageSize, 1, null, browser, Guid.NewGuid(), HomeController._database);
         }
 
 

@@ -6,10 +6,7 @@
     <title>Ping It</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
     <link rel="stylesheet" href="css/main.css" />
-    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
-    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 </head>
 <body>
     <!-- Wrapper -->
@@ -44,41 +41,6 @@
                     <h1>PingIt</h1>
                     <p>A free, crowd-sourced web service helping Internet test and compare website performance.</p>
                 </header>
-                <section class="tiles">
-                    <article class="style1">
-                        <span class="image">
-                            <img src="images/pic01.jpg" alt="" />
-                        </span>
-                        <a href="whypingit.html">
-                            <h2>Why PingIt?</h2>
-                            <div class="content">
-                                <p>PingIt is the first web performance assessment platform intended for the people, by the people.</p>
-                            </div>
-                        </a>
-                    </article>
-                    <article class="style2">
-                        <span class="image">
-                            <img src="images/pic02.jpg" alt="" />
-                        </span>
-                        <a href="testwebavail.html">
-                            <h2>Test Web Availability</h2>
-                            <div class="content">
-                                <p>Monitor website performance and availability.</p>
-                            </div>
-                        </a>
-                    </article>
-                    <article class="style3">
-                        <span class="image">
-                            <img src="images/pic03.jpg" alt="" />
-                        </span>
-                        <a href="dataanalytics.html">
-                            <h2>Data Analytics</h2>
-                            <div class="content">
-                                <p>View test data crowdsourced from other users and interactive graphs to analyze broadband availability and speeds.</p>
-                            </div>
-                        </a>
-                    </article>
-                </section>
                 <p></p>
                 <p></p>
                 <p></p>
@@ -120,7 +82,7 @@
                 data: { username: $("#login_username").val(), password: $("#login_password").val()},
                 success: function (data) {
                     if (data.valid) {
-                        window.location.href = '/User/Index';
+                        window.location.href = '/Options/Index';
                     } else {
                         alert("Password did not match.");
                     }
@@ -136,7 +98,6 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/skel.min.js"></script>
     <script src="js/util.js"></script>
-    <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
     <script src="js/main.js"></script>
 
 </body>

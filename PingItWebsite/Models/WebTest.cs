@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace PingItWebsite.Models
 {
-    public class Webtests
+    public class WebTest
     {
         #region Constructors
         /// <summary>
         /// Class constructor
         /// </summary>
-        public Webtests()
+        public WebTest()
         {
 
         }
@@ -31,7 +31,7 @@ namespace PingItWebsite.Models
         /// <param name="platform"></param>
         /// <param name="guid"></param>
         /// <param name="database"></param>
-        public Webtests(string username, DateTime timestamp, string url, TimeSpan loadtime, double pagesize, int requests, 
+        public WebTest(string username, DateTime timestamp, string url, TimeSpan loadtime, double pagesize, int requests, 
             string location, string platform, Guid guid, Database database)
         {
             database.CheckConnection();

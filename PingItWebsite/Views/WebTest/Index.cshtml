@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<head>
+    <title>Ping It</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header">
+            <div class="inner">
+                <!-- Nav -->
+                <nav>
+                    <ul>
+                        <li><a href="#menu">Menu</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Menu -->
+        <nav id="menu">
+            <h2>Menu</h2>
+            <!-- <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="whypingit.html">Why Ping It?</a></li>
+                <li><a href="testwebavail.html">Test Web Availability</a></li>
+                <li><a href="dataanalytics.html">Data Analytics</a></li>
+            </ul> -->
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <h2 align="center">Test Your Web Address Here</h2>
+                <p></p>
+                <p></p>
+                <form method="post" action="#">
+                    <table align="center" style="width:800px">
+                        <tr>
+                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 650px; height: 20px"></textarea></td>
+                            <td><input type="button" value="Test" id="test_btn" style="width: 100px" onclick="TestWebsite()" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        //Runs the login function
+        function TestWebsite() {
+            $.ajax({
+                type: "POST",
+                url: "/WebTest/TestWebsite",
+                async: true,
+                dataType: "json",
+                data: { url: $("#test_url").val() },
+                success: function (data) {
+                },
+                error: function () {
+                    return "error";
+                }
+            });
+
+        }
+    </script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/skel.min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+
+
+

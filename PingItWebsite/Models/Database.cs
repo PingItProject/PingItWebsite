@@ -6,22 +6,8 @@ namespace PingItWebsite.Models
 {
     public class Database
     {
-        private MySqlConnection _connection;
         private Database _db;
-
-        #region Getters/Setters
-        public MySqlConnection Connection
-        {
-            get { return _connection; }
-            set { _connection = value; }
-        }
-
-        public Database DB
-        {
-            get { return _db; }
-            set { _db = value; }
-        }
-        #endregion
+        private MySqlConnection _connection;
 
         #region Constructors
         /// <summary>
@@ -29,7 +15,15 @@ namespace PingItWebsite.Models
         /// </summary>
         public Database()
         {
+           
+        }
+        #endregion
 
+        #region Getters/Setters
+        public MySqlConnection Connection
+        {
+            get { return _connection; }
+            set { _connection = value; }
         }
         #endregion
 
