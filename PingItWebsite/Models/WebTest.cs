@@ -17,7 +17,9 @@ namespace PingItWebsite.Models
         {
 
         }
+        #endregion
 
+        #region Commands
         /// <summary>
         /// Add webtest to database
         /// </summary>
@@ -31,15 +33,15 @@ namespace PingItWebsite.Models
         /// <param name="platform"></param>
         /// <param name="guid"></param>
         /// <param name="database"></param>
-        public WebTest(string username, DateTime timestamp, string url, TimeSpan loadtime, double pagesize, int requests, 
-            string location, string platform, Guid guid, Database database)
+        public void CreateWebTest(string username, DateTime timestamp, string url, double webspeed, TimeSpan loadtime, double pagesize, 
+            int requests, string location, string platform, int batch, Guid guid, Database database)
         {
             database.CheckConnection();
             try
             {
                 string formatDate = timestamp.ToString("yyyy-MM-dd HH:mm:ss");
-                string insert = "INSERT INTO webtests VALUES ('" + username + "','" + formatDate + "','" + url + "','" + loadtime + 
-                    "'," + pagesize + "," + requests + ", NULL ,'" + platform + "','" + guid + "');";
+                string insert = "INSERT INTO webtests VALUES ('" + username + "','" + formatDate + "','" + url + "'," + webspeed + ",'" + loadtime +
+                    "'," + pagesize + "," + requests + ", NULL ,'" + platform + "'," + batch + ",'" + guid + "');";
 
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
                 command.ExecuteNonQuery();

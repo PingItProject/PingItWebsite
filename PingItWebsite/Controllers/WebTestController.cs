@@ -11,19 +11,25 @@ namespace PingItWebsite.Controllers
 {
     public class WebTestController : Controller
     {
+        /// <summary>
+        /// Returns Webtext Index
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
         }
 
-   
-        public void TestWebsite(string url)
+        /// <summary>
+        /// Creates a web test
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="browser"></param>
+        public void TestWebsite(string url, string browser)
         {
             DateTime now = DateTime.Now;
             Driver driver = new Driver();
-            driver.LoadDriver(url, "phantom JS");
-            Debug.WriteLine("TESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSST");
-
+            driver.LoadDriver(url, browser);
         }
     }
 }

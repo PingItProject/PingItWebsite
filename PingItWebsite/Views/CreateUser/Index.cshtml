@@ -1,0 +1,135 @@
+﻿
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<head>
+    <title>Ping It</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/main.css" />
+</head>
+<body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Header -->
+        <header id="header">
+            <div class="inner">
+                <!-- Nav -->
+                <nav>
+                    <ul>
+                        <li><a href="#menu">Menu</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Menu -->
+        <nav id="menu">
+            <h2>Menu</h2>
+            <!-- <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="whypingit.html">Why Ping It?</a></li>
+            <li><a href="testwebavail.html">Test Web Availability</a></li>
+            <li><a href="dataanalytics.html">Data Analytics</a></li>
+        </ul> -->
+        </nav>
+
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <header align="center">
+                    <h1>Register Account</h1>
+                    <p>All users must register a free account.</p>
+                </header>
+                <p></p>
+                <p></p>
+                <p></p>
+                <form method="post" action="#">
+                    <table align="center" style="width:100px">
+                        <tr>
+                            <td>First Name</td>
+                            <td alignment="center"><input type="text" name="first_name" id="first_name" style="width: 200px" /></td>
+                        </tr>
+                        <tr>
+                            <td>Last Name</td>
+                            <td alignment="center"><input type="text" name="last_name" id="last_name" style="width: 200px" /></td>
+                        </tr>
+                        <tr>
+                            <td>Username </td>
+                            <td alignment="center"><input type="text" name="username" id="create_username" style="width: 200px" /></td>
+                        </tr>
+                        <tr>
+                            <td>Password </td>
+                            <td alignment="center"><input type="password" name="password" id="create_password" style="width: 200px" /></td>
+                        </tr>
+                        <tr>
+                            <td>Re-Enter Password </td>
+                            <td alignment="center"><input type="password" name="password2" id="reenter_password" style="width: 200px" /></td>
+                        </tr>
+                        <tr>
+                            <td>Email</td>
+                            <td alignment="center"><input type="text" name="email" id="email" style="width: 200px" /></td>
+                        </tr>
+                        <tr>
+                            <td>Account type</td>
+                            <td>
+                                <select id="type_options" name="type_options" style="width: 100px">
+                                    <option value="business">Business</option>
+                                    <option value="individual">Individual</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr><td><br /></td></tr>
+                        <tr>
+                            <td align="center"><input type="button" value="Create Account" id="create_btn" onclick="RegisterAccount()" style="width: 200px" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        //Runs the login function
+        function RegisterAccount() {
+            $.ajax({
+                type: "POST",
+                url: "/CreateUser/RegisterAccount",
+                async: true,
+                dataType: "json",
+                data: {
+                    username: $("#create_username").val(),
+                    fname: $("#first_name").val(),
+                    lname: $("#last_name").val(),
+                    email: $("#email").val(),
+                    pass1: $("#create_password").val(),
+                    pass2: $("#reenter_password").val(),
+                    type: $("#type_options").val()
+                },
+                success: function (data) {
+                    if (data.failPass) {
+                        alert("Passwords did not match.")
+                    } else if (data.exists) {
+                        alert("Username already exists.")
+                    } else {
+                        window.location.href = '/Home/Index';
+                    }
+                },
+                error: function () {
+                    return "error";
+                }
+            });
+
+        }
+    </script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/skel.min.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+

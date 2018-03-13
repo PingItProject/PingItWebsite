@@ -83,7 +83,8 @@ namespace PingItWebsite.Selenium
             driver.Close();
 
             //Add to database
-            WebTest tests = new WebTest(HomeController._username, now, url, _loadtime, _pageSize, 1, null, browser, Guid.NewGuid(), HomeController._database);
+            WebTest wt = new WebTest();
+            //wt.CreateWebTest(HomeController._username, now, url, _loadtime, _pageSize, 1, null, browser, Guid.NewGuid(), HomeController._database);
         }
 
 
