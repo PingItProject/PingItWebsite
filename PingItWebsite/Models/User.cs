@@ -26,7 +26,9 @@ namespace PingItWebsite.Models
         {
 
         }
+        #endregion
 
+        #region Commands
         /// <summary>
         /// Add user to the database
         /// </summary>
@@ -37,7 +39,7 @@ namespace PingItWebsite.Models
         /// <param name="password"></param>
         /// <param name="type"></param>
         /// <param name="db"></param>
-        public User(string username, string fname, string lname, string email, string password, string type, Database database)
+        public void CreateUser(string username, string fname, string lname, string email, string password, string type, Database database)
         {
             database.CheckConnection();
             try
@@ -81,6 +83,38 @@ namespace PingItWebsite.Models
                 Debug.WriteLine("Database Error (Users): Cannot get user's password.");
             }
             if (result.Equals(password))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Check if a user exists with the same account name
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public bool UserExists(string username, Database database)
+        {
+            int result = 0;
+            database.CheckConnection();
+            try
+            {
+                string query = "SELECT Count(*) FROM users WHERE username = '" + username + "';";
+                MySqlCommand command = new MySqlCommand(query, database.Connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result = reader.GetInt32(0);
+                }
+                reader.Close();
+            }
+            catch (MySqlException)
+            {
+                Debug.WriteLine("Database Error (Users): Cannot get user row from users.");
+            }
+            if (result != 0)
             {
                 return true;
             }

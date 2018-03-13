@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Test Website";
 }
 
 <head>
@@ -44,8 +44,15 @@
                 <form method="post" action="#">
                     <table align="center" style="width:800px">
                         <tr>
-                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 650px; height: 20px"></textarea></td>
-                            <td><input type="button" value="Test" id="test_btn" style="width: 100px" onclick="TestWebsite()" /></td>
+                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 600px; height: 20px"></textarea></td>
+                            <td>
+                                <select id="browser_options" name="browser" style="width: 100px">
+                                    <option value="chrome">Chrome</option>
+                                    <option value="firefox">FireFox</option>
+                                    <option value="phantomJS">Headless</option>
+                                </select>
+                            </td>
+                            <td><input type="button" value="Test" id="test_btn" style="width: 50px" onclick="TestWebsite()" /></td>
                         </tr>
                     </table>
                 </form>
@@ -62,7 +69,7 @@
                 url: "/WebTest/TestWebsite",
                 async: true,
                 dataType: "json",
-                data: { url: $("#test_url").val() },
+                data: { url: $("#test_url").val(), browser: $("#browser_options").val()},
                 success: function (data) {
                 },
                 error: function () {
