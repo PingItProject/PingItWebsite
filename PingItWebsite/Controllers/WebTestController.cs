@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Sockets;
 using Microsoft.AspNetCore.Mvc;
 using PingItWebsite.APIs;
 using PingItWebsite.Models;
@@ -30,7 +32,14 @@ namespace PingItWebsite.Controllers
         {
             DateTime now = DateTime.Now;
             Driver driver = new Driver();
-            driver.LoadDriver(url, browser);
+
+            //Get ipv4 information
+            IPAddress ipv4 = Array.FindLast(
+                Dns.GetHostEntry(string.Empty).AddressList,
+                a => a.AddressFamily == AddressFamily.InterNetwork);
+            IPAddressAPI ipa = new IPAddressAPI();
+
+            driver.LoadDriver(url, ipa.GetLocation(ipv4.ToString()).city, browser);
         }
         #endregion
 
@@ -46,14 +55,18 @@ namespace PingItWebsite.Controllers
             {
 
             }
+
+            //Get the webtests info
             tests = wt.GetWebTests(HomeController._username, Driver._batch, HomeController._database);
             int seconds = tests[0].loadtime.Seconds;
-
+            
+            //Using the page speed API, insert into database and then add to the table view
             PageSpeedAPI psa = new PageSpeedAPI();
             psa.InsertPageSpeed(tests[0].url, tests[0].loadtime.Seconds, tests[0].guid);
             GoogleTest gt = new GoogleTest();
             List<GoogleTest> gtList = gt.GetGoogleTests(tests[0].guid, HomeController._database);
             tests[0].googleTest = gtList[0];
+
             return PartialView(tests);
         }
 

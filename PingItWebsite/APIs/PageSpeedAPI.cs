@@ -49,7 +49,6 @@ namespace PingItWebsite.APIs
                 {
                     if (msg.IsSuccessStatusCode)
                     {
-                        //deserialize json to congress members
                         var data = msg.Content.ReadAsStringAsync().Result;
                         var json = JsonConvert.DeserializeObject<PageSpeed>(data);
 
@@ -60,10 +59,6 @@ namespace PingItWebsite.APIs
                             WebTest wt = new WebTest();
 
                             decimal webspeed = (decimal) ((json.stats.bytes / seconds) * .000008);
-                       
-                            Debug.WriteLine("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRr " + webspeed);
-                            //Get the foreign key
-                            //guid = wt.GetGuid(HomeController._username, Driver._batch, HomeController._database);
 
                             pst.CreateGoogleTest(guid, json.ruleGroups.speed.score, json.experience.category, json.stats.numResources,
                                 json.stats.numHosts, json.stats.bytes, json.stats.htmlBytes, json.stats.cssBytes, json.stats.imageBytes,

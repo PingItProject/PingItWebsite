@@ -28,10 +28,12 @@ namespace PingItWebsite.Selenium
 
         #region Drivers
         /// <summary>
-        /// Loads a web driver
+        /// Load the Selenium driver
         /// </summary>
         /// <param name="url"></param>
-        public void LoadDriver(string url, string browser)
+        /// <param name="location"></param>
+        /// <param name="browser"></param>
+        public void LoadDriver(string url, string location, string browser)
         {
             DateTime now = DateTime.Now;
 
@@ -69,8 +71,13 @@ namespace PingItWebsite.Selenium
             int batch = wt.GetBatch(HomeController._username, HomeController._database);
             _batch = batch + 1;
 
+            if (String.IsNullOrEmpty(location))
+            {
+                location = "not specified";
+            }
+
             //Add to database
-            wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, "not specified", 
+            wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, location, 
                 browser, _batch, Guid.NewGuid(), HomeController._database);
             _complete = true;
         }
