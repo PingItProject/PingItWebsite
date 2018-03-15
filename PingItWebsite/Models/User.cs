@@ -112,7 +112,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Database Error (Users): Cannot get user row from users.");
+                Debug.WriteLine("Database Error (Users): Cannot get user count from users.");
             }
             if (result != 0)
             {
@@ -120,6 +120,7 @@ namespace PingItWebsite.Models
             }
             return false;
         }
+
         #endregion
 
     }

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Test Website";
 }
 
@@ -7,7 +6,7 @@
     <title>Ping It</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
     <!-- Wrapper -->
@@ -44,18 +43,19 @@
                 <form method="post" action="#">
                     <table align="center" style="width:800px">
                         <tr>
-                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 600px; height: 20px"></textarea></td>
+                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 500px; height: 20px"></textarea></td>
                             <td>
-                                <select id="browser_options" name="browser" style="width: 100px">
+                                <select id="browser_options" name="browser" style="width: 150px">
                                     <option value="chrome">Chrome</option>
                                     <option value="firefox">FireFox</option>
                                     <option value="phantomJS">Headless</option>
                                 </select>
                             </td>
-                            <td><input type="button" value="Test" id="test_btn" style="width: 50px" onclick="TestWebsite()" /></td>
+                            <td><input type="button" value="Test" id="test_btn" style="width: 100px" onclick="TestWebsite()" /></td>
                         </tr>
                     </table>
                 </form>
+                <div id="table_section"></div>
             </div>
         </div>
     </div>
@@ -69,20 +69,26 @@
                 url: "/WebTest/TestWebsite",
                 async: true,
                 dataType: "json",
-                data: { url: $("#test_url").val(), browser: $("#browser_options").val()},
+                data: { url: $("#test_url").val(), browser: $("#browser_options").val() },
                 success: function (data) {
                 },
                 error: function () {
                     return "error";
                 }
             });
-
+            RenderTable();
         }
     </script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/skel.min.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/main.js"></script>
+    <script>
+        //Runs the login function
+        function RenderTable() {
+            $("#table_section").load('@Url.Action("Table","WebTest")');
+        }
+    </script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/skel.min.js"></script>
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main.js"></script>
 
 </body>
 

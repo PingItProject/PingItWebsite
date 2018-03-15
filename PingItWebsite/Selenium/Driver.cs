@@ -14,22 +14,8 @@ namespace PingItWebsite.Selenium
 {
     public class Driver
     {
-        private TimeSpan _loadtime;
-        private double _pageSize;
-
-        #region Getters/Setters
-        public TimeSpan LoadTime
-        {
-            get { return _loadtime; }
-            set { _loadtime = value; }
-        }
-
-        public double PageSize
-        {
-            get { return _pageSize; }
-            set { _pageSize = value; }
-        }
-        #endregion
+        public static int _batch;
+        public static bool _complete = false;
 
         #region Constructors
         /// <summary>
@@ -77,14 +63,20 @@ namespace PingItWebsite.Selenium
 
             //get size of the page
             int bytes = driver.PageSource.Length;
-            _pageSize = bytes / 100;
+            double pagesize = bytes / 1024;
 
-            _loadtime = timer.Elapsed;
+            TimeSpan loadtime = timer.Elapsed;
+            double webspeed = (pagesize / 1000) / loadtime.Seconds;
             driver.Close();
 
-            //Add to database
             WebTest wt = new WebTest();
-            //wt.CreateWebTest(HomeController._username, now, url, _loadtime, _pageSize, 1, null, browser, Guid.NewGuid(), HomeController._database);
+            int batch = wt.GetBatch(HomeController._username, HomeController._database);
+            _batch = batch + 1;
+
+            //Add to database
+            wt.CreateWebTest(HomeController._username, now, url, webspeed, loadtime, pagesize, 1, "not specified", 
+                browser, _batch, Guid.NewGuid(), HomeController._database);
+            _complete = true;
         }
 
 

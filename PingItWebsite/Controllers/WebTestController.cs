@@ -20,6 +20,7 @@ namespace PingItWebsite.Controllers
             return View();
         }
 
+        #region Selenium Methods
         /// <summary>
         /// Creates a web test
         /// </summary>
@@ -31,5 +32,23 @@ namespace PingItWebsite.Controllers
             Driver driver = new Driver();
             driver.LoadDriver(url, browser);
         }
+        #endregion
+
+        #region Table Methods
+        /// <summary>
+        /// Prepare a dynamic table of webtests
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Table()
+        {
+            WebTest wt = new WebTest();
+            while (!Driver._complete)
+            {
+
+            }
+            List<WebTest> tests = wt.GetWebTests(HomeController._username, Driver._batch, HomeController._database);
+            return PartialView(tests);
+        }
+        #endregion
     }
 }
