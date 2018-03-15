@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
-using OpenQA.Selenium.IE;
 using OpenQA.Selenium.PhantomJS;
 using PingItWebsite.Models;
 using PingItWebsite.Controllers;
@@ -62,11 +61,8 @@ namespace PingItWebsite.Selenium
             timer.Stop();
 
             //get size of the page
-            int bytes = driver.PageSource.Length;
-            double pagesize = bytes / 1024;
 
             TimeSpan loadtime = timer.Elapsed;
-            double webspeed = (pagesize / 1000) / loadtime.Seconds;
             driver.Close();
 
             WebTest wt = new WebTest();
@@ -74,7 +70,7 @@ namespace PingItWebsite.Selenium
             _batch = batch + 1;
 
             //Add to database
-            wt.CreateWebTest(HomeController._username, now, url, webspeed, loadtime, pagesize, 1, "not specified", 
+            wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, "not specified", 
                 browser, _batch, Guid.NewGuid(), HomeController._database);
             _complete = true;
         }

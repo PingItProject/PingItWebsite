@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using PingItWebsite.APIs;
 using PingItWebsite.Models;
 using PingItWebsite.Selenium;
 
@@ -11,6 +10,7 @@ namespace PingItWebsite.Controllers
 {
     public class WebTestController : Controller
     {
+        List<WebTest> tests;
         /// <summary>
         /// Returns Webtext Index
         /// </summary>
@@ -46,9 +46,18 @@ namespace PingItWebsite.Controllers
             {
 
             }
-            List<WebTest> tests = wt.GetWebTests(HomeController._username, Driver._batch, HomeController._database);
+            tests = wt.GetWebTests(HomeController._username, Driver._batch, HomeController._database);
+            int seconds = tests[0].loadtime.Seconds;
+
+            PageSpeedAPI psa = new PageSpeedAPI();
+            psa.InsertPageSpeed(tests[0].url, tests[0].loadtime.Seconds, tests[0].guid);
+            GoogleTest gt = new GoogleTest();
+            List<GoogleTest> gtList = gt.GetGoogleTests(tests[0].guid, HomeController._database);
+            tests[0].googleTest = gtList[0];
             return PartialView(tests);
         }
+
+  
         #endregion
     }
 }

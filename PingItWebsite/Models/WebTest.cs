@@ -1,10 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
+using PingItWebsite.APIs;
+using PingItWebsite.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PingItWebsite.Models
 {
@@ -12,12 +12,11 @@ namespace PingItWebsite.Models
     {
         public DateTime date { get; set; }
         public string url { get; set; }
-        public double webspeed { get; set; }
         public TimeSpan loadtime { get; set; }
-        public double pagesize { get; set; }
         public string location { get; set; }
         public string browser { get; set; }
-
+        public GoogleTest googleTest { get; set; }
+        public Guid guid { get; set; }
         
         #region Constructors
         /// <summary>
@@ -46,15 +45,15 @@ namespace PingItWebsite.Models
         /// <param name="platform"></param>
         /// <param name="guid"></param>
         /// <param name="database"></param>
-        public void CreateWebTest(string username, DateTime timestamp, string url, double webspeed, TimeSpan loadtime, double pagesize, 
-            int requests, string location, string platform, int batch, Guid guid, Database database)
+        public void CreateWebTest(string username, DateTime timestamp, string url, TimeSpan loadtime, int requests, 
+            string location, string platform, int batch, Guid guid, Database database)
         {
             database.CheckConnection();
             try
             {
                 string formatDate = timestamp.ToString("yyyy-MM-dd HH:mm:ss");
-                string insert = "INSERT INTO webtests VALUES ('" + username + "','" + formatDate + "','" + url + "'," + webspeed + ",'" + loadtime +
-                    "'," + pagesize + "," + requests + ",'" + location + "','" + platform + "'," + batch + ",'" + guid + "');";
+                string insert = "INSERT INTO webtests VALUES ('" + username + "','" + formatDate + "','" + url + "','" + loadtime +
+                    "'," + requests + ",'" + location + "','" + platform + "'," + batch + ",'" + guid + "');";
 
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
                 command.ExecuteNonQuery();
@@ -126,6 +125,29 @@ namespace PingItWebsite.Models
             }
             return result;
         }
+
+      
+        
+        public Guid GetGuid(string username, int batch, Database database)
+        {
+            Guid result;
+            try
+            {
+                string query = "SELECT guid FROM webtests WHERE username = '" + username + "' AND batch = " + batch + ";";
+                MySqlCommand command = new MySqlCommand(query, database.Connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result = reader.GetGuid("guid");
+                }
+                reader.Close();
+            }
+            catch (MySqlException)
+            {
+                Debug.WriteLine("Database Error (Users): Cannot get user row from users.");
+            }
+            return result;
+        }
         #endregion
 
         #region StoredProcedures
@@ -144,15 +166,17 @@ namespace PingItWebsite.Models
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
+                    string url = reader.GetString("url");
+                    Guid guid = reader.GetGuid("guid");
+
                     WebTest wt = new WebTest
                     {
                         date = reader.GetDateTime("tstamp"),
                         url = reader.GetString("url"),
-                        webspeed = reader.GetDouble("webspeed"),
                         loadtime = reader.GetTimeSpan("loadtime"),
-                        pagesize = reader.GetDouble("pagesize"),
                         location = reader.GetString("location"),
-                        browser = reader.GetString("platform")
+                        browser = reader.GetString("platform"),
+                        guid = guid
                     };
                     tests.Add(wt);
                 }
@@ -164,8 +188,6 @@ namespace PingItWebsite.Models
             }
             return tests;
         }
-
-      
         #endregion
     }
 }
