@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "Crowd Source";
+}
+
+<head>
+    <title>Ping It</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="~/css/main.css" />
+</head>
+<body>
+    <!-- Wrapper -->
+    <div id="wrapper">
+        <!-- Header -->
+        <header id="header">
+            <div class="inner">
+                <!-- Nav -->
+                <nav>
+                    <ul>
+                        <li><a href="#menu">Menu</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Menu -->
+        <nav id="menu">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="~/Home/index">Home</a></li>
+                <li><a href="~/Options/index">Options</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+            <div class="inner">
+                <h2 align="center">Test Your Web Address Here</h2>
+                <p></p>
+                <p></p>
+                <form method="post" action="#">
+                    <table align="center" style="width:800px">
+                        <tr>
+                            <td>
+                                Data Type
+                                <select id="data_options" name="data_options" style="width: 150px">
+                                    <option value="general">General</option>
+                                    <option value="detailed">Detailed</option>
+                                </select>
+                            </td>
+                            <td>
+                                Order By
+                                <select id="order_options" name="order_options" style="width: 150px">
+                                    <option value="asc">Ascending</option>
+                                    <option value="desc">Descending</option>
+                                </select>
+                            </td>
+                            <td><input type="button" value="Submit" id="submit_btn" style="width: 150px" onclick="LoadData()" /></td>
+                        </tr>
+                        <tr> General Filters
+                            <td>
+                                Browser
+                                <select id="browser_options" name="browser_options" style="width: 150px">
+                                    <option value="all">All</option>
+                                    <option value="chrome">Chrome</option>
+                                    <option value="firefox">FireFox</option>
+                                    <option value="phantomJS">Headless</option>
+                                </select>
+                            </td>
+                            <td>
+                                Location
+                                <textarea id="location_text" placeholder="all" style="width: 150px; height: 20px"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div id="table_section"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script>
+        function LoadData() {
+            var ordering;
+            if (($("#order_options").val()) == 'asc') {
+                ordering = true;
+            } else {
+                ordering = false;
+            }
+
+            if (($("#data_options").val()) == 'general') {
+                $("#table_section").load('@Url.Action("GeneralTable", "CrowdSource")?location=' + $("#location_text").val() +
+                    '&browser=' + $("#browser_options").val() + '&order=' + ordering);
+            } else {
+                 $("#table_section").load('@Url.Action("DetailedTable", "CrowdSource")?location=' + $("#location_text").val() +
+                    '&browser=' + $("#browser_options").val() + '&order=' + ordering);
+            }
+
+        }
+    </script>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/skel.min.js"></script>
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main.js"></script>
+
+</body>
+

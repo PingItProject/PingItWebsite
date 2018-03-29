@@ -19,6 +19,8 @@ namespace PingItWebsite.Models
         public long cssBytes { get; set; }
         public long imageBytes { get; set; }
         public decimal webspeed { get; set; }
+        public string location { get; set; }
+        public string browser { get; set; }
 
         #region Constructors
         /// <summary>
@@ -65,13 +67,19 @@ namespace PingItWebsite.Models
         #endregion
 
         #region StoredProcedures
-        public List<GoogleTest> GetGoogleTests(Guid guid, Database database)
+        /// <summary>
+        /// Get user google tests
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public List<GoogleTest> GetUserGoogleTests(Guid guid, Database database)
         {
             database.CheckConnection();
             List<GoogleTest> tests = new List<GoogleTest>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetGoogleTestResults", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetUserGoogleTestResults", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@guid", guid);
 
@@ -100,6 +108,74 @@ namespace PingItWebsite.Models
                 Debug.WriteLine("Stored Procedure: Cannot perform GetGoogleTestResults.");
             }
             _complete = true;
+            return tests;
+        }
+
+        /// <summary>
+        /// Get google tests
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <param name="browser"></param>
+        /// <param name="ordering"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public List<GoogleTest> GetGoogleTests(string loc, string browser, bool ordering, Database database)
+        {
+            database.CheckConnection();
+            List<GoogleTest> tests = new List<GoogleTest>();
+            try
+            {
+                MySqlCommand command = new MySqlCommand("GetGoogleTestResults", database.Connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                if (String.IsNullOrEmpty(loc))
+                {
+                    loc = "null";
+                }
+                if (String.IsNullOrEmpty(browser))
+                {
+                    browser = "null";
+                }
+
+                command.Parameters.AddWithValue("@loc", loc);
+                command.Parameters.AddWithValue("@browser", browser);
+
+                if (ordering)
+                {
+                    command.Parameters.AddWithValue("@ordering", true);
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@ordering", false);
+                }
+
+                //Run stored procedure to get the event dates in asc order of the current month
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    GoogleTest gt = new GoogleTest
+                    {
+                        score = reader.GetInt32("score"),
+                        category = reader.GetString("category"),
+                        resources = reader.GetInt32("resources"),
+                        hosts = reader.GetInt32("hosts"),
+                        bytes = reader.GetInt64("bytes"),
+                        htmlBytes = reader.GetInt64("html_bytes"),
+                        cssBytes = reader.GetInt64("css_bytes"),
+                        imageBytes = reader.GetInt64("image_bytes"),
+                        webspeed = (decimal)reader.GetDouble("webspeed"),
+                        location = reader.GetString("location"),
+                        browser = reader.GetString("platform"),
+                    };
+                    tests.Add(gt);
+                }
+                reader.Close();
+            }
+            catch (MySqlException)
+            {
+                Debug.WriteLine("Stored Procedure: Cannot perform GetTestResults.");
+            }
             return tests;
         }
         #endregion

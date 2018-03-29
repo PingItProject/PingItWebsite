@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +44,7 @@ namespace PingItWebsite.Controllers
 
         #region Table Methods
         /// <summary>
-        /// Prepare a dynamic table of webtests
+        /// Prepare table partial view
         /// </summary>
         /// <returns></returns>
         public IActionResult Table()
@@ -57,14 +56,14 @@ namespace PingItWebsite.Controllers
             }
 
             //Get the webtests info
-            tests = wt.GetWebTests(HomeController._username, Driver._batch, HomeController._database);
+            tests = wt.GetUserWebTests(HomeController._username, Driver._batch, HomeController._database);
             int seconds = tests[0].loadtime.Seconds;
             
             //Using the page speed API, insert into database and then add to the table view
             PageSpeedAPI psa = new PageSpeedAPI();
             psa.InsertPageSpeed(tests[0].url, tests[0].loadtime.Seconds, tests[0].guid);
             GoogleTest gt = new GoogleTest();
-            List<GoogleTest> gtList = gt.GetGoogleTests(tests[0].guid, HomeController._database);
+            List<GoogleTest> gtList = gt.GetUserGoogleTests(tests[0].guid, HomeController._database);
             tests[0].googleTest = gtList[0];
 
             return PartialView(tests);

@@ -26,12 +26,10 @@
         <!-- Menu -->
         <nav id="menu">
             <h2>Menu</h2>
-            <!-- <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="whypingit.html">Why Ping It?</a></li>
-                <li><a href="testwebavail.html">Test Web Availability</a></li>
-                <li><a href="dataanalytics.html">Data Analytics</a></li>
-            </ul> -->
+            <ul>
+                <li><a href="~/Home/index">Home</a></li>
+                <li><a href="~/Options/index">Options</a></li>
+            </ul>
         </nav>
 
         <!-- Main -->
@@ -80,7 +78,7 @@
         }
     </script>
     <script>
-        //Runs the login function
+        //Renders the tables
         function RenderTable() {
             $("#table_section").load('@Url.Action("Table","WebTest")');
         }

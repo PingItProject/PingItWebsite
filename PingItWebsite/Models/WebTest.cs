@@ -151,7 +151,58 @@ namespace PingItWebsite.Models
         #endregion
 
         #region StoredProcedures
-        public List<WebTest> GetWebTests(string username, int batch, Database database)
+        /// <summary>
+        /// Get user specific web tests
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="batch"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public List<WebTest> GetUserWebTests(string username, int batch, Database database)
+        {
+            database.CheckConnection();
+            List<WebTest> tests = new List<WebTest>();
+            try
+            {
+                MySqlCommand command = new MySqlCommand("GetUserTestResults", database.Connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@u", username);
+                command.Parameters.AddWithValue("@b", batch);
+
+                //Run stored procedure to get the event dates in asc order of the current month
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    WebTest wt = new WebTest
+                    {
+                        date = reader.GetDateTime("tstamp"),
+                        url = reader.GetString("url"),
+                        loadtime = reader.GetTimeSpan("loadtime"),
+                        location = reader.GetString("location"),
+                        browser = reader.GetString("platform"),
+                        guid = reader.GetGuid("guid")
+                    };
+                    tests.Add(wt);
+                }
+                reader.Close();
+            }
+            catch (MySqlException)
+            {
+                Debug.WriteLine("Stored Procedure: Cannot perform GetUserTestResults.");
+            }
+            return tests;
+        }
+
+        /// <summary>
+        /// Get web tests for crowdsourcing
+        /// </summary>
+        /// <param name="loc"></param>
+        /// <param name="browser"></param>
+        /// <param name="ordering"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public List<WebTest> GetWebTests(string loc, string browser, bool ordering, Database database)
         {
             database.CheckConnection();
             List<WebTest> tests = new List<WebTest>();
@@ -159,15 +210,31 @@ namespace PingItWebsite.Models
             {
                 MySqlCommand command = new MySqlCommand("GetTestResults", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@username", username);
-                command.Parameters.AddWithValue("@batch", batch);
 
+                if (String.IsNullOrEmpty(loc))
+                {
+                    loc = "null";
+                } 
+                if (String.IsNullOrEmpty(browser))
+                {
+                    browser = "null";
+                }
+
+                command.Parameters.AddWithValue("@loc", loc);
+                command.Parameters.AddWithValue("@browser", browser);
+
+                if (ordering)
+                {
+                    command.Parameters.AddWithValue("@ordering", true);
+                } else
+                {
+                    command.Parameters.AddWithValue("@ordering", false);
+                }
+                
                 //Run stored procedure to get the event dates in asc order of the current month
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    string url = reader.GetString("url");
-                    Guid guid = reader.GetGuid("guid");
 
                     WebTest wt = new WebTest
                     {
@@ -176,7 +243,7 @@ namespace PingItWebsite.Models
                         loadtime = reader.GetTimeSpan("loadtime"),
                         location = reader.GetString("location"),
                         browser = reader.GetString("platform"),
-                        guid = guid
+                        guid = reader.GetGuid("guid")
                     };
                     tests.Add(wt);
                 }

@@ -1,0 +1,22 @@
+﻿@using PingItWebsite.Models;
+
+<table> General Information
+    <tr>
+        <td>TimeStamp</td>
+        <td>URL</td>
+        <td>LoadTime(s)</td>
+        <td>Location</td>
+        <td>Platform</td>
+    </tr>
+    @foreach (WebTest test in Model)
+    {
+        <tr>
+            <td>@test.date.ToString()</td>
+            <td>@test.url</td>
+            <td>@test.loadtime.ToString()</td>
+            <td>@test.location</td>
+            <td>@test.browser</td>
+        </tr>
+
+    }
+</table>

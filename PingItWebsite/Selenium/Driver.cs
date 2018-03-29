@@ -77,6 +77,8 @@ namespace PingItWebsite.Selenium
             }
 
             //Add to database
+            location = location.ToLower();
+
             wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, location, 
                 browser, _batch, Guid.NewGuid(), HomeController._database);
             _complete = true;
