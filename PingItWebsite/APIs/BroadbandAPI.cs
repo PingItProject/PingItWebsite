@@ -32,6 +32,8 @@ namespace PingItWebsite.APIs
             {
                 Debug.WriteLine("API (Page Speed): Cannot get speed results.");
             }
+
+
             /*if (msg == null)
             {
                 return null;
