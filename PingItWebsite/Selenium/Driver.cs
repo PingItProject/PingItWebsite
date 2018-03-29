@@ -36,7 +36,7 @@ namespace PingItWebsite.Selenium
         public void LoadDriver(string url, string location, string browser)
         {
             DateTime now = DateTime.Now;
-
+            Debug.WriteLine("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
             IWebDriver driver;
             if (browser.Equals("chrome"))
             {
