@@ -6,34 +6,11 @@
     <title>Ping It</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
     <!-- Wrapper -->
     <div id="wrapper">
-        <!-- Header -->
-        <header id="header">
-            <div class="inner">
-                <!-- Nav -->
-                <nav>
-                    <ul>
-                        <li><a href="#menu">Menu</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-
-        <!-- Menu -->
-        <nav id="menu">
-            <h2>Menu</h2>
-            <!-- <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="whypingit.html">Why Ping It?</a></li>
-                <li><a href="testwebavail.html">Test Web Availability</a></li>
-                <li><a href="dataanalytics.html">Data Analytics</a></li>
-            </ul> -->
-        </nav>
-
         <!-- Main -->
         <div id="main">
             <div class="inner">
@@ -60,7 +37,7 @@
                                 <td alignment="center"><input type="password" name="password" id="login_password" style="width: 200px" /></td>
                             </tr>
                             <tr>
-                                <td align="center"><input type="button" value="Create Account" id="create_btn" style="width: 200px" runat="server" onclick="Submit"/></td>
+                                <td align="center"><input type="button" value="Create Account" id="create_btn" style="width: 200px" onclick="location.href='/CreateUser/Index'"/></td>
                                 <td align="center"><input type="button" value="Login" id="login_btn" onclick="Login()" style="width: 200px" /></td>
                             </tr>
                         </table>
@@ -92,12 +69,12 @@
                     return "error";
                 }
             });
-
         }
+
     </script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/skel.min.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/main.js"></script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/skel.min.js"></script>
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main.js"></script>
 
 </body>

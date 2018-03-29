@@ -1,13 +1,12 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Test Website";
 }
 
 <head>
     <title>Ping It</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
     <!-- Wrapper -->
@@ -27,12 +26,10 @@
         <!-- Menu -->
         <nav id="menu">
             <h2>Menu</h2>
-            <!-- <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="whypingit.html">Why Ping It?</a></li>
-                <li><a href="testwebavail.html">Test Web Availability</a></li>
-                <li><a href="dataanalytics.html">Data Analytics</a></li>
-            </ul> -->
+            <ul>
+                <li><a href="~/Home/index">Home</a></li>
+                <li><a href="~/Options/index">Options</a></li>
+            </ul>
         </nav>
 
         <!-- Main -->
@@ -44,11 +41,19 @@
                 <form method="post" action="#">
                     <table align="center" style="width:800px">
                         <tr>
-                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 650px; height: 20px"></textarea></td>
+                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 500px; height: 20px"></textarea></td>
+                            <td>
+                                <select id="browser_options" name="browser" style="width: 150px">
+                                    <option value="chrome">Chrome</option>
+                                    <option value="firefox">FireFox</option>
+                                    <option value="phantomJS">Headless</option>
+                                </select>
+                            </td>
                             <td><input type="button" value="Test" id="test_btn" style="width: 100px" onclick="TestWebsite()" /></td>
                         </tr>
                     </table>
                 </form>
+                <div id="table_section"></div>
             </div>
         </div>
     </div>
@@ -62,20 +67,26 @@
                 url: "/WebTest/TestWebsite",
                 async: true,
                 dataType: "json",
-                data: { url: $("#test_url").val() },
+                data: { url: $("#test_url").val(), browser: $("#browser_options").val() },
                 success: function (data) {
                 },
                 error: function () {
                     return "error";
                 }
             });
-
+            RenderTable();
         }
     </script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/skel.min.js"></script>
-    <script src="js/util.js"></script>
-    <script src="js/main.js"></script>
+    <script>
+        //Renders the tables
+        function RenderTable() {
+            $("#table_section").load('@Url.Action("Table","WebTest")');
+        }
+    </script>
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/skel.min.js"></script>
+    <script src="~/js/util.js"></script>
+    <script src="~/js/main.js"></script>
 
 </body>
 

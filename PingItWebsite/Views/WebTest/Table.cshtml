@@ -1,0 +1,54 @@
+﻿@using PingItWebsite.Models;
+
+<table>
+    <tr> General Information
+        <td>TimeStamp</td>
+        <td>URL</td>
+        <td>LoadTime(s)</td>
+        <td>Location</td>
+        <td>Platform</td>
+    </tr>
+    @foreach(WebTest test in Model)
+    {
+        <tr>
+            <td>@test.date.ToString()</td>
+            <td>@test.url</td>
+            <td>@test.loadtime.ToString()</td>
+            <td>@test.location</td>
+            <td>@test.browser</td>
+        </tr>
+
+    }
+</table>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<table> Detailed Information
+    <tr>
+        <td>Score</td>
+        <td>Category</td>
+        <td>No. Resources</td>
+        <td>No. Hosts</td>
+        <td>Page Size (bytes)</td>
+        <td>HTML Size (bytes)</td>
+        <td>CSS Size (bytes)</td>
+        <td>Image Size (bytes)</td>
+        <td>Web Speed (Mbps)</td>
+    </tr>
+    @foreach (WebTest test in Model)
+    {
+        <tr>
+            <td>@test.googleTest.score.ToString()</td>
+            <td>@test.googleTest.category</td>
+            <td>@test.googleTest.resources.ToString()</td>
+            <td>@test.googleTest.hosts.ToString()</td>
+            <td>@test.googleTest.bytes.ToString()</td>
+            <td>@test.googleTest.htmlBytes</td>
+            <td>@test.googleTest.cssBytes</td>
+            <td>@test.googleTest.imageBytes</td>
+            <td>@test.googleTest.webspeed</td>
+        </tr>
+
+    }
+</table>

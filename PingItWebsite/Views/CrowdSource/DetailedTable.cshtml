@@ -1,0 +1,35 @@
+﻿@using PingItWebsite.Models;
+
+<table>
+    Detailed Information
+    <tr>
+        <td>Score</td>
+        <td>Category</td>
+        <td>No. Resources</td>
+        <td>No. Hosts</td>
+        <td>Page Size (bytes)</td>
+        <td>HTML Size (bytes)</td>
+        <td>CSS Size (bytes)</td>
+        <td>Image Size (bytes)</td>
+        <td>Web Speed (Mbps)</td>
+        <td>Location</td>
+        <td>Platform</td>
+    </tr>
+    @foreach (GoogleTest test in Model)
+    {
+    <tr>
+        <td>@test.score.ToString()</td>
+        <td>@test.category</td>
+        <td>@test.resources.ToString()</td>
+        <td>@test.hosts.ToString()</td>
+        <td>@test.bytes.ToString()</td>
+        <td>@test.htmlBytes</td>
+        <td>@test.cssBytes</td>
+        <td>@test.imageBytes</td>
+        <td>@test.webspeed</td>
+        <td>@test.location</td>
+        <td>@test.browser</td>
+    </tr>
+
+    }
+</table>

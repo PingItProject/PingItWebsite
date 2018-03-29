@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
-using OpenQA.Selenium.IE;
 using OpenQA.Selenium.PhantomJS;
 using PingItWebsite.Models;
 using PingItWebsite.Controllers;
@@ -14,22 +13,8 @@ namespace PingItWebsite.Selenium
 {
     public class Driver
     {
-        private TimeSpan _loadtime;
-        private double _pageSize;
-
-        #region Getters/Setters
-        public TimeSpan LoadTime
-        {
-            get { return _loadtime; }
-            set { _loadtime = value; }
-        }
-
-        public double PageSize
-        {
-            get { return _pageSize; }
-            set { _pageSize = value; }
-        }
-        #endregion
+        public static int _batch;
+        public static bool _complete = false;
 
         #region Constructors
         /// <summary>
@@ -43,10 +28,12 @@ namespace PingItWebsite.Selenium
 
         #region Drivers
         /// <summary>
-        /// Loads a web driver
+        /// Load the Selenium driver
         /// </summary>
         /// <param name="url"></param>
-        public void LoadDriver(string url, string browser)
+        /// <param name="location"></param>
+        /// <param name="browser"></param>
+        public void LoadDriver(string url, string location, string browser)
         {
             DateTime now = DateTime.Now;
 
@@ -76,14 +63,25 @@ namespace PingItWebsite.Selenium
             timer.Stop();
 
             //get size of the page
-            int bytes = driver.PageSource.Length;
-            _pageSize = bytes / 100;
 
-            _loadtime = timer.Elapsed;
+            TimeSpan loadtime = timer.Elapsed;
             driver.Close();
 
+            WebTest wt = new WebTest();
+            int batch = wt.GetBatch(HomeController._username, HomeController._database);
+            _batch = batch + 1;
+
+            if (String.IsNullOrEmpty(location))
+            {
+                location = "not specified";
+            }
+
             //Add to database
-            WebTest tests = new WebTest(HomeController._username, now, url, _loadtime, _pageSize, 1, null, browser, Guid.NewGuid(), HomeController._database);
+            location = location.ToLower();
+
+            wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, location, 
+                browser, _batch, Guid.NewGuid(), HomeController._database);
+            _complete = true;
         }
 
 

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using PingItWebsite.Models;
-using PingItWebsite.Selenium;
 
 namespace PingItWebsite.Controllers
 {
@@ -21,36 +15,10 @@ namespace PingItWebsite.Controllers
         /// <returns></returns>
         public IActionResult Index()
         {
-      
-            return View();
-        }
-
-        /// <summary>
-        /// View About
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult About()
-        {
-  
-            ViewData["Message"] = "Your application description page.";
-            //Testing Purposes Only
-            //Database db = new Database();
-            //db.Initialize();
             
-
             return View();
         }
 
-        /// <summary>
-        /// View Contact 
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
 
         /// <summary>
         /// View Error
@@ -77,7 +45,7 @@ namespace PingItWebsite.Controllers
             {
                 _database = new Database();
             }
-            _database.Initialize();
+            _database.CheckConnection();
             bool valid = user.IsValid(username, password, _database);
             if (valid)
             {
