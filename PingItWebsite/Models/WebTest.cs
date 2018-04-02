@@ -10,6 +10,7 @@ namespace PingItWebsite.Models
 {
     public class WebTest
     {
+        //main variables
         public DateTime date { get; set; }
         public string url { get; set; }
         public TimeSpan loadtime { get; set; }
@@ -17,6 +18,11 @@ namespace PingItWebsite.Models
         public string browser { get; set; }
         public GoogleTest googleTest { get; set; }
         public Guid guid { get; set; }
+
+        //extra crowd sourcing variables
+        public string city { get; set; }
+        public string county { get; set; }
+        public double speed { get; set; }
         
         #region Constructors
         /// <summary>

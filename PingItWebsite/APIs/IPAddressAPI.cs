@@ -21,6 +21,11 @@ namespace PingItWebsite.APIs
         }
         #endregion
 
+        /// <summary>
+        /// Calls IP Address api to get location
+        /// </summary>
+        /// <param name="ipAddress"></param>
+        /// <returns></returns>
         public IPLocation GetLocation(string ipAddress)
         {
             HttpClient httpClient = new HttpClient();

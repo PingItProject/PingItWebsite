@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using PingItWebsite.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +20,12 @@ namespace PingItWebsite.APIs
         }
         #endregion
 
-        public void GetBroadbandSpeed(string code)
+        /// <summary>
+        /// Calls broadband api to get address
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public Broadband GetBroadbandSpeed(string code)
         {
             HttpClient httpClient = new HttpClient();
 
@@ -30,37 +37,37 @@ namespace PingItWebsite.APIs
             }
             catch (AggregateException)
             {
-                Debug.WriteLine("API (Page Speed): Cannot get speed results.");
+                Debug.WriteLine("API (Broadband): Cannot get speed results.");
             }
 
 
-            /*if (msg == null)
+            if (msg == null)
             {
                 return null;
             }
 
-            IPLocation ipl = null;
+            Broadband bb = null;
             using (msg)
             {
                 if (msg.IsSuccessStatusCode)
                 {
                     var data = msg.Content.ReadAsStringAsync().Result;
-                    var json = JsonConvert.DeserializeObject<IP>(data);
+                    var json = JsonConvert.DeserializeObject<JsonModels.Broadband>(data);
 
                     //get guid
                     if (json != null)
                     {
-                        ipl = new IPLocation
+                        bb = new Broadband
                         {
-                            country = json.country,
-                            regionName = json.regionName,
-                            city = json.city
+                            blockcode = json.blockcode,
+                            provider = json.provider,
+                            state = json.state,
+                            speed = json.speed
                         };
                     }
                 }
             }
-            return ipl;
-            */
+            return bb;
         }
     }
 }
