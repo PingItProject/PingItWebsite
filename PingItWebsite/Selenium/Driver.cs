@@ -31,12 +31,12 @@ namespace PingItWebsite.Selenium
         /// Load the Selenium driver
         /// </summary>
         /// <param name="url"></param>
-        /// <param name="location"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
         /// <param name="browser"></param>
-        public void LoadDriver(string url, string location, string browser)
+        public void LoadDriver(string url, string city, string state, string browser)
         {
             DateTime now = DateTime.Now;
-            Debug.WriteLine("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
             IWebDriver driver;
             if (browser.Equals("chrome"))
             {
@@ -71,15 +71,16 @@ namespace PingItWebsite.Selenium
             int batch = wt.GetBatch(HomeController._username, HomeController._database);
             _batch = batch + 1;
 
-            if (String.IsNullOrEmpty(location))
+            if (String.IsNullOrEmpty(city))
             {
-                location = "not specified";
+                city = "not specified";
+                state = "N/A";
             }
 
             //Add to database
-            location = location.ToLower();
+            city = city.ToLower();
 
-            wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, location, 
+            wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, city, state, 
                 browser, _batch, Guid.NewGuid(), HomeController._database);
             _complete = true;
         }

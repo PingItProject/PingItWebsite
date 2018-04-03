@@ -5,7 +5,8 @@
         <td>TimeStamp</td>
         <td>URL</td>
         <td>LoadTime(s)</td>
-        <td>Location</td>
+        <td>City</td>
+        <td>State</td>
         <td>Platform</td>
     </tr>
     @foreach(WebTest test in Model)
@@ -14,7 +15,8 @@
             <td>@test.date.ToString()</td>
             <td>@test.url</td>
             <td>@test.loadtime.ToString()</td>
-            <td>@test.location</td>
+            <td>@test.city</td>
+            <td>@test.state</td>
             <td>@test.browser</td>
         </tr>
 

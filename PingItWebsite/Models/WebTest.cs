@@ -1,6 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using PingItWebsite.APIs;
-using PingItWebsite.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,15 +12,11 @@ namespace PingItWebsite.Models
         public DateTime date { get; set; }
         public string url { get; set; }
         public TimeSpan loadtime { get; set; }
-        public string location { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
         public string browser { get; set; }
         public GoogleTest googleTest { get; set; }
         public Guid guid { get; set; }
-
-        //extra crowd sourcing variables
-        public string city { get; set; }
-        public string county { get; set; }
-        public double speed { get; set; }
         
         #region Constructors
         /// <summary>
@@ -47,19 +41,20 @@ namespace PingItWebsite.Models
         /// <param name="loadtime"></param>
         /// <param name="pagesize"></param>
         /// <param name="requests"></param>
-        /// <param name="location"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
         /// <param name="platform"></param>
         /// <param name="guid"></param>
         /// <param name="database"></param>
         public void CreateWebTest(string username, DateTime timestamp, string url, TimeSpan loadtime, int requests, 
-            string location, string platform, int batch, Guid guid, Database database)
+            string city, string state, string platform, int batch, Guid guid, Database database)
         {
             database.CheckConnection();
             try
             {
                 string formatDate = timestamp.ToString("yyyy-MM-dd HH:mm:ss");
                 string insert = "INSERT INTO webtests VALUES ('" + username + "','" + formatDate + "','" + url + "','" + loadtime +
-                    "'," + requests + ",'" + location + "','" + platform + "'," + batch + ",'" + guid + "');";
+                    "'," + requests + ",'" + city + "','" + state + "','" + platform + "'," + batch + ",'" + guid + "');";
 
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
                 command.ExecuteNonQuery();
@@ -133,7 +128,13 @@ namespace PingItWebsite.Models
         }
 
       
-        
+        /// <summary>
+        /// Get guid
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="batch"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
         public Guid GetGuid(string username, int batch, Database database)
         {
             Guid result;
@@ -185,7 +186,8 @@ namespace PingItWebsite.Models
                         date = reader.GetDateTime("tstamp"),
                         url = reader.GetString("url"),
                         loadtime = reader.GetTimeSpan("loadtime"),
-                        location = reader.GetString("location"),
+                        city = reader.GetString("city"),
+                        state = reader.GetString("state"),
                         browser = reader.GetString("platform"),
                         guid = reader.GetGuid("guid")
                     };
@@ -203,12 +205,13 @@ namespace PingItWebsite.Models
         /// <summary>
         /// Get web tests for crowdsourcing
         /// </summary>
-        /// <param name="loc"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
         /// <param name="browser"></param>
         /// <param name="ordering"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<WebTest> GetWebTests(string loc, string browser, bool ordering, Database database)
+        public List<WebTest> GetWebTests(string city, string state, string browser, bool ordering, Database database)
         {
             database.CheckConnection();
             List<WebTest> tests = new List<WebTest>();
@@ -217,16 +220,21 @@ namespace PingItWebsite.Models
                 MySqlCommand command = new MySqlCommand("GetTestResults", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                if (String.IsNullOrEmpty(loc))
+                if (String.IsNullOrEmpty(city))
                 {
-                    loc = "null";
+                    city = "null";
                 } 
+                if (String.IsNullOrEmpty(state))
+                {
+                    state = "null";
+                }
                 if (String.IsNullOrEmpty(browser))
                 {
                     browser = "null";
                 }
 
-                command.Parameters.AddWithValue("@loc", loc);
+                command.Parameters.AddWithValue("@c", city);
+                command.Parameters.AddWithValue("@s", state);
                 command.Parameters.AddWithValue("@browser", browser);
 
                 if (ordering)
@@ -247,7 +255,8 @@ namespace PingItWebsite.Models
                         date = reader.GetDateTime("tstamp"),
                         url = reader.GetString("url"),
                         loadtime = reader.GetTimeSpan("loadtime"),
-                        location = reader.GetString("location"),
+                        city = reader.GetString("city"),
+                        state = reader.GetString("state"),
                         browser = reader.GetString("platform"),
                         guid = reader.GetGuid("guid")
                     };

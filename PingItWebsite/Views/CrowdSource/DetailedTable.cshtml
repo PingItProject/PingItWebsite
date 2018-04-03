@@ -12,7 +12,8 @@
         <td>CSS Size (bytes)</td>
         <td>Image Size (bytes)</td>
         <td>Web Speed (Mbps)</td>
-        <td>Location</td>
+        <td>City</td>
+        <td>State</td>
         <td>Platform</td>
     </tr>
     @foreach (GoogleTest test in Model)
@@ -27,7 +28,8 @@
         <td>@test.cssBytes</td>
         <td>@test.imageBytes</td>
         <td>@test.webspeed</td>
-        <td>@test.location</td>
+        <td>@test.city</td>
+        <td>@test.state</td>
         <td>@test.browser</td>
     </tr>
 

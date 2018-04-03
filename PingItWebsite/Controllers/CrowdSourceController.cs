@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PingItWebsite.Models;
 
@@ -15,33 +12,42 @@ namespace PingItWebsite.Controllers
             return View();
         }
 
-
         /// <summary>
-        /// Load general table partial view
+        /// Load general partial view
         /// </summary>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="browser"></param>
+        /// <param name="order"></param>
         /// <returns></returns>
-        public IActionResult GeneralTable(string location, string browser, bool order)
+        public IActionResult GeneralTable(string city, string state, string browser, bool order)
         {
             WebTest wt = new WebTest();
             List<WebTest> tests;
 
-            if (!String.IsNullOrEmpty(location))
+            if (!String.IsNullOrEmpty(city))
             {
-                location = location.ToLower();
+                string temp = city;
+                city = city.ToLower();
+                if (String.IsNullOrEmpty(state))
+                {
+                    Counties counties = new Counties();
+                    state = counties.GetState(temp, HomeController._database);
+                }
             }
 
-            if (String.IsNullOrEmpty(location) && browser.Equals("all"))
+            if (String.IsNullOrEmpty(city) && browser.Equals("all"))
             {
-                tests = wt.GetWebTests(null, null, order, HomeController._database);
-            } else if (String.IsNullOrEmpty(location))
+                tests = wt.GetWebTests(null, null, null, order, HomeController._database);
+            } else if (String.IsNullOrEmpty(city))
             {
-                tests = wt.GetWebTests(null, browser, order, HomeController._database);
+                tests = wt.GetWebTests(null, null, browser, order, HomeController._database);
             } else if (browser.Equals("all"))
             {
-                tests = wt.GetWebTests(location, null, order, HomeController._database);
+                tests = wt.GetWebTests(city, state, null, order, HomeController._database);
             } else
             {
-                tests = wt.GetWebTests(location, browser, order, HomeController._database);
+                tests = wt.GetWebTests(city, state, browser, order, HomeController._database);
             }
             return PartialView(tests);
         }
@@ -49,37 +55,54 @@ namespace PingItWebsite.Controllers
         /// <summary>
         /// Load detailed table partial view
         /// </summary>
-        /// <param name="location"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
         /// <param name="browser"></param>
         /// <param name="order"></param>
         /// <returns></returns>
-        public IActionResult DetailedTable(string location, string browser, bool order)
+        public IActionResult DetailedTable(string city, string state, string browser, bool order)
         {
             GoogleTest gt = new GoogleTest();
             List<GoogleTest> tests;
 
-            if (!String.IsNullOrEmpty(location))
+            if (!String.IsNullOrEmpty(city))
             {
-                location = location.ToLower();
+                string temp = city;
+                city = city.ToLower();
+                if (String.IsNullOrEmpty(state))
+                {
+                    Counties counties = new Counties();
+                    state = counties.GetState(temp, HomeController._database);
+                }
             }
 
-            if (String.IsNullOrEmpty(location) && browser.Equals("all"))
+            if (String.IsNullOrEmpty(city) && browser.Equals("all"))
             {
-                tests = gt.GetGoogleTests(null, null, order, HomeController._database);
+                tests = gt.GetGoogleTests(null, null, null, order, HomeController._database);
             }
-            else if (String.IsNullOrEmpty(location))
+            else if (String.IsNullOrEmpty(city))
             {
-                tests = gt.GetGoogleTests(null, browser, order, HomeController._database);
+                tests = gt.GetGoogleTests(null, null, browser, order, HomeController._database);
             }
             else if (browser.Equals("all"))
             {
-                tests = gt.GetGoogleTests(location, null, order, HomeController._database);
+                tests = gt.GetGoogleTests(city, state, null, order, HomeController._database);
             }
             else
             {
-                tests = gt.GetGoogleTests(location, browser, order, HomeController._database);
+                tests = gt.GetGoogleTests(city, state, browser, order, HomeController._database);
             }
             return PartialView(tests);
+        }
+
+        public IActionResult DataOptions()
+        {
+            return PartialView();
+        }
+        
+        public IActionResult CrowdSourceTable(string city, string state)
+        {
+            return null;
         }
 
     }

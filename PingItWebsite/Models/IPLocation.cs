@@ -7,5 +7,7 @@
         public string regionName { get; set; }
 
         public string city { get; set; }
+
+        public string state { get; set; }
     }
 }

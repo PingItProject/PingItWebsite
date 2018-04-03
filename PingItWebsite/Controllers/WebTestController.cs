@@ -38,7 +38,7 @@ namespace PingItWebsite.Controllers
                 a => a.AddressFamily == AddressFamily.InterNetwork);
             IPAddressAPI ipa = new IPAddressAPI();
 
-            driver.LoadDriver(url, ipa.GetLocation(ipv4.ToString()).city, browser);
+            driver.LoadDriver(url, ipa.GetLocation(ipv4.ToString()).city, ipa.GetLocation(ipv4.ToString()).state, browser);
         }
         #endregion
 

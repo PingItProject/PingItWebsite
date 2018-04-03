@@ -60,7 +60,8 @@ namespace PingItWebsite.APIs
                         {
                             country = json.country,
                             regionName = json.regionName,
-                            city = json.city
+                            city = json.city,
+                            state = json.region
                         };
                     }
                 }

@@ -19,7 +19,8 @@ namespace PingItWebsite.Models
         public long cssBytes { get; set; }
         public long imageBytes { get; set; }
         public decimal webspeed { get; set; }
-        public string location { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
         public string browser { get; set; }
 
         #region Constructors
@@ -119,7 +120,7 @@ namespace PingItWebsite.Models
         /// <param name="ordering"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<GoogleTest> GetGoogleTests(string loc, string browser, bool ordering, Database database)
+        public List<GoogleTest> GetGoogleTests(string city, string state, string browser, bool ordering, Database database)
         {
             database.CheckConnection();
             List<GoogleTest> tests = new List<GoogleTest>();
@@ -128,16 +129,21 @@ namespace PingItWebsite.Models
                 MySqlCommand command = new MySqlCommand("GetGoogleTestResults", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                if (String.IsNullOrEmpty(loc))
+                if (String.IsNullOrEmpty(city))
                 {
-                    loc = "null";
+                    city = "null";
+                }
+                if (String.IsNullOrEmpty(state))
+                {
+                    state = "null";
                 }
                 if (String.IsNullOrEmpty(browser))
                 {
                     browser = "null";
                 }
 
-                command.Parameters.AddWithValue("@loc", loc);
+                command.Parameters.AddWithValue("@c", city);
+                command.Parameters.AddWithValue("@s", state);
                 command.Parameters.AddWithValue("@browser", browser);
 
                 if (ordering)
@@ -165,7 +171,8 @@ namespace PingItWebsite.Models
                         cssBytes = reader.GetInt64("css_bytes"),
                         imageBytes = reader.GetInt64("image_bytes"),
                         webspeed = (decimal)reader.GetDouble("webspeed"),
-                        location = reader.GetString("location"),
+                        city = reader.GetString("city"),
+                        state = reader.GetString("state"),
                         browser = reader.GetString("platform"),
                     };
                     tests.Add(gt);
