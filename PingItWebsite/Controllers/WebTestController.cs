@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.AspNetCore.Mvc;
@@ -27,18 +29,43 @@ namespace PingItWebsite.Controllers
         /// </summary>
         /// <param name="url"></param>
         /// <param name="browser"></param>
-        public void TestWebsite(string url, string browser)
+        public void TestWebsite(string url, string browser, string city, string state)
         {
+            //Get today's date
             DateTime now = DateTime.Now;
             Driver driver = new Driver();
 
-            //Get ipv4 information
-            IPAddress ipv4 = Array.FindLast(
+            //If either is empty, then use the ipv4 information to get computer's location
+            if (String.IsNullOrEmpty(city) || String.IsNullOrEmpty(state))
+            {
+                //Get ipv4 information
+                IPAddress ipv4 = Array.FindLast(
                 Dns.GetHostEntry(string.Empty).AddressList,
                 a => a.AddressFamily == AddressFamily.InterNetwork);
-            IPAddressAPI ipa = new IPAddressAPI();
+                IPAddressAPI ipa = new IPAddressAPI();
+                driver.LoadDriver(url, ipa.GetLocation(ipv4.ToString()).city, ipa.GetLocation(ipv4.ToString()).state, browser);
+            } else
+            {
+                //Get coordinates using the Geocoding API
+                GeocodingAPI ga = new GeocodingAPI();
+                IList<double> coord = ga.GetLocationCoords(city, state);
+                double lat = coord[0];
+                double lng = coord[1];
+                
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "Selenium/location.json");
 
-            driver.LoadDriver(url, ipa.GetLocation(ipv4.ToString()).city, ipa.GetLocation(ipv4.ToString()).state, browser);
+                //Update JSON with the correct latitude and longitude of the chosen dest.
+                string json = System.IO.File.ReadAllText(path);
+                //string json = System.IO.File.ReadAllText(@"C:\Users\Brighton\source\repos\PingItWebsite\PingItWebsite\Selenium\location.json");
+                dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+                jsonObj["location"]["lat"] = lat;
+               jsonObj["location"]["lng"] = lng;
+                string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                
+                System.IO.File.WriteAllText(path, output);
+                driver.LoadDriver(url, city, state, browser);
+                
+            }
         }
         #endregion
 

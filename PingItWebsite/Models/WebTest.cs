@@ -47,14 +47,14 @@ namespace PingItWebsite.Models
         /// <param name="guid"></param>
         /// <param name="database"></param>
         public void CreateWebTest(string username, DateTime timestamp, string url, TimeSpan loadtime, int requests, 
-            string city, string state, string platform, int batch, Guid guid, Database database)
+            string city, string state, string platform, string provider, int batch, Guid guid, Database database)
         {
             database.CheckConnection();
             try
             {
                 string formatDate = timestamp.ToString("yyyy-MM-dd HH:mm:ss");
                 string insert = "INSERT INTO webtests VALUES ('" + username + "','" + formatDate + "','" + url + "','" + loadtime +
-                    "'," + requests + ",'" + city + "','" + state + "','" + platform + "'," + batch + ",'" + guid + "');";
+                    "'," + requests + ",'" + city + "','" + state + "','" + platform + "','" + provider + "'," + batch + ",'" + guid + "');";
 
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
                 command.ExecuteNonQuery();

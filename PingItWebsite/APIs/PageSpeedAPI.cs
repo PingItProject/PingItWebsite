@@ -2,13 +2,9 @@
 using PingItWebsite.Controllers;
 using PingItWebsite.JsonModels;
 using PingItWebsite.Models;
-using PingItWebsite.Selenium;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace PingItWebsite.APIs
 {
@@ -17,7 +13,7 @@ namespace PingItWebsite.APIs
         string _APIkey = "AIzaSyBuJEUbGXKZ_DH76YM8uY4RQGzIK7dojxI";
         string _url = "https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url={0}&strategy=desktop&key={1}";
 
-        #region
+        #region Constructors
         public PageSpeedAPI()
         {
 
