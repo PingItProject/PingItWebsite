@@ -1,1 +1,1 @@
-This project is a crowdsourced application that tests website performance. The platform is ASP.NET core, and the app itself is a MVC web application. This app uses C#, JavaScript, and CSS/HTML.
+This project is a crowdsourced application that tests website performance. The platform is ASP.NET core, and the app itself is a MVC web application. It is connected to a MySQL database on the Google Cloud. This app uses C#, JavaScript, PostgreSQL, and CSS/HTML.
