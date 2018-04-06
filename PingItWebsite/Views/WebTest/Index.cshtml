@@ -54,10 +54,15 @@
                                     <option value="phantomJS">Headless</option>
                                 </select>
                             </td>
-                            <td><textarea id="provider" placeholder="Enter your provider (i.e. AT&T)" style="width: 300px; height: 20px"></textarea></td>
+                            <td>
+                                <textarea id="no_requests" style="width: 50px; height: 20px"></textarea>
+                            </td>
+                            <td>
+                                <textarea id="provider" placeholder="Enter your provider (i.e. AT&T)" style="width: 300px; height: 20px"></textarea>
+                            </td>
                         </tr>
                         <tr>
-                            (Optional: Choose a custom location)
+                            (Optional: Choose a custom location-- only available for Firefox driver)
                         </tr>
                         <tr> 
                             <td style="width: 50px">City</td>
@@ -77,8 +82,33 @@
 
     <!-- Scripts -->
     <script>
-        //Tests the website with url and browser
         function TestWebsite() {
+            $.ajax({
+                type: "POST",
+                url: "/WebTest/PrepareBatch",
+                async: true,
+                dataType: "json",
+                data: {
+                    requests: $("#no_requests").val()
+                },
+                success: function () {
+                    
+                },
+                error: function () {
+                    return "error";
+                }
+            });
+            var nr = parseInt($("#no_requests").val());
+            for (i = 0; i < nr; i++) {
+                TestWebsiteHelper();
+            }
+            RenderTable();
+            
+        }     
+    </script>
+    <script>
+        //Tests the website with url and browser
+        function TestWebsiteHelper() {
             $.ajax({
                 type: "POST",
                 url: "/WebTest/TestWebsite",
@@ -88,7 +118,9 @@
                     url: $("#test_url").val(),
                     browser: $("#browser_options").val(),
                     city: $("#city").val(),
-                    state: $("#state").val()
+                    state: $("#state").val(),
+                    provider: $("#provider").val(),
+                    requests: $("#no_requests").val()
                 },
                 success: function (data) {
                 },
@@ -96,7 +128,6 @@
                     return "error";
                 }
             });
-            RenderTable();
         }
     </script>
     <script>

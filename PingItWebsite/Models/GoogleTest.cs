@@ -57,6 +57,7 @@ namespace PingItWebsite.Models
                 string insert = "INSERT INTO googletests VALUES ('" + guid + "'," + score + ",'" + category + "'," + resources + "," + hosts +
                     "," + bytes + "," + htmlBytes + "," + cssBytes + "," + imageBytes + "," + webSpeed + ");";
 
+                Debug.WriteLine("I'm in hereeeeeeeeee");
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
                 command.ExecuteNonQuery();
             }
@@ -69,15 +70,15 @@ namespace PingItWebsite.Models
 
         #region StoredProcedures
         /// <summary>
-        /// Get user google tests
+        /// Returns a matching Google Test
         /// </summary>
         /// <param name="guid"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<GoogleTest> GetUserGoogleTests(Guid guid, Database database)
+        public GoogleTest GetUserGoogleTest(Guid guid, Database database)
         {
             database.CheckConnection();
-            List<GoogleTest> tests = new List<GoogleTest>();
+            GoogleTest gt = null;
             try
             {
                 MySqlCommand command = new MySqlCommand("GetUserGoogleTestResults", database.Connection);
@@ -88,7 +89,7 @@ namespace PingItWebsite.Models
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    GoogleTest gt = new GoogleTest
+                    gt = new GoogleTest
                     {
                         score = reader.GetInt32("score"),
                         category = reader.GetString("category"),
@@ -100,7 +101,6 @@ namespace PingItWebsite.Models
                         imageBytes = reader.GetInt64("image_bytes"),
                         webspeed = (decimal)reader.GetDouble("webspeed")
                     };
-                    tests.Add(gt);
                 }
                 reader.Close();
             }
@@ -109,7 +109,7 @@ namespace PingItWebsite.Models
                 Debug.WriteLine("Stored Procedure: Cannot perform GetGoogleTestResults.");
             }
             _complete = true;
-            return tests;
+            return gt;
         }
 
         /// <summary>

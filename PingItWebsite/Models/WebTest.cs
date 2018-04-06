@@ -15,7 +15,12 @@ namespace PingItWebsite.Models
         public string city { get; set; }
         public string state { get; set; }
         public string browser { get; set; }
+        public string provider { get; set; }
+
+        //google test variable
         public GoogleTest googleTest { get; set; }
+
+        //unique id
         public Guid guid { get; set; }
         
         #region Constructors
@@ -43,7 +48,7 @@ namespace PingItWebsite.Models
         /// <param name="requests"></param>
         /// <param name="city"></param>
         /// <param name="state"></param>
-        /// <param name="platform"></param>
+        /// <param name="browser"></param>
         /// <param name="guid"></param>
         /// <param name="database"></param>
         public void CreateWebTest(string username, DateTime timestamp, string url, TimeSpan loadtime, int requests, 
@@ -188,7 +193,8 @@ namespace PingItWebsite.Models
                         loadtime = reader.GetTimeSpan("loadtime"),
                         city = reader.GetString("city"),
                         state = reader.GetString("state"),
-                        browser = reader.GetString("platform"),
+                        browser = reader.GetString("browser"),
+                        provider = reader.GetString("provider"),
                         guid = reader.GetGuid("guid")
                     };
                     tests.Add(wt);
@@ -257,7 +263,8 @@ namespace PingItWebsite.Models
                         loadtime = reader.GetTimeSpan("loadtime"),
                         city = reader.GetString("city"),
                         state = reader.GetString("state"),
-                        browser = reader.GetString("platform"),
+                        browser = reader.GetString("browser"),
+                        provider = reader.GetString("provider"),
                         guid = reader.GetGuid("guid")
                     };
                     tests.Add(wt);

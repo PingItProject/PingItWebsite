@@ -6,9 +6,12 @@ namespace PingItWebsite.Controllers
 {
     public class HomeController : Controller
     {
+        #region Variables
         public static Database _database;
         public static string _username;
+        #endregion
 
+        #region View-Controllers
         /// <summary>
         /// View Home Index
         /// </summary>
@@ -54,6 +57,7 @@ namespace PingItWebsite.Controllers
             return Json(new { valid = false });
 
         }
+        #endregion
 
 
     }

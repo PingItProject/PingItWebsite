@@ -7,7 +7,8 @@
         <td>LoadTime(s)</td>
         <td>City</td>
         <td>State</td>
-        <td>Platform</td>
+        <td>Browser</td>
+        <td>Provider</td>
     </tr>
     @foreach(WebTest test in Model)
     {
@@ -18,8 +19,8 @@
             <td>@test.city</td>
             <td>@test.state</td>
             <td>@test.browser</td>
+            <td>@test.provider</td>
         </tr>
-
     }
 </table>
 <p></p>

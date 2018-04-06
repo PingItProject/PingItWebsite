@@ -8,8 +8,6 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.PhantomJS;
 using PingItWebsite.Models;
 using PingItWebsite.Controllers;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
-using Microsoft.CodeAnalysis;
 using System.Text;
 
 namespace PingItWebsite.Selenium
@@ -18,7 +16,9 @@ namespace PingItWebsite.Selenium
     {
         #region variables
         public static int _batch;
-        public static bool _complete = false;
+        public static int _requests = Int32.MaxValue;
+
+        private WebTest wt;
         #endregion
 
         #region Constructors
@@ -39,10 +39,19 @@ namespace PingItWebsite.Selenium
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <param name="browser"></param>
-        public void LoadDriver(string url, string city, string state, string browser)
+        /// <param name="provider"></param>
+        /// <param name="requests"></param>
+        public void LoadDriver(string url, string city, string state, string browser, string provider, int requests)
         {
             DateTime now = DateTime.Now;
             IWebDriver driver;
+            
+            if (String.IsNullOrEmpty(provider))
+            {
+                provider = "not specified";
+            }
+
+            //Create drivers depending on browser type
             if (browser.Equals("chrome"))
             {
                 //add preferences
@@ -63,7 +72,6 @@ namespace PingItWebsite.Selenium
                 profile.SetPreference("geo.prompt.testing", true);
                 profile.SetPreference("geo.prompt.testing.allow", true);
                 profile.SetPreference("geo.enabled", true);
-                //profile.SetPreference("geo.wifi.uri", @"C:\Users\Brighton\source\repos\PingItWebsite\PingItWebsite\Selenium\location.json");
                 profile.SetPreference("geo.wifi.uri", "~/Selenium/location.json");
                 options.Profile = profile;
                 driver = new FirefoxDriver(Directory.GetCurrentDirectory(), options);
@@ -81,12 +89,7 @@ namespace PingItWebsite.Selenium
             TimeSpan loadtime = timer.Elapsed;
             driver.Close();
 
-            //Create a batch number to keep track of user's tests
-            WebTest wt = new WebTest();
-            int batch = wt.GetBatch(HomeController._username, HomeController._database);
-            _batch = batch + 1;
-
-            if (String.IsNullOrEmpty(city))
+            if (String.IsNullOrEmpty(city) || String.IsNullOrEmpty(state))
             {
                 city = "not specified";
                 state = "N/A";
@@ -95,19 +98,12 @@ namespace PingItWebsite.Selenium
             //Add to database
             city = city.ToLower();
 
-            wt.CreateWebTest(HomeController._username, now, url, loadtime, 1, city, state, 
-                browser, "GTLAWN", _batch, Guid.NewGuid(), HomeController._database);
-            _complete = true;
-        }
+            wt = new WebTest();
+            wt.CreateWebTest(HomeController._username, now, url, loadtime, requests, city, state,
+                browser, provider, _batch, Guid.NewGuid(), HomeController._database);
 
-        /// <summary>
-        /// Helper function that helps a Chrome driver execute 
-        /// </summary>
-        /// <param name="driver"></param>
-        /// <returns></returns>
-        public static IJavaScriptExecutor Scripts(IWebDriver driver)
-        {
-            return (IJavaScriptExecutor)driver;
+            _requests--;
+            Debug.WriteLine("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + _requests);
         }
 
         #endregion

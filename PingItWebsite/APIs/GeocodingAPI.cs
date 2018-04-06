@@ -3,9 +3,7 @@ using PingItWebsite.JsonModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace PingItWebsite.APIs
 {
@@ -21,7 +19,7 @@ namespace PingItWebsite.APIs
         }
         #endregion
 
-        #region Inserts
+        #region Queries
         /// <summary>
         /// Get location coordinates using the Google API
         /// </summary>
