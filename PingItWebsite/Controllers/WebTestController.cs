@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using PingItWebsite.APIs;
 using PingItWebsite.Models;
 using PingItWebsite.Selenium;
@@ -121,21 +119,17 @@ namespace PingItWebsite.Controllers
             PageSpeedAPI psa = new PageSpeedAPI();
             GoogleTest gt = new GoogleTest();
 
-            Debug.WriteLine(tests.Count + "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
             //Loop through the number of general tests and create a corresponding google test
             for (int i = 0; i < tests.Count; i++)
             {
-                Debug.WriteLine("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSssssss" + i); 
                 int seconds = tests[i].loadtime.Seconds;
 
                 //Using the page speed API, insert into database and then add to the table view
                 psa.InsertPageSpeed(tests[i].url, tests[i].loadtime.Seconds, tests[i].guid);
-                
-                //Find the matching 
-                //List<GoogleTest> gtList = gt.GetUserGoogleTests(tests[i].guid, HomeController._database);
 
-                //Debug.WriteLine("The list size " + gtList.Count);
-                /*tests[i].googleTest = gtList[i];*/
+                //Find the matching google test
+                GoogleTest test = gt.GetUserGoogleTest(tests[i].guid, HomeController._database);
+                tests[i].googleTest = test;
             }
 
             return PartialView(tests);

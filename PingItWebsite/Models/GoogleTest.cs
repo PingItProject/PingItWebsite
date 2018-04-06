@@ -57,7 +57,6 @@ namespace PingItWebsite.Models
                 string insert = "INSERT INTO googletests VALUES ('" + guid + "'," + score + ",'" + category + "'," + resources + "," + hosts +
                     "," + bytes + "," + htmlBytes + "," + cssBytes + "," + imageBytes + "," + webSpeed + ");";
 
-                Debug.WriteLine("I'm in hereeeeeeeeee");
                 MySqlCommand command = new MySqlCommand(insert, database.Connection);
                 command.ExecuteNonQuery();
             }

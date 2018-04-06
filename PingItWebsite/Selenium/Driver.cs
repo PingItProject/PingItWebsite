@@ -103,7 +103,6 @@ namespace PingItWebsite.Selenium
                 browser, provider, _batch, Guid.NewGuid(), HomeController._database);
 
             _requests--;
-            Debug.WriteLine("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + _requests);
         }
 
         #endregion
