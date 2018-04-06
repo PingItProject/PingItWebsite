@@ -10,8 +10,10 @@ namespace PingItWebsite.APIs
 {
     public class PageSpeedAPI
     {
+        #region Variables
         string _APIkey = "AIzaSyBuJEUbGXKZ_DH76YM8uY4RQGzIK7dojxI";
         string _url = "https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url={0}&strategy=desktop&key={1}";
+        #endregion
 
         #region Constructors
         public PageSpeedAPI()
@@ -20,11 +22,13 @@ namespace PingItWebsite.APIs
         }
         #endregion
 
-        #region Inserts
+        #region Requests
         /// <summary>
-        /// Gets page speed
+        /// Grabs the page speed and inserts into database
         /// </summary>
         /// <param name="website"></param>
+        /// <param name="seconds"></param>
+        /// <param name="guid"></param>
         public void InsertPageSpeed(string website, int seconds, Guid guid)
         {
             HttpClient httpClient = new HttpClient();
@@ -48,7 +52,6 @@ namespace PingItWebsite.APIs
                         var data = msg.Content.ReadAsStringAsync().Result;
                         var json = JsonConvert.DeserializeObject<PageSpeed>(data);
 
-                        //get guid
                         if (json != null)
                         {
                             GoogleTest pst = new GoogleTest();

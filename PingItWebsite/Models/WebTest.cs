@@ -8,6 +8,7 @@ namespace PingItWebsite.Models
 {
     public class WebTest
     {
+        #region WebTest properties
         //main variables
         public DateTime date { get; set; }
         public string url { get; set; }
@@ -22,7 +23,8 @@ namespace PingItWebsite.Models
 
         //unique id
         public Guid guid { get; set; }
-        
+        #endregion
+
         #region Constructors
         /// <summary>
         /// Class constructor
@@ -73,7 +75,7 @@ namespace PingItWebsite.Models
 
         #region Queries
         /// <summary>
-        /// Gets the latest batch number by checking if the user tested before and then calling helper
+        /// Gets the latest batch number by checking if the user tested before and then calling helper fx
         /// </summary>
         /// <param name="username"></param>
         /// <param name="database"></param>
@@ -241,7 +243,7 @@ namespace PingItWebsite.Models
 
                 command.Parameters.AddWithValue("@c", city);
                 command.Parameters.AddWithValue("@s", state);
-                command.Parameters.AddWithValue("@browser", browser);
+                command.Parameters.AddWithValue("@b", browser);
 
                 if (ordering)
                 {

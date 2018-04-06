@@ -11,15 +11,17 @@ namespace PingItWebsite.Controllers
 {
     public class CreateUserController : Controller
     {
+        #region Variables
         public static bool _VisitedCreatedUser = false;
+        #endregion
 
+        #region View-Controllers
         /// <summary>
         /// Return CreateUser Index
         /// </summary>
         /// <returns></returns>
         public IActionResult Index()
         {
-            Debug.WriteLine("SSSSSSSSSSSSSSSSSSSSS " + Directory.GetCurrentDirectory());
             return View();
         }
         
@@ -55,5 +57,6 @@ namespace PingItWebsite.Controllers
             user.CreateUser(username, fname, lname, email, pass1, type, HomeController._database);
             return Json(new { failPass = false, exists = false });
         }
+        #endregion
     }
 }

@@ -8,8 +8,11 @@ namespace PingItWebsite.Models
 {
     public class GoogleTest
     {
+        #region Variables
         public static bool _complete = false;
+        #endregion
 
+        #region Properties of Google Test
         public int score { get; set; }
         public string category { get; set; }
         public int resources { get; set; }
@@ -22,6 +25,7 @@ namespace PingItWebsite.Models
         public string city { get; set; }
         public string state { get; set; }
         public string browser { get; set; }
+        #endregion
 
         #region Constructors
         /// <summary>
@@ -69,7 +73,7 @@ namespace PingItWebsite.Models
 
         #region StoredProcedures
         /// <summary>
-        /// Returns a matching Google Test
+        /// Returns a matching user Google Test 
         /// </summary>
         /// <param name="guid"></param>
         /// <param name="database"></param>

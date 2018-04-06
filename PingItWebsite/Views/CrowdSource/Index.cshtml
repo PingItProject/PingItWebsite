@@ -81,21 +81,35 @@
                                 State
                                 <textarea id="state_text" placeholder="all" style="width: 150px; height: 20px"></textarea>
                             </td>
-                            <td><input type="button" value="Submit" id="submit_btn" onclick="LoadData()" style="width: 150px" /></td>
+                            <td><input type="button" value="Submit" id="submit_btn" onclick="RevealBtns()" style="width: 150px" /></td>
                         </tr>
                     </table>
                 </form>
+                <div id="table_options" name="table_options" style="display:none" align="center">
+                    <h2 align="center">Table Options</h2>
+                    <input id="general_tbtn" type="button" value="General" />
+                    <input id="detailed_tbtn" type="button" value="Detailed" />
+                    <input id="fcc_tbtn" type="button" value="FCC Data" />
+                    <input id="website_tbtn" type="button" value="Website Comparisons" />
+                </div>
+               
                 <div id="table_section"></div>
             </div>
         </div>
     </div>
 
-
-
-
-
-        
     <!-- Scripts -->
+    <script>
+        //Reveal the table buttons
+        function RevealBtns() {
+            var options = document.getElementById("table_options");
+            var generalbtn = document.getElementById("general_tbtn");
+
+            //display buttons
+            options.style.display = "block";
+            generalbtn.style.color = "blue";
+        }
+    </script>
     <script>
         function LoadData() {
             var ordering;

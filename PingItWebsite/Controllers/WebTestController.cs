@@ -55,6 +55,7 @@ namespace PingItWebsite.Controllers
         /// <param name="requests"></param>
         public void TestWebsite(string url, string browser, string city, string state, string provider, string requests)
         {
+            //Locks the thread so multiple drivers are not being used at the same time
             lock(wtLock)
             {
                 Driver driver = new Driver();

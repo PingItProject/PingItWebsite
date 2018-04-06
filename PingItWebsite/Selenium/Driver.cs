@@ -14,7 +14,7 @@ namespace PingItWebsite.Selenium
 {
     public class Driver
     {
-        #region variables
+        #region Variables
         public static int _batch;
         public static int _requests = Int32.MaxValue;
 
