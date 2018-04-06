@@ -36,6 +36,8 @@
         </nav>
 
 
+
+
         <!-- Main -->
         <div id="main">
             <div class="inner">
@@ -45,10 +47,11 @@
                 <form method="post" action="#">
                     <table align="center" style="width:800px">
                         <tr>
+                            
                             <td>
                                 Browser Type
                                 <select id="browser_options" name="browser_options" style="width: 150px">
-                                    <option value="all">All</option>
+                                    <option value="all">All &nbsp&nbsp &dtrif; </option>
                                     <option value="chrome">Chrome</option>
                                     <option value="firefox">FireFox</option>
                                     <option value="phantomJS">Headless</option>
@@ -57,14 +60,19 @@
                             <td>
                                 Order By
                                 <select id="order_options" name="order_options" style="width: 150px">
-                                    <option value="asc">Ascending</option>
+                                    <option value="asc">Ascending &nbsp&nbsp &dtrif; </option>
                                     <option value="desc">Descending</option>
                                 </select>
                             </td>
-                            <td><input type="button" value="Submit" id="submit_btn" onclick="LoadData()" style="width: 150px" /></td>
+                            <td>Data Options
+                                <select id="data_options" name="data_options" style="width: 150px">
+                                    <option value="general">General &nbsp&nbsp &dtrif; </option>
+                                    <option value="detailed">Detailed</option>
+                                    <option value="broadband">Avg. Broadband Speeds</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
-                            Location
                             <td>
                                 City
                                 <textarea id="city_text" placeholder="all" style="width: 150px; height: 20px"></textarea>
@@ -73,15 +81,7 @@
                                 State
                                 <textarea id="state_text" placeholder="all" style="width: 150px; height: 20px"></textarea>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <select id="data_options" name="data_options" style="width: 150px;">
-                                    <option value="general">General</option>
-                                    <option value="detailed">Detailed</option>
-                                    <option value="broadband">Avg. Broadband Speeds</option>
-                                </select>
-                            </td>  
+                            <td><input type="button" value="Submit" id="submit_btn" onclick="LoadData()" style="width: 150px" /></td>
                         </tr>
                     </table>
                 </form>
@@ -89,6 +89,12 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+        
     <!-- Scripts -->
     <script>
         function LoadData() {
