@@ -42,37 +42,42 @@
                 <form method="post" action="#">
                     <!--Create an options table to choose for webtest-->
                     <table align="center" style="width:800px">
-                        <tr> URL
-                            <td><textarea id="test_url" placeholder="Enter your URL here." style="width: 500px; height: 20px"></textarea></td>
-                        </tr>
-                        <tr>
-                            Required
+                        <tr> 
                             <td>
-                                <select id="browser_options" name="browser" style="width: 150px">
-                                    <option value="chrome">Chrome</option>
+                                URL Required
+                            <textarea id="test_url" placeholder="Enter your URL here." style="width: 700px; height: 20px"></textarea></td>
+                        </tr>
+                     <table align="center" style="width:800px">
+                        <tr>
+                            <td>
+                                Select Browser
+                                <select id="browser_options" name="browser" style="width: 300px">
+                                    <option value="chrome">Chrome &nbsp&nbsp &dtrif;</option>
                                     <option value="firefox">FireFox</option>
                                     <option value="phantomJS">Headless</option>
                                 </select>
                             </td>
                             <td>
-                                <textarea id="no_requests" style="width: 50px; height: 20px"></textarea>
-                            </td>
-                            <td>
+                                Select Provider
                                 <textarea id="provider" placeholder="Enter your provider (i.e. AT&T)" style="width: 300px; height: 20px"></textarea>
                             </td>
                         </tr>
-                        <tr>
-                            (Optional: Choose a custom location-- only available for Firefox driver)
-                        </tr>
                         <tr> 
-                            <td style="width: 50px">City</td>
-                            <td><textarea id="city" style="width: 75px; height: 20px"></textarea></td>
-                            <td style="width: 50px">State (Abbr.)</td>
-                            <td><textarea id="state" style="width: 75px; height: 20px"></textarea></td>
+                            <td>
+                                City
+                                <textarea id="city" placeholder="Enter City" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                            <td>
+                                State
+                                <textarea id="state" placeholder="Enter State" style="width: 300px; height: 20px"></textarea>
+                            </td>
                         </tr>
+                    <table align="center" style="width:800px">
                         <tr>
-                            <td><input type="button" value="Test" id="test_btn" style="width: 100px" onclick="TestWebsite()" /></td>
+                            <td align="center"><input type="button" value="Test" id="test_btn" style="width: 100px" onclick="TestWebsite()" /></td>
                         </tr>
+                    </table>
+                    </table>
                     </table>
                 </form>
                 <div id="table_section"></div>
