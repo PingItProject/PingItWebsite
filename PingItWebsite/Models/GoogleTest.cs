@@ -14,6 +14,7 @@ namespace PingItWebsite.Models
 
         #region Properties of Google Test
         public DateTime date { get; set; }
+        public string website { get; set; }
         public int score { get; set; }
         public string category { get; set; }
         public int resources { get; set; }
@@ -23,9 +24,6 @@ namespace PingItWebsite.Models
         public long cssBytes { get; set; }
         public long imageBytes { get; set; }
         public decimal webspeed { get; set; }
-        public string city { get; set; }
-        public string state { get; set; }
-        public string browser { get; set; }
         #endregion
 
         #region Constructors
@@ -122,10 +120,11 @@ namespace PingItWebsite.Models
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <param name="browser"></param>
+        /// <param name="website"></param>
         /// <param name="ordering"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<GoogleTest> GetGoogleTests(string city, string state, string browser, bool ordering, Database database)
+        public List<GoogleTest> GetGoogleTests(string city, string state, string browser, string website, bool ordering, Database database)
         {
             database.CheckConnection();
             List<GoogleTest> tests = new List<GoogleTest>();
@@ -146,10 +145,15 @@ namespace PingItWebsite.Models
                 {
                     browser = "null";
                 }
+                if (String.IsNullOrEmpty(website))
+                {
+                    website = "null";
+                }
 
-                command.Parameters.AddWithValue("@c", city);
-                command.Parameters.AddWithValue("@s", state);
-                command.Parameters.AddWithValue("@b", browser);
+                command.Parameters.AddWithValue("@ucity", city);
+                command.Parameters.AddWithValue("@ustate", state);
+                command.Parameters.AddWithValue("@ubrowser", browser);
+                command.Parameters.AddWithValue("@uwebsite", website);
 
                 if (ordering)
                 {
@@ -167,6 +171,7 @@ namespace PingItWebsite.Models
                     GoogleTest gt = new GoogleTest
                     {
                         date = reader.GetDateTime("tstamp"),
+                        website = website,
                         score = reader.GetInt32("score"),
                         category = reader.GetString("category"),
                         resources = reader.GetInt32("resources"),
@@ -176,9 +181,6 @@ namespace PingItWebsite.Models
                         cssBytes = reader.GetInt64("css_bytes"),
                         imageBytes = reader.GetInt64("image_bytes"),
                         webspeed = (decimal)reader.GetDouble("webspeed"),
-                        city = reader.GetString("city"),
-                        state = reader.GetString("state"),
-                        browser = reader.GetString("browser"),
                     };
                     tests.Add(gt);
                 }

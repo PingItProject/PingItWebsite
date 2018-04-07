@@ -216,10 +216,11 @@ namespace PingItWebsite.Models
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <param name="browser"></param>
+        /// <param name="website"></param>
         /// <param name="ordering"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<WebTest> GetWebTests(string city, string state, string browser, bool ordering, Database database)
+        public List<WebTest> GetWebTests(string city, string state, string browser, string website, bool ordering, Database database)
         {
             database.CheckConnection();
             List<WebTest> tests = new List<WebTest>();
@@ -240,11 +241,17 @@ namespace PingItWebsite.Models
                 {
                     browser = "null";
                 }
+                if (String.IsNullOrEmpty(website))
+                {
+                    website = "null";
+                }
 
-                command.Parameters.AddWithValue("@c", city);
-                command.Parameters.AddWithValue("@s", state);
-                command.Parameters.AddWithValue("@b", browser);
+                command.Parameters.AddWithValue("@ucity", city);
+                command.Parameters.AddWithValue("@ustate", state);
+                command.Parameters.AddWithValue("@ubrowser", browser);
+                command.Parameters.AddWithValue("@uwebsite", website);
 
+                
                 if (ordering)
                 {
                     command.Parameters.AddWithValue("@ordering", true);
@@ -257,7 +264,6 @@ namespace PingItWebsite.Models
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-
                     WebTest wt = new WebTest
                     {
                         date = reader.GetDateTime("tstamp"),

@@ -22,9 +22,10 @@ namespace PingItWebsite.Controllers
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <param name="browser"></param>
+        /// <param name="website"></param>
         /// <param name="order"></param>
         /// <returns></returns>
-        public IActionResult GeneralTable(string city, string state, string browser, bool order)
+        public IActionResult GeneralTable(string city, string state, string browser, string website, bool order)
         {
             WebTest wt = new WebTest();
             List<WebTest> tests;
@@ -42,20 +43,11 @@ namespace PingItWebsite.Controllers
                 }
             }
 
-            //Checks the options for the filters to perform stored proc
-            if (String.IsNullOrEmpty(city) && browser.Equals("all"))
-            {
-                tests = wt.GetWebTests(null, null, null, order, HomeController._database);
-            } else if (String.IsNullOrEmpty(city))
-            {
-                tests = wt.GetWebTests(null, null, browser, order, HomeController._database);
-            } else if (browser.Equals("all"))
-            {
-                tests = wt.GetWebTests(city, state, null, order, HomeController._database);
-            } else
-            {
-                tests = wt.GetWebTests(city, state, browser, order, HomeController._database);
-            }
+            //Get the default array
+            string[] defArr = GetDefault(browser, website);
+
+            tests = wt.GetWebTests(city, state, defArr[0], defArr[1], order, HomeController._database);
+
             return PartialView(tests);
         }
 
@@ -65,9 +57,10 @@ namespace PingItWebsite.Controllers
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <param name="browser"></param>
+        /// <param name="website"></param>
         /// <param name="order"></param>
         /// <returns></returns>
-        public IActionResult DetailedTable(string city, string state, string browser, bool order)
+        public IActionResult DetailedTable(string city, string state, string browser, string website, bool order)
         {
             GoogleTest gt = new GoogleTest();
             List<GoogleTest> tests;
@@ -84,25 +77,52 @@ namespace PingItWebsite.Controllers
                 }
             }
 
-            if (String.IsNullOrEmpty(city) && browser.Equals("all"))
-            {
-                tests = gt.GetGoogleTests(null, null, null, order, HomeController._database);
-            }
-            else if (String.IsNullOrEmpty(city))
-            {
-                tests = gt.GetGoogleTests(null, null, browser, order, HomeController._database);
-            }
-            else if (browser.Equals("all"))
-            {
-                tests = gt.GetGoogleTests(city, state, null, order, HomeController._database);
-            }
-            else
-            {
-                tests = gt.GetGoogleTests(city, state, browser, order, HomeController._database);
-            }
+            //Get the default array
+            string[] defArr = GetDefault(browser, website);
+
+            tests = gt.GetGoogleTests(city, state, defArr[0], defArr[1], order, HomeController._database);
             return PartialView(tests);
         }
 
+        /// <summary>
+        /// Helper method that sets browser and website
+        /// </summary>
+        /// <param name="browser"></param>
+        /// <param name="website"></param>
+        /// <returns></returns>
+        private string[] GetDefault(string browser, string website)
+        {
+            string[] retArr = new string[2];
+            //Checks if the browser is all, then the query selects all browsers
+            if (browser.Equals("all"))
+            {
+                retArr[0] = null;
+            } else
+            {
+                retArr[0] = browser;
+            }
+
+            string tempWebsite = null;
+            if (!String.IsNullOrEmpty(website))
+            {
+                Uri uri = new Uri(website);
+                string host = uri.Host;
+
+                //count the number of periods and appropiately find the domain
+                int count = host.Count(p => p == '.');
+                if (count == 1)
+                {
+                    tempWebsite = host.Split(".")[0];
+                }
+                else
+                {
+                    tempWebsite = host.Split(".")[1];
+                }
+            }
+            retArr[1] = tempWebsite;
+            return retArr;
+
+        }
 
         /// <summary>
         /// Load FCC crowd source table partial view
@@ -130,7 +150,6 @@ namespace PingItWebsite.Controllers
             {
                 broadbands = (ba.GetBroadbandSpeed(code, city, state)).OrderBy(o => o.provider).ToList();
             }
-            Debug.WriteLine(broadbands.Count);
 
             return PartialView(broadbands);
         }

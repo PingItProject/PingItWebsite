@@ -4,6 +4,7 @@
     Detailed Information
     <tr>
         <td>TimeStamp</td>
+        <td>Website</td>
         <td>Score</td>
         <td>Category</td>
         <td>No. Resources</td>
@@ -13,14 +14,12 @@
         <td>CSS Size (bytes)</td>
         <td>Image Size (bytes)</td>
         <td>Web Speed (Mbps)</td>
-        <td>City</td>
-        <td>State</td>
-        <td>Browser</td>
     </tr>
     @foreach (GoogleTest test in Model)
     {
     <tr>
         <td>@test.date.ToString()</td>
+        <td>@test.website</td>
         <td>@test.score.ToString()</td>
         <td>@test.category</td>
         <td>@test.resources.ToString()</td>
@@ -30,9 +29,6 @@
         <td>@test.cssBytes</td>
         <td>@test.imageBytes</td>
         <td>@test.webspeed</td>
-        <td>@test.city</td>
-        <td>@test.state</td>
-        <td>@test.browser</td>
     </tr>
 
     }

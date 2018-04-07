@@ -1,20 +1,23 @@
-CREATE DEFINER=`root`@`%` PROCEDURE `GetTestResults`(IN c VARCHAR(100), IN s VARCHAR(10), IN b VARCHAR(25), IN ordering bool)
+CREATE DEFINER=`root`@`%` PROCEDURE `GetTestResults`(IN ucity VARCHAR(100), IN ustate VARCHAR(10), IN ubrowser VARCHAR(25), IN uwebsite VARCHAR(100), IN ordering bool)
 BEGIN
 	
 	SELECT	tstamp, url, loadtime, city, state, browser, provider, guid
 	FROM 	webtests w
-	WHERE	
+	WHERE
 		#For data with neither
-		(c = 'null' AND b = 'null')
+		((ucity = 'null' AND ubrowser = 'null')
         OR
 		#For data with just a browser
-		(c = 'null' AND browser = b)
+		(ucity = 'null' AND browser = ubrowser)
         OR
         #For data with just a location
-        (city = c AND state = s AND b = 'null')
+        (city = ucity AND state = ustate AND ubrowser = 'null')
         OR 
         #For data with both
-        (city = c AND state = s AND browser = b)
+        (city = ucity AND state = ustate AND browser = ubrowser))
+        AND
+        #For data with or without a website
+		(uwebsite = 'null' OR url LIKE concat('%', uwebsite, '%'))
 	ORDER BY 
 		CASE WHEN ordering = TRUE THEN tstamp END ASC,
 		CASE WHEN ordering = FALSE THEN tstamp END DESC;

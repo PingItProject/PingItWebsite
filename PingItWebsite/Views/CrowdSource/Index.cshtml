@@ -47,7 +47,6 @@
                 <form method="post" action="#">
                     <table align="center" style="width:800px">
                         <tr>
-                            
                             <td>
                                 Browser Type
                                 <select id="browser_options" name="browser_options" style="width: 150px">
@@ -74,6 +73,12 @@
                                 State
                                 <textarea id="state_text" placeholder="all" style="width: 150px; height: 20px"></textarea>
                             </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Website
+                                <textarea id="website" placeholder="(optional)" style="width: 300px; height: 300px"></textarea>
+                            </td>
                             <td><input type="button" value="Submit" id="submit_btn" onclick="RevealBtns()" style="width: 150px" /></td>
                         </tr>
                     </table>
@@ -92,18 +97,32 @@
 
     <!-- Scripts -->
     <script>
+        var generalbtn = document.getElementById("general_tbtn");
+        var detailedbtn = document.getElementById("detailed_tbtn");
+        var fccbtn = document.getElementById("fcc_tbtn");
+        var websitebtn = document.getElementById("website_tbtn");
+
+        var section = document.getElementById("table_section");
+        var loaded = false;
+    </script>
+    <script>
         //Reveal the table buttons
         function RevealBtns() {
+            SetButtonsWhite();
+
             var options = document.getElementById("table_options");
             options.style.display = "block";
+
+            //hide section
+            if (loaded) {
+                section.style.display = "none";
+                loaded = false;
+            }
+            
         }
     </script>
     <script>
         function LoadTable(btn) {
-            var generalbtn = document.getElementById("general_tbtn");
-            var detailedbtn = document.getElementById("detailed_tbtn");
-            var fccbtn = document.getElementById("fcc_tbtn");
-            var websitebtn = document.getElementById("website_tbtn");
             var ordering;
 
             if (($("#order_options").val()) == 'asc') {
@@ -111,22 +130,20 @@
             } else {
                 ordering = false;
             }
-            //set button in use to light blue
-            generalbtn.style.background = "#FFFFFF";
-            detailedbtn.style.background = "#FFFFFF";
-            fccbtn.style.background = "#FFFFFF";
-            websitebtn.style.background = "#FFFFFF";
 
+            //Set buttons to white
+            SetButtonsWhite();
+            
             switch (btn) {
                 case 0:
                     generalbtn.style.background = "#ADD8E6";
                     $("#table_section").load('@Url.Action("GeneralTable", "CrowdSource")?city=' + $("#city_text").val() +
-                        '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&order=' + ordering);
+                        '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&website=' + $("#website").val() + '&order=' + ordering);
                     break;
                 case 1:
                     detailedbtn.style.background = "#ADD8E6";
                     $("#table_section").load('@Url.Action("DetailedTable", "CrowdSource")?city=' + $("#city_text").val() +
-                        '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&order=' + ordering);
+                        '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&website=' + $("#website").val() + '&order=' + ordering);
                     break;
                 case 2:
                     fccbtn.style.background = "#ADD8E6";
@@ -135,6 +152,18 @@
                     break;
             }
 
+            if (!loaded) {
+                section.style.display = "initial";
+                loaded = true;
+            }
+        }
+    </script>
+    <script>
+        function SetButtonsWhite() {
+            generalbtn.style.background = "#FFFFFF";
+            detailedbtn.style.background = "#FFFFFF";
+            fccbtn.style.background = "#FFFFFF";
+            websitebtn.style.background = "#FFFFFF";
         }
     </script>
     <script src="~/js/jquery.min.js"></script>
