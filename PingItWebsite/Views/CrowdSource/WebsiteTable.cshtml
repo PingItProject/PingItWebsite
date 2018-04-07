@@ -1,0 +1,24 @@
+﻿@using PingItWebsite.Models;
+
+<table>
+    Public Website Information
+    <tr>
+        <td>Website</td>
+        <td>City</td>
+        <td>Country</td>
+        <td>Connection Time (s)</td>
+        <td>First Byte(s)</td>
+        <td>Total Time (s)</td>
+    </tr>
+    @foreach (Website w in Model)
+    {
+        <tr>
+            <td>@w.website</td>
+            <td>@w.city</td>
+            <td>@w.country</td>
+            <td>@w.connection.ToString()</td>
+            <td>@w.firstByte.ToString()</td>
+            <td>@w.total.ToString()</td>
+        </tr>
+    }
+</table>

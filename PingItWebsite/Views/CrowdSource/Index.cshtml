@@ -34,10 +34,6 @@
                 <li><a href="~/Options/dataanalytics.html"> Data Analytics </a></li>
             </ul>
         </nav>
-
-
-
-
         <!-- Main -->
         <div id="main">
             <div class="inner">
@@ -88,7 +84,7 @@
                     <input id="general_tbtn" type="button" value="General" onclick="LoadTable(0)"/>
                     <input id="detailed_tbtn" type="button" value="Detailed" onclick="LoadTable(1)" />
                     <input id="fcc_tbtn" type="button" value="FCC Data" onclick="LoadTable(2)"/>
-                    <input id="website_tbtn" type="button" value="Website Comparisons" />
+                    <input id="website_tbtn" type="button" value="Website Comparisons" onclick="LoadTable(3)" />
                 </div>
                 <div id="table_section"></div>
             </div>
@@ -133,7 +129,7 @@
 
             //Set buttons to white
             SetButtonsWhite();
-            
+
             switch (btn) {
                 case 0:
                     generalbtn.style.background = "#ADD8E6";
@@ -149,6 +145,10 @@
                     fccbtn.style.background = "#ADD8E6";
                     $("#table_section").load('@Url.Action("FCCTable", "CrowdSource")?city=' + $("#city_text").val() +
                         '&state=' + $("#state_text").val() + '&order=' + ordering);
+                    break;
+                case 3:
+                    websitebtn.style.background = "#ADD8E6";
+                    $("#table_section").load('@Url.Action("WebsiteTable", "CrowdSource")?website=' + $("#website").val() + '&order=' + ordering);
                     break;
             }
 

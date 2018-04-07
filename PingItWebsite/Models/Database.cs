@@ -6,8 +6,10 @@ namespace PingItWebsite.Models
 {
     public class Database
     {
-        private Database _db;
-        private MySqlConnection _connection;
+        #region Variables
+        private Database db;
+        private MySqlConnection connection;
+        #endregion
 
         #region Constructors
         /// <summary>
@@ -22,8 +24,8 @@ namespace PingItWebsite.Models
         #region Getters/Setters
         public MySqlConnection Connection
         {
-            get { return _connection; }
-            set { _connection = value; }
+            get { return connection; }
+            set { connection = value; }
         }
         #endregion
 
@@ -35,19 +37,18 @@ namespace PingItWebsite.Models
         public MySqlConnection Initialize()
         {
             string connectionString = "Server=35.226.2.191; Database=PingIt; Uid=root; Password=sherrybrighton; SslMode=None; charset=utf8";
-            _connection = new MySqlConnection(connectionString);
+            connection = new MySqlConnection(connectionString);
             try
             {
-                _connection.Open();
+                connection.Open();
             }
             catch (MySqlException)
             {
                 Debug.WriteLine("Database Error: Cannot connect to database.");
             }
-            return _connection;
+            return connection;
         }
         
-
         /// <summary>
         /// Closes the connection
         /// </summary>
@@ -56,7 +57,7 @@ namespace PingItWebsite.Models
         {
             try
             {
-                _connection.Close();
+                connection.Close();
                 return true;
             }
             catch (MySqlException)
@@ -71,18 +72,18 @@ namespace PingItWebsite.Models
         /// </summary>
         public void CheckConnection()
         {
-            if (_connection == null)
+            if (connection == null)
             {
-                _db = new Database();
-                _connection = _db.Initialize();
+                db = new Database();
+                connection = db.Initialize();
             }
-            else if (_connection.State != ConnectionState.Open)
+            else if (connection.State != ConnectionState.Open)
             {
-                if (_db == null)
+                if (db == null)
                 {
-                    _db = new Database();
+                    db = new Database();
                 }
-                _connection = _db.Initialize();
+                connection = db.Initialize();
             }
         }
         #endregion

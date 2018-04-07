@@ -38,8 +38,8 @@ namespace PingItWebsite.Controllers
                 //Check if a city was entered, if not get the state that corresponds
                 if (String.IsNullOrEmpty(state))
                 {
-                    Counties counties = new Counties();
-                    state = counties.GetState(temp, HomeController._database);
+                    County county = new County();
+                    state = county.GetState(temp, HomeController._database);
                 }
             }
 
@@ -72,8 +72,8 @@ namespace PingItWebsite.Controllers
                 city = city.ToLower();
                 if (String.IsNullOrEmpty(state))
                 {
-                    Counties counties = new Counties();
-                    state = counties.GetState(temp, HomeController._database);
+                    County county = new County();
+                    state = county.GetState(temp, HomeController._database);
                 }
             }
 
@@ -102,24 +102,12 @@ namespace PingItWebsite.Controllers
                 retArr[0] = browser;
             }
 
-            string tempWebsite = null;
+            string domain = null;
             if (!String.IsNullOrEmpty(website))
             {
-                Uri uri = new Uri(website);
-                string host = uri.Host;
-
-                //count the number of periods and appropiately find the domain
-                int count = host.Count(p => p == '.');
-                if (count == 1)
-                {
-                    tempWebsite = host.Split(".")[0];
-                }
-                else
-                {
-                    tempWebsite = host.Split(".")[1];
-                }
+                domain = FindWebsiteDomain(website);
             }
-            retArr[1] = tempWebsite;
+            retArr[1] = domain;
             return retArr;
 
         }
@@ -134,9 +122,9 @@ namespace PingItWebsite.Controllers
         public IActionResult FCCTable(string city, string state, bool ordering)
         {
             //Get census code
-            Counties counties = new Counties();
+            County county = new County();
             string newCity = char.ToUpper(city[0]) + city.Substring(1);
-            int code = counties.GetCensusCode(city, state, HomeController._database);
+            int code = county.GetCensusCode(city, state, HomeController._database);
 
             //Get list of broadbands
             BroadbandAPI ba = new BroadbandAPI();
@@ -153,7 +141,46 @@ namespace PingItWebsite.Controllers
 
             return PartialView(broadbands);
         }
+
+        /// <summary>
+        /// Load website table partial view
+        /// </summary>
+        /// <param name="website"></param>
+        /// <param name="ordering"></param>
+        /// <returns></returns>
+        public IActionResult WebsiteTable(string website, bool ordering)
+        {
+            Website w = new Website();
+            string domain = FindWebsiteDomain(website);
+            List<Website> info = w.GetPublicWebsiteInfo(domain, ordering, HomeController._database);
+            return PartialView(info);
+        }
         #endregion
 
+        #region Shared Helper Methods
+        /// <summary>
+        /// Given a url, find the website domain
+        /// </summary>
+        /// <param name="website"></param>
+        /// <returns></returns>
+        private string FindWebsiteDomain(string website)
+        {
+            string retWebsite;
+            Uri uri = new Uri(website);
+            string host = uri.Host;
+
+            //count the number of periods and appropiately find the domain
+            int count = host.Count(p => p == '.');
+            if (count == 1)
+            {
+                retWebsite = host.Split(".")[0];
+            }
+            else
+            {
+                retWebsite = host.Split(".")[1];
+            }
+            return retWebsite;
+        }
+        #endregion
     }
 }

@@ -3,18 +3,19 @@ using System.Diagnostics;
 
 namespace PingItWebsite.Models
 {
-    public class Counties
+    public class County
     {
         #region Constructors
         /// <summary>
         /// Class constructor
         /// </summary>
-        public Counties()
+        public County()
         {
 
         }
         #endregion
 
+        #region Queries
         /// <summary>
         /// Get state code 
         /// </summary>
@@ -70,6 +71,7 @@ namespace PingItWebsite.Models
             }
             return result;
         }
+        #endregion
     }
 
 }
