@@ -1,0 +1,23 @@
+﻿@using PingItWebsite.Models;
+
+<table>
+    Broadband Crowdsource 
+    <tr>
+        <td>Provider</td>
+        <td>Census Code</td>
+        <td>Speed (Mbps)</td>
+        <td>City</td>
+        <td>State</td>
+    </tr>
+    @foreach (Broadband bb in Model)
+    {
+        <tr>
+            <td>@bb.provider</td>
+            <td>@bb.blockcode.ToString()</td>
+            <td>@bb.speed.ToString()</td>
+            <td>@bb.city</td>
+            <td>@bb.state</td>
+        </tr>
+
+    }
+</table>

@@ -64,13 +64,6 @@
                                     <option value="desc">Descending</option>
                                 </select>
                             </td>
-                            <td>Data Options
-                                <select id="data_options" name="data_options" style="width: 150px">
-                                    <option value="general">General &nbsp&nbsp &dtrif; </option>
-                                    <option value="detailed">Detailed</option>
-                                    <option value="broadband">Avg. Broadband Speeds</option>
-                                </select>
-                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -87,12 +80,11 @@
                 </form>
                 <div id="table_options" name="table_options" style="display:none" align="center">
                     <h2 align="center">Table Options</h2>
-                    <input id="general_tbtn" type="button" value="General" />
-                    <input id="detailed_tbtn" type="button" value="Detailed" />
-                    <input id="fcc_tbtn" type="button" value="FCC Data" />
+                    <input id="general_tbtn" type="button" value="General" onclick="LoadTable(0)"/>
+                    <input id="detailed_tbtn" type="button" value="Detailed" onclick="LoadTable(1)" />
+                    <input id="fcc_tbtn" type="button" value="FCC Data" onclick="LoadTable(2)"/>
                     <input id="website_tbtn" type="button" value="Website Comparisons" />
                 </div>
-               
                 <div id="table_section"></div>
             </div>
         </div>
@@ -103,34 +95,48 @@
         //Reveal the table buttons
         function RevealBtns() {
             var options = document.getElementById("table_options");
-            var generalbtn = document.getElementById("general_tbtn");
-
-            //display buttons
             options.style.display = "block";
-            generalbtn.style.color = "blue";
         }
     </script>
     <script>
-        function LoadData() {
+        function LoadTable(btn) {
+            var generalbtn = document.getElementById("general_tbtn");
+            var detailedbtn = document.getElementById("detailed_tbtn");
+            var fccbtn = document.getElementById("fcc_tbtn");
+            var websitebtn = document.getElementById("website_tbtn");
             var ordering;
+
             if (($("#order_options").val()) == 'asc') {
                 ordering = true;
             } else {
                 ordering = false;
             }
-            $("#data_options").load();
+            //set button in use to light blue
+            generalbtn.style.background = "#FFFFFF";
+            detailedbtn.style.background = "#FFFFFF";
+            fccbtn.style.background = "#FFFFFF";
+            websitebtn.style.background = "#FFFFFF";
 
-            if (($("#data_options").val()) == 'general') {
-                $("#table_section").load('@Url.Action("GeneralTable", "CrowdSource")?city=' + $("#city_text").val() +
-                    '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&order=' + ordering);
-            } else {
-                 $("#table_section").load('@Url.Action("DetailedTable", "CrowdSource")?city' + $("#city_text").val() +
-                     '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&order=' + ordering);
+            switch (btn) {
+                case 0:
+                    generalbtn.style.background = "#ADD8E6";
+                    $("#table_section").load('@Url.Action("GeneralTable", "CrowdSource")?city=' + $("#city_text").val() +
+                        '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&order=' + ordering);
+                    break;
+                case 1:
+                    detailedbtn.style.background = "#ADD8E6";
+                    $("#table_section").load('@Url.Action("DetailedTable", "CrowdSource")?city=' + $("#city_text").val() +
+                        '&state=' + $("#state_text").val() + '&browser=' + $("#browser_options").val() + '&order=' + ordering);
+                    break;
+                case 2:
+                    fccbtn.style.background = "#ADD8E6";
+                    $("#table_section").load('@Url.Action("FCCTable", "CrowdSource")?city=' + $("#city_text").val() +
+                        '&state=' + $("#state_text").val() + '&order=' + ordering);
+                    break;
             }
 
         }
     </script>
-
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/skel.min.js"></script>
     <script src="~/js/util.js"></script>

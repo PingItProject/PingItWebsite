@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using PingItWebsite.APIs;
 using PingItWebsite.Models;
 
 namespace PingItWebsite.Controllers
 {
     public class CrowdSourceController : Controller
     {
+        #region View-Controllers
         public IActionResult Index()
         {
             return View();
         }
 
         /// <summary>
-        /// Load general partial view
+        /// Load general table partial view
         /// </summary>
         /// <param name="city"></param>
         /// <param name="state"></param>
@@ -25,10 +29,12 @@ namespace PingItWebsite.Controllers
             WebTest wt = new WebTest();
             List<WebTest> tests;
 
+            //Check if a specific city was entered, else assume all
             if (!String.IsNullOrEmpty(city))
             {
                 string temp = city;
                 city = city.ToLower();
+                //Check if a city was entered, if not get the state that corresponds
                 if (String.IsNullOrEmpty(state))
                 {
                     Counties counties = new Counties();
@@ -36,6 +42,7 @@ namespace PingItWebsite.Controllers
                 }
             }
 
+            //Checks the options for the filters to perform stored proc
             if (String.IsNullOrEmpty(city) && browser.Equals("all"))
             {
                 tests = wt.GetWebTests(null, null, null, order, HomeController._database);
@@ -65,6 +72,7 @@ namespace PingItWebsite.Controllers
             GoogleTest gt = new GoogleTest();
             List<GoogleTest> tests;
 
+            //Check if a specific city was entered, else assume all
             if (!String.IsNullOrEmpty(city))
             {
                 string temp = city;
@@ -95,15 +103,38 @@ namespace PingItWebsite.Controllers
             return PartialView(tests);
         }
 
-        public IActionResult DataOptions()
+
+        /// <summary>
+        /// Load FCC crowd source table partial view
+        /// </summary>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="ordering"></param>
+        /// <returns></returns>
+        public IActionResult FCCTable(string city, string state, bool ordering)
         {
-            return PartialView();
+            //Get census code
+            Counties counties = new Counties();
+            string newCity = char.ToUpper(city[0]) + city.Substring(1);
+            int code = counties.GetCensusCode(city, state, HomeController._database);
+
+            //Get list of broadbands
+            BroadbandAPI ba = new BroadbandAPI();
+            List<Broadband> broadbands;
+
+            //If ordering is ascending
+            if (ordering)
+            {
+                broadbands = (ba.GetBroadbandSpeed(code, city, state)).OrderByDescending(o => o.provider).ToList();
+            } else
+            {
+                broadbands = (ba.GetBroadbandSpeed(code, city, state)).OrderBy(o => o.provider).ToList();
+            }
+            Debug.WriteLine(broadbands.Count);
+
+            return PartialView(broadbands);
         }
-        
-        public IActionResult CrowdSourceTable(string city, string state)
-        {
-            return null;
-        }
+        #endregion
 
     }
 }

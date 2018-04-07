@@ -211,7 +211,7 @@ namespace PingItWebsite.Models
         }
 
         /// <summary>
-        /// Get web tests for crowdsourcing
+        /// Get crowdsourcing tests
         /// </summary>
         /// <param name="city"></param>
         /// <param name="state"></param>

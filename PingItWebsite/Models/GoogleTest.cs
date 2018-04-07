@@ -13,6 +13,7 @@ namespace PingItWebsite.Models
         #endregion
 
         #region Properties of Google Test
+        public DateTime date { get; set; }
         public int score { get; set; }
         public string category { get; set; }
         public int resources { get; set; }
@@ -109,16 +110,17 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetGoogleTestResults.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetUserGoogleTestResults.");
             }
             _complete = true;
             return gt;
         }
 
         /// <summary>
-        /// Get google tests
+        /// Get crowdsourcing tests (google specific)
         /// </summary>
-        /// <param name="loc"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
         /// <param name="browser"></param>
         /// <param name="ordering"></param>
         /// <param name="database"></param>
@@ -147,7 +149,7 @@ namespace PingItWebsite.Models
 
                 command.Parameters.AddWithValue("@c", city);
                 command.Parameters.AddWithValue("@s", state);
-                command.Parameters.AddWithValue("@browser", browser);
+                command.Parameters.AddWithValue("@b", browser);
 
                 if (ordering)
                 {
@@ -162,9 +164,9 @@ namespace PingItWebsite.Models
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-
                     GoogleTest gt = new GoogleTest
                     {
+                        date = reader.GetDateTime("tstamp"),
                         score = reader.GetInt32("score"),
                         category = reader.GetString("category"),
                         resources = reader.GetInt32("resources"),
@@ -176,7 +178,7 @@ namespace PingItWebsite.Models
                         webspeed = (decimal)reader.GetDouble("webspeed"),
                         city = reader.GetString("city"),
                         state = reader.GetString("state"),
-                        browser = reader.GetString("platform"),
+                        browser = reader.GetString("browser"),
                     };
                     tests.Add(gt);
                 }
@@ -184,7 +186,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetTestResults.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetGoogleTestResults.");
             }
             return tests;
         }

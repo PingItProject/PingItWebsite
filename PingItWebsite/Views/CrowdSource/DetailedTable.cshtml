@@ -3,6 +3,7 @@
 <table>
     Detailed Information
     <tr>
+        <td>TimeStamp</td>
         <td>Score</td>
         <td>Category</td>
         <td>No. Resources</td>
@@ -14,11 +15,12 @@
         <td>Web Speed (Mbps)</td>
         <td>City</td>
         <td>State</td>
-        <td>Platform</td>
+        <td>Browser</td>
     </tr>
     @foreach (GoogleTest test in Model)
     {
     <tr>
+        <td>@test.date.ToString()</td>
         <td>@test.score.ToString()</td>
         <td>@test.category</td>
         <td>@test.resources.ToString()</td>

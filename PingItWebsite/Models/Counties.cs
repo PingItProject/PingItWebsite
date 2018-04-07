@@ -41,5 +41,35 @@ namespace PingItWebsite.Models
             }
             return result;
         }
+
+        /// <summary>
+        /// Get the census fips code from the database
+        /// </summary>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public int GetCensusCode(string city, string state, Database database)
+        {
+            int result = -1;
+            try
+            {
+                string query = "SELECT county_fips FROM PingIt.counties WHERE city = '" + city + "' AND " +
+                    "state_id = '" + state + "' ORDER BY population DESC LIMIT 1";
+                MySqlCommand command = new MySqlCommand(query, database.Connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    result = reader.GetInt32("county_fips");
+                }
+                reader.Close();
+            }
+            catch (MySqlException)
+            {
+                Debug.WriteLine("Database Error (Counties): Cannot get fips code from counties.");
+            }
+            return result;
+        }
     }
+
 }

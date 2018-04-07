@@ -1,6 +1,6 @@
 CREATE DEFINER=`root`@`%` PROCEDURE `GetGoogleTestResults`(IN c VARCHAR(100), IN s VARCHAR(10), IN b VARCHAR(25), IN ordering bool)
 BEGIN
-	SELECT score, category, resources, g.hosts, bytes, html_bytes, css_bytes, image_bytes, webspeed, w.city, w.state, w.browser
+	SELECT w.tstamp, score, category, resources, g.hosts, bytes, html_bytes, css_bytes, image_bytes, webspeed, w.city, w.state, w.browser
     FROM googletests g
     JOIN webtests w 
 		ON w.guid = g.guid 

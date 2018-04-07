@@ -7,6 +7,8 @@
         public string provider { get; set; }
 
         public string state { get; set; }
+
+        public string city { get; set; }
         
         public double speed { get; set; }
 

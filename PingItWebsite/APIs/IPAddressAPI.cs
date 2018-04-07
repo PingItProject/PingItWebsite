@@ -2,11 +2,8 @@
 using PingItWebsite.JsonModels;
 using PingItWebsite.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace PingItWebsite.APIs
 {
@@ -21,6 +18,7 @@ namespace PingItWebsite.APIs
         }
         #endregion
 
+        #region Requests
         /// <summary>
         /// Calls IP Address api to get location
         /// </summary>
@@ -67,8 +65,7 @@ namespace PingItWebsite.APIs
                 }
             }
             return ipl;
-
-
         }
+        #endregion
     }
 }
