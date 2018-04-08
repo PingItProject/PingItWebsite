@@ -1,0 +1,22 @@
+﻿@using PingItWebsite.Models;
+
+<table>
+    Public Website Information
+    <tr>
+        <td>Website</td>
+        <td>ISP Name</td>
+        <td>Provider Type</td>
+        <td>Speed (Mbps)</td>
+        <td>Date</td>
+    </tr>
+    @foreach (Netflix n in Model)
+    {
+        <tr>
+            <td>@n.website</td>
+            <td>@n.isp</td>
+            <td>@n.type</td>
+            <td>@n.speed.ToString()</td>
+            <td>@n.date</td>
+        </tr>
+    }
+</table>

@@ -143,16 +143,46 @@ namespace PingItWebsite.Controllers
         }
 
         /// <summary>
-        /// Load website table partial view
+        /// Decides whether to load the general table or the netflix website partial view
         /// </summary>
         /// <param name="website"></param>
         /// <param name="ordering"></param>
         /// <returns></returns>
         public IActionResult WebsiteTable(string website, bool ordering)
         {
-            Website w = new Website();
+
             string domain = FindWebsiteDomain(website);
+            if (domain.Equals("netflix"))
+            {
+                return NetflixTable(ordering);
+            } else
+            {
+                return WebsiteTableHelper(domain, ordering);
+            }
+        }
+
+        /// <summary>
+        /// Load website table partial view
+        /// </summary>
+        /// <param name="domain"></param> 
+        /// <param name="ordering"></param>
+        /// <returns></returns>
+        public IActionResult WebsiteTableHelper(string domain, bool ordering)
+        {
+            Website w = new Website();
             List<Website> info = w.GetPublicWebsiteInfo(domain, ordering, HomeController._database);
+            return PartialView(info);
+        }
+
+        /// <summary>
+        /// Load netflix table partial view
+        /// </summary>
+        /// <param name="ordering"></param>
+        /// <returns></returns>
+        public IActionResult NetflixTable(bool ordering)
+        {
+            Netflix n = new Netflix();
+            List<Netflix> info = n.GetNetflixInfo(ordering, HomeController._database);
             return PartialView(info);
         }
         #endregion
