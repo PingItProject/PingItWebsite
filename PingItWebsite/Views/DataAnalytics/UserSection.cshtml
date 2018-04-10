@@ -1,0 +1,69 @@
+﻿@using PingItWebsite.Models;
+
+<head>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
+<table>
+    User Web Test Averages
+    <tr>
+        <td>Key</td>
+        <td>URL</td>
+        <td>Provider</td>
+        <td>State</td>
+        <td>City</td>
+        <td>Speed (Mbps)</td>
+        <td>Load Time (s)</td>
+        <td>Score</td>
+    </tr>
+    @foreach (UserTestAvgs uta in Model)
+    {
+        <tr>
+            <td>@uta.key.ToString()</td>
+            <td>@uta.url</td>
+            <td>@uta.provider</td>
+            <td>@uta.state</td>
+            <td>@uta.city</td>
+            <td>@uta.speed</td>
+            <td>@uta.loadtime</td>
+            <td>@uta.score</td>
+        </tr>
+    }
+</table>
+<div id="loadtimeChart" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="speedChart" style="width: 45%; height: 300px;display: inline-block;"></div><br />
+<script type="text/javascript">
+    var chart1 = new CanvasJS.Chart("loadtimeChart", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Avg. Load Times"
+        },
+        axisY: {
+            title: "Load Time (Seconds)"
+        },
+        data: [
+            {
+                type: "column", //change type to bar, line, area, pie, etc
+                dataPoints: @Html.Raw(ViewBag.DataPoints1),
+            }
+        ]
+    });
+    var chart2 = new CanvasJS.Chart("speedChart", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Avg. Speed"
+        },
+        axisY: {
+            title: "Speed (Mbps)"
+        },
+        data: [
+            {
+                type: "column", //change type to bar, line, area, pie, etc
+                dataPoints: @Html.Raw(ViewBag.DataPoints2),
+            }
+        ]
+    });
+    chart1.render();
+    chart2.render();
+</script>
