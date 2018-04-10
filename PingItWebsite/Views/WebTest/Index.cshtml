@@ -35,6 +35,10 @@
             </ul>
         </nav>
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
         
         <!-- Main -->
         <div id="main">
@@ -45,6 +49,7 @@
                 <form method="post" action="#">
                     <!--Create an options table to choose for webtest-->
                     <table align="center" style="width:800px">
+<<<<<<< Updated upstream
                         <tr> 
                             <td>
                                 URL Required
@@ -82,10 +87,43 @@
                             </td>
                         </tr>
                     </table>
+=======
+                        <tr>
+                            <td>
+                                URL Required
+                            <textarea id="test_url" placeholder="Input URL Here" style="width: 750; height: 20px"></textarea></td>
+                        </tr>
+                    <table align="center" style="width:800px">
+                        <tr>
+                            <td>
+                                Browser Type
+                                <select id="browser_options" name="browser" style="width: 300px">
+                                    <option value="all">All &nbsp&nbsp &dtrif; </option>
+                                    <option value="chrome">Chrome</option>
+                                    <option value="firefox">FireFox</option>
+                                    <option value="phantomJS">Headless</option>
+                                </select>
+                            </td>
+                            <td>
+                                Select Provider
+                            <textarea id="provider" placeholder="Enter your provider (i.e. AT&T)" style="width: 300px; height: 20px"></textarea></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                City
+                                <textarea id="city" placeholder="Input City" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                            <td>
+                                State
+                                <textarea id="state" placeholder="Input State" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                        <tr/>
+>>>>>>> Stashed changes
                     <table align="center" style="width:800px">
                         <tr>
                             <td align="center"><input type="button" value="Test" id="test_btn" style="width: 100px" onclick="TestWebsite()" /></td>
                         </tr>
+                    </table>
                     </table>
                 </form>
                 <div id="table_section"></div>
@@ -93,6 +131,7 @@
         </div>
     </div>
 
+    
     <!-- Scripts -->
     <script>
         function TestWebsite() {
