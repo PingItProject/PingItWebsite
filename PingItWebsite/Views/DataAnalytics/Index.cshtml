@@ -60,10 +60,7 @@
                 </div>
                 <p></p>
                 <p></p>
-                <div id="user_data_body" align="center">
-                    <div id="user_data_body_table"></div>
-                </div>
-                
+                <div id="user_section" align="center"/>
             </div>
         </div>
     </div>
@@ -77,12 +74,7 @@
     </script>
     <script>
         function LoadUserSection() {
-            LoadWebsiteTestCountTable();
-        }
-    </script>
-    <script>
-        function LoadWebsiteTestCountTable() {
-            $("#user_data_body_table").load('@Url.Action("UserTestAvgsTable", "DataAnalytics")');
+            $("#user_section").load('@Url.Action("UserSection", "DataAnalytics")');
         }
     </script>
     <script src="~/js/jquery.min.js"></script>

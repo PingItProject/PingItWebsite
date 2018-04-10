@@ -2,13 +2,12 @@
 using Newtonsoft.Json;
 using PingItWebsite.Models;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PingItWebsite.Controllers
 {
     public class DataAnalyticsController : Controller
     {
-        static List<UserTestAvgs> _tests;
-        static bool _tableLoaded = false;
 
         public IActionResult Index()
         {
@@ -16,47 +15,30 @@ namespace PingItWebsite.Controllers
         }
 
         /// <summary>
-        /// Load user avg table partial view
+        /// Load user section partial view
         /// </summary>
         /// <returns></returns>
-        public IActionResult UserTestAvgsTable()
+        public IActionResult UserSection()
         {
             UserTestAvgs wtc = new UserTestAvgs();
-            _tests = wtc.GetWebsiteTestCounts(HomeController._database);
-            _tableLoaded = true;
-
-            while (!_tableLoaded)
-            {
-
-            }
-            //Prepare data points
-            List<LoadTimeAvg> dataPoints = new List<LoadTimeAvg>();
-            foreach (UserTestAvgs avg in _tests)
-            {
-                dataPoints.Add(new LoadTimeAvg(avg.key, avg.loadtime));
-            }
-            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
-
-            return PartialView(_tests);
-        }
-
-        public IActionResult UserTestAvgsGraph()
-        {
-            //Wait for the table to be loaded first
-            while (!_tableLoaded)
-            {
-
-            }
-            UserTestAvgs wtc = new UserTestAvgs();
+            List<UserTestAvgs> tests = wtc.GetWebsiteTestCounts(HomeController._database);
 
             //Prepare data points
-            List<UserTestAvgs> dataPoints = new List<UserTestAvgs>();
-            foreach (UserTestAvgs avg in _tests)
+            List<LoadTimeAvg> data1 = new List<LoadTimeAvg>();
+            List<SpeedAvg> data2 = new List<SpeedAvg>();
+            foreach (UserTestAvgs avg in tests)
             {
-                //dataPoints.Add(new UserTestAvgs(avg.key, avg.speed, avg.loadtime, avg.score));
+                data1.Add(new LoadTimeAvg(avg.key, avg.loadtime));
+                data2.Add(new SpeedAvg(avg.key, avg.speed));
             }
-            ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
-            return View();
+
+            ViewBag.DataPoints1 = JsonConvert.SerializeObject(data1);
+            ViewBag.DataPoints2 = JsonConvert.SerializeObject(data2);
+
+            return PartialView(tests);
         }
+
+
+
     }
 }
