@@ -2,7 +2,12 @@
   "status": "OK",
   "accuracy": 10.0,
   "location": {
+<<<<<<< HEAD
     "lat": 33.7489954,
     "lng": -84.3879824
+=======
+    "lat": 39.7392358,
+    "lng": -104.990251
+>>>>>>> origin/master
   }
 }
