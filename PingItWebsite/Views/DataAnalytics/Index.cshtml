@@ -8,6 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="~/css/main.css" />
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <style>
     .btn-group button {
@@ -48,15 +49,42 @@
             <!--Inner-->
             <div class="inner">
                 <h2 align="center">Test and Compare Broadband Availability</h2>
-            </div>
-            <!-- Data Bar -->
-            <div class="btn-group">
-                <button>User Data</button>
+                <div class="btn-group" align="center">
+                    <button id="user_data_btn" onclick="ShowUserButtons()">User Data</button>
+                </div>
+                <p></p>
+                <p></p>
+                <div id="user_data_options" style="display:none" align="center">
+                    <h6 align="center">View your own website test data</h6>
+                    <input id="useravgs_btn" type="button" value="User Avgs" onclick="LoadUserSection()" style="background:#F08080; font-size:10px;" />
+                </div>
+                <p></p>
+                <p></p>
+                <div id="user_data_body" align="center">
+                    <div id="user_data_body_table"></div>
+                </div>
+                
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
+    <script>
+        function ShowUserButtons() {
+            var useroptions = document.getElementById("user_data_options");
+            useroptions.style.display = "block";
+        }
+    </script>
+    <script>
+        function LoadUserSection() {
+            LoadWebsiteTestCountTable();
+        }
+    </script>
+    <script>
+        function LoadWebsiteTestCountTable() {
+            $("#user_data_body_table").load('@Url.Action("UserTestAvgsTable", "DataAnalytics")');
+        }
+    </script>
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/skel.min.js"></script>
     <script src="~/js/util.js"></script>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PingItWebsite.APIs;
@@ -28,7 +27,6 @@ namespace PingItWebsite.Controllers
         public IActionResult GeneralTable(string city, string state, string browser, string website, bool order)
         {
             WebTest wt = new WebTest();
-            List<WebTest> tests;
 
             //Check if a specific city was entered, else assume all
             if (!String.IsNullOrEmpty(city))
@@ -46,7 +44,7 @@ namespace PingItWebsite.Controllers
             //Get the default array
             string[] defArr = GetDefault(browser, website);
 
-            tests = wt.GetWebTests(city, state, defArr[0], defArr[1], order, HomeController._database);
+            List<WebTest> tests = wt.GetWebTests(city, state, defArr[0], defArr[1], order, HomeController._database);
 
             return PartialView(tests);
         }
