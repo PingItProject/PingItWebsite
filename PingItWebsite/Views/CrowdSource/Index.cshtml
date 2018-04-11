@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Crowdsourced Data";
 }
 
@@ -24,7 +23,8 @@
             </div>
         </header>
 
-        <!-- Menu -->
+
+         <!-- Menu -->
         <nav id="menu">
             <h2>Menu</h2>
             <ul>
@@ -32,8 +32,11 @@
                 <li><a href="~/WebTest/Index"> Web Test </a></li>
                 <li><a href="~/CrowdSource/Index"> Crowdsourced Database </a></li>
                 <li><a href="~/DataAnalytics/Index"> Data Analytics </a></li>
+                <li><a href="~/About/Index"> About </a></li>
             </ul>
         </nav>
+
+        
         <!-- Main -->
         <div id="main">
             <div class="inner">
@@ -45,7 +48,7 @@
                         <tr>
                             <td>
                                 Browser Type
-                                <select id="browser_options" name="browser_options" style="width: 150px">
+                                <select id="browser_options" name="browser_options" style="width: 300px">
                                     <option value="all">All &nbsp&nbsp &dtrif; </option>
                                     <option value="chrome">Chrome</option>
                                     <option value="firefox">FireFox</option>
@@ -54,28 +57,37 @@
                             </td>
                             <td>
                                 Order By
-                                <select id="order_options" name="order_options" style="width: 150px">
+                                <select id="order_options" name="order_options" style="width: 300px">
                                     <option value="asc">Ascending &nbsp&nbsp &dtrif; </option>
                                     <option value="desc">Descending</option>
+                                </select>
+                            </td>
+                        <tr>
+                            <td>
+                                Website
+                                <textarea id="website" placeholder="(optional)" style="width: 300px; height: 300px"></textarea>
+                            </td>
+                            <td>Data Options
+                                <select id="data_options" name="data_options" style="width: 300px">
+                                    <option value="general">General &nbsp&nbsp &dtrif; </option>
+                                    <option value="detailed">Detailed</option>
+                                    <option value="broadband">Avg. Broadband Speeds</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 City
-                                <textarea id="city_text" placeholder="all" style="width: 150px; height: 20px"></textarea>
+                                <textarea id="city_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
                             </td>
                             <td>
                                 State
-                                <textarea id="state_text" placeholder="all" style="width: 150px; height: 20px"></textarea>
+                                <textarea id="state_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                Website
-                                <textarea id="website" placeholder="(optional)" style="width: 300px; height: 300px"></textarea>
-                            </td>
-                            <td><input type="button" value="Submit" id="submit_btn" onclick="RevealBtns()" style="width: 150px" /></td>
+                    <table align="center" style="width:800px">
+                        <tr> 
+                            <td align="center"><input type="button" value="Submit" id="submit_btn" onclick="RevealBtns()" style="width: 150px" /></td>
                         </tr>
                     </table>
                 </form>
@@ -171,5 +183,7 @@
     <script src="~/js/util.js"></script>
     <script src="~/js/main.js"></script>
 
+
+    
 </body>
 
