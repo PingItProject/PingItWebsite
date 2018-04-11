@@ -4,27 +4,28 @@ using System.Runtime.Serialization;
 namespace PingItWebsite.Models
 {
     [DataContract]
-    public class LoadTimeAvg
+    public class ScoreAvgGraph
     {
         #region Data Contract Variables
         [DataMember(Name = "label")]
         public Nullable<int> Key = null;
 
         [DataMember(Name = "y")]
-        public Nullable<double> Loadtime = null;
+        public Nullable<double> Score = null;
         #endregion
 
         #region Constructors
         /// <summary>
-        /// Constructor used to create a loadtime bar graph
+        /// Constructor used to create a score bar graph
         /// </summary>
         /// <param name="key"></param>
         /// <param name="loadtime"></param>
-        public LoadTimeAvg(int key, double loadtime)
+        public ScoreAvgGraph(int key, int score)
         {
             this.Key = key;
-            this.Loadtime = loadtime;
+            this.Score = score;
         }
         #endregion
+
     }
 }

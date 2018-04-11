@@ -56,16 +56,23 @@
                 <p></p>
                 <div id="user_data_options" style="display:none" align="center">
                     <h6 align="center">View your own website test data</h6>
-                    <input id="useravgs_btn" type="button" value="User Avgs" onclick="LoadUserSection()" style="background:#F08080; font-size:10px;" />
+                    <input id="useravgs_btn" type="button" value="User Avgs" onclick="LoadUserAvgs(0)" style="background:#F08080; font-size:10px;" />
+                    <input id="usertimeplot_btn" type="button" value="User Time Plots" onclick="LoadUserAvgs(1)" style="background:#F08080; font-size:10px;" />
                 </div>
                 <p></p>
                 <p></p>
-                <div id="user_section" align="center"/>
+                <div id="data_section" align="center"/>
             </div>
         </div>
     </div>
 
     <!-- Scripts -->
+    <script>
+        var avgsbtn = document.getElementById("useravgs_btn");
+        var timeplotbtn = document.getElementById("usertimeplot_tbtn");
+
+        var csTable = document.getElementById("city_state_table");
+    </script>
     <script>
         function ShowUserButtons() {
             var useroptions = document.getElementById("user_data_options");
@@ -73,8 +80,15 @@
         }
     </script>
     <script>
-        function LoadUserSection() {
-            $("#user_section").load('@Url.Action("UserSection", "DataAnalytics")');
+        function LoadUserAvgs(btn) {
+            switch (btn) {
+                case 0:
+                    $("#data_section").load('@Url.Action("UserAvgsSection", "DataAnalytics")');
+                    break;
+                case 1:
+                    $("#data_section").load('@Url.Action("UserTimePlotSection", "DataAnalytics")');
+                    break;
+            }
         }
     </script>
     <script src="~/js/jquery.min.js"></script>

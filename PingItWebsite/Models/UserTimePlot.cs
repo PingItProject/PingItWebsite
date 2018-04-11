@@ -1,46 +1,49 @@
 ﻿using MySql.Data.MySqlClient;
 using PingItWebsite.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PingItWebsite.Models
 {
-    public class UserTestAvgs
+    public class UserTimePlot
     {
         #region Variables
-        public int key { get; set; }
-        public string url { get; set; }
-        public string provider { get; set; }
-        public string state { get; set; }
+        public int rank { get; set; }
+        public DateTime date { get; set; }
         public string city { get; set; }
+        public string state { get; set; }
+        public string provider { get; set; }
         public double speed { get; set; }
-        public double loadtime { get; set; }
-        public int score { get; set; }
+        public TimeSpan loadtime { get; set; }
         #endregion
 
         #region Constructors
         /// <summary>
         /// Constructor
         /// </summary>
-        public UserTestAvgs() {
+        public UserTimePlot()
+        {
 
         }
         #endregion
 
         #region Stored Procedures
         /// <summary>
-        /// Get user averages
+        /// Get user test data organized chronologically
         /// </summary>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<UserTestAvgs> GetUserTestAvgs(Database database)
+        public List<UserTimePlot> GetUserTestChron(Database database)
         {
             database.CheckConnection();
-            List<UserTestAvgs> tests = new List<UserTestAvgs>();
+            List<UserTimePlot> tests = new List<UserTimePlot>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetUserTestAvgs", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetUserTestChron", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@user", HomeController._username);
@@ -48,18 +51,17 @@ namespace PingItWebsite.Models
                 MySqlDataReader reader = command.ExecuteReader();
                 while (reader.Read())
                 {
-                    UserTestAvgs wtc = new UserTestAvgs
+                    UserTimePlot utp = new UserTimePlot
                     {
-                        key = reader.GetInt32("id"),
-                        url = reader.GetString("url"),
-                        provider = reader.GetString("provider"),
-                        state = reader.GetString("state"),
+                        rank = reader.GetInt32("rank"),
+                        date = reader.GetDateTime("tstamp"),
                         city = reader.GetString("city"),
+                        state = reader.GetString("state"),
+                        provider = reader.GetString("provider"),
                         speed = reader.GetDouble("speed"),
-                        loadtime = reader.GetDouble("loadtime"),
-                        score = reader.GetInt32("score")
+                        loadtime = reader.GetTimeSpan("loadtime")
                     };
-                    tests.Add(wtc);
+                    tests.Add(utp);
                 }
                 reader.Close();
             }
@@ -70,6 +72,5 @@ namespace PingItWebsite.Models
             return tests;
         }
         #endregion
-
     }
 }

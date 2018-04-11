@@ -29,8 +29,13 @@
         </tr>
     }
 </table>
+<p></p>
+<p></p>
+<p></p>
 <div id="loadtimeChart" style="width: 45%; height: 300px;display: inline-block;"></div>
-<div id="speedChart" style="width: 45%; height: 300px;display: inline-block;"></div><br />
+<div id="speedChart" style="width: 45%; height: 300px;display: inline-block;"></div><br/>
+<div id="scoreChart" style="width: 45%; height: 300px;display: inline-block;"></div><br/>
+
 <script type="text/javascript">
     var chart1 = new CanvasJS.Chart("loadtimeChart", {
         theme: "theme2",
@@ -64,6 +69,23 @@
             }
         ]
     });
+    var chart3 = new CanvasJS.Chart("scoreChart", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Avg. Score"
+        },
+        axisY: {
+            title: "Score (Out of 100)"
+        },
+        data: [
+            {
+                type: "column", //change type to bar, line, area, pie, etc
+                dataPoints: @Html.Raw(ViewBag.DataPoints3),
+            }
+        ]
+    });
     chart1.render();
     chart2.render();
+    chart3.render();
 </script>

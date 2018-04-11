@@ -1,0 +1,221 @@
+﻿@using PingItWebsite.Models;
+
+<table>
+    User Web Tests Over Time
+    <tr>
+        <td>Rank/Key</td>
+        <td>Date</td>
+        <td>City</td>
+        <td>State</td>
+        <td>Provider</td>
+        <td>Speed (Mbps)</td>
+        <td>Load Time (s)</td>
+    </tr>
+    @foreach (UserTimePlot utp in Model)
+    {
+        <tr>
+            <td>@utp.rank.ToString()</td>
+            <td>@utp.date.ToString()</td>
+            <td>@utp.city</td>
+            <td>@utp.state</td>
+            <td>@utp.provider</td>
+            <td>@utp.speed</td>
+            <td>@utp.loadtime</td>
+        </tr>
+    }
+</table>
+<p></p>
+<p></p>
+<p></p>
+<div id="chart1" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart2" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart3" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart4" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart5" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart6" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart7" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart8" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart9" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="chart10" style="width: 45%; height: 300px;display: inline-block;"></div>
+<script type="text/javascript">
+    var chart1 = new CanvasJS.Chart("chart1", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Speed Over Time (Key 1)"
+        },
+        axisY: {
+            title: "Speed (Mbps)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints1),
+            }
+        ]
+    });
+    var chart2 = new CanvasJS.Chart("chart2", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Speed Over Time (Key 2)"
+        },
+        axisY: {
+            title: "Speed (Mbps)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints2),
+            }
+        ]
+    });
+    var chart3 = new CanvasJS.Chart("chart3", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Speed Over Time (Key 3)"
+        },
+        axisY: {
+            title: "Speed (Mbps)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints3),
+            }
+        ]
+    });
+    var chart4 = new CanvasJS.Chart("chart4", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Speed Over Time (Key 4)"
+        },
+        axisY: {
+            title: "Speed (Mbps)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints4),
+            }
+        ]
+    });
+    var chart5 = new CanvasJS.Chart("chart5", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Speed Over Time (Key 5)"
+        },
+        axisY: {
+            title: "Speed (Mbps)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints5),
+            }
+        ]
+    });
+    var chart6 = new CanvasJS.Chart("chart6", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Loadtime Over Time (Key 1)"
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints6),
+            }
+        ]
+    });
+    var chart7 = new CanvasJS.Chart("chart7", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Loadtime Over Time (Key 2)"
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints7),
+            }
+        ]
+    });
+    var chart8 = new CanvasJS.Chart("chart8", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Loadtime Over Time (Key 3)"
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints8),
+            }
+        ]
+    });
+    var chart9 = new CanvasJS.Chart("chart9", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Loadtime Over Time (Key 4)"
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints9),
+            }
+        ]
+    });
+    var chart10 = new CanvasJS.Chart("chart10", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Loadtime Over Time (Key 5)"
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        xValueType: "dateTime",
+        data: [
+            {
+                type: "line", //change type to bar, line, area, pie, etc
+                dataPoints:  @Html.Raw(ViewBag.DataPoints10),
+            }
+        ]
+    });
+    chart1.render();
+    chart2.render();
+    chart3.render();
+    chart4.render();
+    chart5.render();
+    chart6.render();
+    chart7.render();
+    chart8.render();
+    chart9.render();
+    chart10.render();
+</script>
