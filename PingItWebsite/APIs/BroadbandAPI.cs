@@ -3,6 +3,7 @@ using PingItWebsite.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 
 namespace PingItWebsite.APIs
@@ -59,35 +60,58 @@ namespace PingItWebsite.APIs
                     //Deserialize in this format because there are many tuples of broadband
                     var json = JsonConvert.DeserializeObject<List<JsonModels.Broadband>>(data);
 
-                    HashSet<String> providers = new HashSet<String>();
+                    Dictionary<String, Dictionary<double, int>> providers = new Dictionary<String, Dictionary<double, int>>();
 
                     foreach (var j in json)
                     {
-                        if (!providers.Contains(j.provider))
+                        //If there is no repeats, htne only allow 1 provider in the list
+                        if (!providers.ContainsKey(j.provider))
                         {
-                            providers.Add(j.provider);
 
                             //SoQL query sometimes gets same city name in different states, so filter
                             if (j.state.Equals(state))
                             {
+                                //Create a dictionary of speed so you can later get the avg
+                                Dictionary<double, int> speedDict = new Dictionary<double, int>();
+                                speedDict.Add(j.speed, 1);
+
                                 Broadband bb = new Broadband
                                 {
                                     blockcode = j.blockcode,
                                     provider = j.provider,
                                     state = j.state,
                                     city = city,
-                                    speed = j.speed
+                                    speedDict = speedDict
                                 };
 
+                                providers.Add(j.provider, speedDict);
                                 broadbandList.Add(bb);
                             }
+                        } else
+                        {
+                            //the dictionary is only of size 0
+                            Dictionary<double, int> tempSpeed = providers[j.provider];
 
+                            //update the total evaluated and the total speed
+                            double key = tempSpeed.Keys.First();
+                            int total = tempSpeed[key];
+                            tempSpeed.Remove(key);
+                            tempSpeed.Add(key + j.speed, total + 1);
+                            providers[j.provider] = tempSpeed;
                         }
+                    }
+
+                    //After finishing speed map, update the speeds
+                    foreach (Broadband b in broadbandList)
+                    {
+                        double key = b.speedDict.Keys.First();
+                        b.speed = key / b.speedDict[key];
                     }
                 }
             }
             return broadbandList;
         }
+
         #endregion
     }
 }

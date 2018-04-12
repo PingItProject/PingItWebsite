@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PingItWebsite.APIs;
 using PingItWebsite.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace PingItWebsite.Controllers
 {
@@ -12,6 +14,11 @@ namespace PingItWebsite.Controllers
 
         private long UnixEpochTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
 
+        #region View-Controllers
+        /// <summary>
+        /// Load the main index
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View();
@@ -133,5 +140,32 @@ namespace PingItWebsite.Controllers
             return (value.ToUniversalTime().Ticks - UnixEpochTicks) / 10000;
         }
 
+        /// <summary>
+        /// Load the FCC Data Section partial view
+        /// </summary>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public IActionResult FCCDataSection(string city, string state)
+        {
+            //Get census code
+            County county = new County();
+            string newCity = char.ToUpper(city[0]) + city.Substring(1);
+            int code = county.GetCensusCode(city, state, HomeController._database);
+
+            //Get list of broadbands
+            BroadbandAPI ba = new BroadbandAPI();
+            List<Broadband> broadbands = (ba.GetBroadbandSpeed(code, city, state)).OrderByDescending(o => o.provider).ToList();
+
+            List<BroadbandSpeedGraph> data = new List<BroadbandSpeedGraph>();
+            foreach (Broadband b in broadbands)
+            {
+                data.Add(new BroadbandSpeedGraph(b.provider, b.speed));
+            }
+
+            ViewBag.DataPoints = JsonConvert.SerializeObject(data);
+            return PartialView();
+        }
+#endregion
     }
 }
