@@ -69,6 +69,52 @@ namespace PingItWebsite.Models
             }
             return tests;
         }
+
+        /// <summary>
+        /// Get user averages filtered
+        /// </summary>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="domain"></param>
+        /// <param name="database"></param>
+        /// <returns></returns>
+        public List<UserTestAvgs> GetUserTestAvgsFiltered(string city, string state, string domain, Database database)
+        {
+            database.CheckConnection();
+            List<UserTestAvgs> tests = new List<UserTestAvgs>();
+            try
+            {
+                MySqlCommand command = new MySqlCommand("GetUserTestAvgsFiltered", database.Connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@user", HomeController._username);
+                command.Parameters.AddWithValue("@ucity", city);
+                command.Parameters.AddWithValue("@ustate", state);
+                command.Parameters.AddWithValue("@domain", domain);
+
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    UserTestAvgs wtc = new UserTestAvgs
+                    {
+                        key = reader.GetInt32("id"),
+                        url = reader.GetString("url"),
+                        provider = reader.GetString("provider"),
+                        state = reader.GetString("state"),
+                        city = reader.GetString("city"),
+                        speed = reader.GetDouble("speed"),
+                        loadtime = reader.GetDouble("loadtime"),
+                    };
+                    tests.Add(wtc);
+                }
+                reader.Close();
+            }
+            catch (MySqlException)
+            {
+                Debug.WriteLine("Stored Procedure: Cannot perform GetUserTestAvgsFiltered.");
+            }
+            return tests;
+        }
         #endregion
 
     }

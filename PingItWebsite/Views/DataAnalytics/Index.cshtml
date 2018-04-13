@@ -57,17 +57,19 @@
                 <div class="btn-group" align="center">
                     <button id="user_data_btn" onclick="ShowUserButtons()">User Data</button>
                     <button id="crowdsource_data_btn" onclick="ShowCSButtons()">Crowdsource Data</button>
+                    <button id="compare_data_btn" onclick="ShowCompareTable()">Compare Data</button>
                 </div>
                 <p></p>
                 <p></p>
                 <div id="user_data_options" style="display:none" align="center">
                     <h6 align="center">View your own website test data</h6>
                     <input id="useravgs_btn" type="button" value="User Avgs" onclick="LoadUserData(0)" style="background:#F08080; font-size:10px;" />
-                    <input id="usertimeplot_btn" type="button" value="User Time Plots" onclick="LoadUserData(1)" style="background:#F08080; font-size:10px;" />
+                    <input id="usertimeplot_btn" type="button" value="User Time Plots" onclick="LoadUserData(1)" style="background:#F08080; font-size:10px;"/>
                 </div>
                 <div id="crowdsource_data_options" style="display:none" align="center">
                     <h6 align="center">View crowdsource data</h6>
-                    <input id="fcc_stats_btn" type="button" value="FCC Stats" style="background:#F08080; font-size:10px;" />
+                    <input id="fcc_stats_btn" type="button" onclick="ShowCityStateTable()" value="FCC Stats" style="background:#F08080; font-size:10px;" />
+                    <input id="website_stats_btn" type="button" onclick="LoadWebsiteData()" value="Website Stats" style="background:#F08080; font-size:10px;" />
                 </div>
                 <p></p>
                 <p></p>
@@ -84,6 +86,27 @@
                             </td>
                             <td>
                                 <input type="button" value="Display" id="display_btn" style="width: 150px" onclick="LoadFCCData()" />
+                            </td>
+                        </tr>
+                    </table>
+                    <table id="compare_table" align="center" style="width:800px; display:none">
+                        <tr>
+                            <td>
+                                City
+                                <textarea id="city_compare_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                            <td>
+                                State
+                                <textarea id="state_compare_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Domain
+                                <textarea id="domain_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                            <td>
+                                <input type="button" value="Display" id="display_compare_btn" style="width: 150px" onclick="LoadCompareData()" />
                             </td>
                         </tr>
                     </table>
@@ -106,10 +129,20 @@
     <script>
         function ShowCSButtons() {
             var csoptions = document.getElementById("crowdsource_data_options");
-            var cstable = document.getElementById("city_state_table");
 
             csoptions.style.display = "block";
+        }
+    </script>
+    <script>
+        function ShowCityStateTable() {
+            var cstable = document.getElementById("city_state_table");
             cstable.style.display = "initial";
+        }
+    </script>
+    <script>
+        function ShowCompareTable() {
+            var comparetable = document.getElementById("compare_table");
+            comparetable.style.display = "initial";
         }
     </script>
     <script>
@@ -128,6 +161,17 @@
                     $("#data_section").load('@Url.Action("UserTimePlotSection", "DataAnalytics")');
                     break;
             }
+        }
+    </script>
+    <script>
+        function LoadWebsiteData() {
+            $("#data_section").load('@Url.Action("WebsiteDataSection", "DataAnalytics")');
+        }
+    </script>
+    <script>
+        function LoadCompareData() {
+            $("#data_section").load('@Url.Action("CompareDataSection", "DataAnalytics")?city=' + $("#city_compare_text").val() +
+                '&state=' + $("#state_compare_text").val() + '&domain=' + $("#domain_text").val());
         }
     </script>
     <script src="~/js/jquery.min.js"></script>
