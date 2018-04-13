@@ -104,9 +104,6 @@ namespace PingItWebsite.Selenium
 
             _requests--;
         }
-
         #endregion
-
-
     }
 }

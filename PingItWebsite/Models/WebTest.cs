@@ -35,8 +35,6 @@ namespace PingItWebsite.Models
         }
         #endregion
 
-        #region Getters/Setters
-        #endregion
 
         #region Commands
         /// <summary>
@@ -181,8 +179,8 @@ namespace PingItWebsite.Models
                 MySqlCommand command = new MySqlCommand("GetUserTestResults", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@u", username);
-                command.Parameters.AddWithValue("@b", batch);
+                command.Parameters.AddWithValue("@user", username);
+                command.Parameters.AddWithValue("@num", batch);
 
                 //Run stored procedure to get the event dates in asc order of the current month
                 MySqlDataReader reader = command.ExecuteReader();

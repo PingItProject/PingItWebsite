@@ -1,7 +1,15 @@
-CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTestResults`(IN u VARCHAR(50), IN b int)
+CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTestResults`(IN user VARCHAR(50), IN num int)
 BEGIN
-	SELECT		tstamp, url, loadtime, city, state, browser, provider, guid
+	SELECT		tstamp, 
+				url, 
+                loadtime, 
+                city, 
+                state, 
+                browser, 
+                provider, 
+                guid
 	FROM 		webtests w
-	WHERE		username = u AND batch = b
+	WHERE		username = user 
+				AND batch = num
 	ORDER BY 	tstamp ASC;
 END

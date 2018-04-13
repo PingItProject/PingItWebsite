@@ -35,50 +35,52 @@
             </ul>
         </nav>
 
-        
+
         <!-- Main -->
         <div id="main">
             <div class="inner">
                 <h2 align="center">Test Your Web Address Here</h2>
+                <h6 align="center">Custom location is only available with Firefox browser. City and state fields are optional.</h6>
+                <p></p>
                 <p></p>
                 <p></p>
                 <form method="post" action="#">
                     <!--Create an options table to choose for webtest-->
                     <table align="center" style="width:800px">
-                        <tr> 
+                        <tr>
                             <td>
-                                URL Required
+                                URL
                                 <textarea id="test_url" placeholder="Enter your URL here." style="width: 600px; height: 20px"></textarea>
                             </td>
                         </tr>
                     </table>
-                     <table align="center" style="width:800px">
-                         <tr>
-                             <td>
-                                 Select Browser
-                                 <select id="browser_options" name="browser" style="width: 300px">
-                                     <option value="chrome">Chrome &nbsp&nbsp &dtrif;</option>
-                                     <option value="firefox">FireFox</option>
-                                     <option value="phantomJS">Headless</option>
-                                 </select>
-                             </td>
-                             <td>
-                                 Select Provider
-                                 <textarea id="provider" placeholder="Enter your provider (i.e. AT&T)" style="width: 300px; height: 20px"></textarea>
-                             </td>
-                             <td>
-                                 # Requests
-                                 <textarea id="no_requests" placeholder="1" style="width: 20px; height: 20px"></textarea>
-                             </td>
-                         </tr>
-                        <tr> 
+                    <table align="center" style="width:800px">
+                        <tr>
                             <td>
-                                City
-                                <textarea id="city" placeholder="Enter City" style="width: 300px; height: 20px"></textarea>
+                                Browser
+                                <select id="browser_options" name="browser" style="width: 300px">
+                                    <option value="chrome">Chrome &nbsp&nbsp &dtrif;</option>
+                                    <option value="firefox">FireFox</option>
+                                    <option value="phantomJS">Headless</option>
+                                </select>
                             </td>
                             <td>
-                                State
-                                <textarea id="state" placeholder="Enter State" style="width: 300px; height: 20px"></textarea>
+                                Provider
+                                <textarea id="provider" placeholder="Enter your provider (i.e. AT&T)" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                            <td>
+                                # Requests
+                                <textarea id="no_requests" placeholder="1" style="width: 20px; height: 20px"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                *City
+                                <textarea id="city" placeholder="Enter city" style="width: 300px; height: 20px"></textarea>
+                            </td>
+                            <td>
+                                *State
+                                <textarea id="state" placeholder="Enter state abbr." style="width: 300px; height: 20px"></textarea>
                             </td>
                         </tr>
                     </table>
@@ -88,6 +90,7 @@
                         </tr>
                     </table>
                 </form>
+                <h6 align="center">Thank you for waiting as the table loads.</h6>
                 <div id="table_section"></div>
             </div>
         </div>
@@ -95,29 +98,56 @@
 
     <!-- Scripts -->
     <script>
+        //Test the website
         function TestWebsite() {
-            $.ajax({
-                type: "POST",
-                url: "/WebTest/PrepareBatch",
-                async: true,
-                dataType: "json",
-                data: {
-                    requests: $("#no_requests").val()
-                },
-                success: function () {
-                    
-                },
-                error: function () {
-                    return "error";
-                }
-            });
-            var nr = parseInt($("#no_requests").val());
-            for (i = 0; i < nr; i++) {
-                TestWebsiteHelper();
+            var pass = true;
+            //Check if any of the values are empty
+            if (!$("#test_url").val()) {
+                pass = false;
+                alert("No url entered.");
             }
-            RenderTable();
-            
-        }     
+            if (!$("#browser_options").val()) {
+                pass = false;
+                alert("No browser chosen.");
+            }
+            if (!$("#provider").val()) {
+                pass = false;
+                alert("No city entered.");
+            }
+            if (!$("#no_requests").val()) {
+                pass = false;
+                alert("No number of requests entered.");
+            }
+
+            if ($("#state").val() && $("#state").val().length != 2) {
+                pass = false;
+                alert("State must be in abbreviation form.");
+            }
+
+            if (pass) {
+                $.ajax({
+                    type: "POST",
+                    url: "/WebTest/PrepareBatch",
+                    async: true,
+                    dataType: "json",
+                    data: {
+                        requests: $("#no_requests").val()
+                    },
+                    success: function () {
+
+                    },
+                    error: function () {
+                        return "error";
+                    }
+                });
+                var nr = parseInt($("#no_requests").val());
+                for (i = 0; i < nr; i++) {
+                    TestWebsiteHelper();
+                }
+                RenderTable();
+
+            }
+        }
     </script>
     <script>
         //Tests the website with url and browser

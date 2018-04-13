@@ -14,7 +14,6 @@ namespace PingItWebsite.Controllers
     {
         #region Variables
         private List<WebTest> tests;
-
         private static Object wtLock = new Object();
         #endregion
 
@@ -44,6 +43,7 @@ namespace PingItWebsite.Controllers
             int norequests = Convert.ToInt32(requests);
             Driver._requests = norequests;
         }
+
         /// <summary>
         /// Test a user's website
         /// </summary>
@@ -79,6 +79,12 @@ namespace PingItWebsite.Controllers
                 {
                     //Get coordinates using the Geocoding API
                     GeocodingAPI ga = new GeocodingAPI();
+
+                    //Get the proper capitalization of state and city
+                    state = state.ToUpper();
+                    city = city.ToLower();
+
+                    //Get the latitude and longitude of the city and state
                     IList<double> coord = ga.GetLocationCoords(city, state);
                     double lat = coord[0];
                     double lng = coord[1];
@@ -94,7 +100,6 @@ namespace PingItWebsite.Controllers
 
                     System.IO.File.WriteAllText(path, output);
                     driver.LoadDriver(url, city, state, browser, provider, norequests);
-
                 }
             }
             
