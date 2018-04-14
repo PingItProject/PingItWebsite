@@ -1,10 +1,9 @@
 CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTestChron`(IN user VARCHAR(100))
 BEGIN
-	#Get the user tests chronologically for a chart
-    SELECT  t.*,
-			@rownum := @rownum + 1 AS id
-	FROM (	
-		SELECT	wt.tstamp, 
+	   SELECT 	chron.*, rt.rank
+       FROM
+       #Get the user tests chronologically for a chart
+       (SELECT  wt.tstamp, 
 				wt.city, 
 				wt.state, 
 				wt.provider, 
@@ -38,6 +37,27 @@ BEGIN
 			ON 	b.guid = wt.guid
 		JOIN	googletests gt
 			ON	gt.guid = wt.guid
-		)t,
-        (SELECT	@rownum := 0) r;
+		) chron
+        JOIN (
+		#Get the top five state, city, and providers that were tested most
+			SELECT 		    tests.*, 
+							@rank := @rank + 1 AS rank
+            FROM(
+				SELECT		state,
+							city,
+							provider,
+							COUNT(*) AS tests
+				FROM		PingIt.webtests wt
+				JOIN 		PingIt.googletests gt
+					ON 		gt.guid = wt.guid
+				WHERE		wt.username = user
+				GROUP BY 	state, city, provider
+				ORDER BY 	tests DESC
+			) tests,
+			(SELECT 		@rank := 0) r
+		) rt
+        ON			chron.state = rt.state
+				AND chron.city  = rt.city
+				AND chron.provider = rt.provider
+		ORDER BY	chron.tstamp ASC;
 END

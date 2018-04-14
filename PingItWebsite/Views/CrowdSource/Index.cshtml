@@ -23,7 +23,6 @@
             </div>
         </header>
 
-
          <!-- Menu -->
         <nav id="menu">
             <h2>Menu</h2>
@@ -41,6 +40,8 @@
         <div id="main">
             <div class="inner">
                 <h2 align="center">Test and Compare Broadband Availability</h2>
+                <h6 align="center">All fields required.</h6>
+                <h6 align="center">Database matches to all performance tests with the same domain.</h6>
                 <p></p>
                 <p></p>
                 <form method="post" action="#">
@@ -65,26 +66,18 @@
                         <tr>
                             <td>
                                 Website
-                                <textarea id="website" placeholder="(optional)" style="width: 300px; height: 300px"></textarea>
+                                <textarea id="website" style="width: 300px; height: 300px"></textarea>
                             </td>
-                            <td>Data Options
-                                <select id="data_options" name="data_options" style="width: 300px">
-                                    <option value="general">General &nbsp&nbsp &dtrif; </option>
-                                    <option value="detailed">Detailed</option>
-                                    <option value="broadband">Avg. Broadband Speeds</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
                             <td>
                                 City
-                                <textarea id="city_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                                <textarea id="city_text" placeholder="all" style="width: 200px; height: 20px"></textarea>
                             </td>
                             <td>
                                 State
-                                <textarea id="state_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                                <textarea id="state_text" placeholder="all" style="width: 100px; height: 20px"></textarea>
                             </td>
                         </tr>
+                    </table>
                     <table align="center" style="width:800px">
                         <tr> 
                             <td align="center"><input type="button" value="Submit" id="submit_btn" onclick="RevealBtns()" style="width: 150px" /></td>
@@ -105,6 +98,7 @@
 
     <!-- Scripts -->
     <script>
+        //Get the buttons
         var generalbtn = document.getElementById("general_tbtn");
         var detailedbtn = document.getElementById("detailed_tbtn");
         var fccbtn = document.getElementById("fcc_tbtn");
@@ -116,20 +110,42 @@
     <script>
         //Reveal the table buttons
         function RevealBtns() {
-            SetButtonsWhite();
+            var pass = true;
+            //Check to see if any values were left empty
+            if (!$("#website").val()) {
+                pass = false;
+                alert("No website chosen.");
+            }
+            if (!$("#city_text").val()) {
+                pass = false;
+                alert("No city entered.");
+            }
+            if (!$("#state_text").val()) {
+                pass = false;
+                alert("No state entered.");
+            }
+            if ($("#state").val() && $("#state").val().length != 2) {
+                pass = false;
+                alert("State must be in abbreviation form.");
+            }
 
-            var options = document.getElementById("table_options");
-            options.style.display = "block";
+            if (pass) {
+                SetButtonsWhite();
 
-            //hide section
-            if (loaded) {
-                section.style.display = "none";
-                loaded = false;
+                var options = document.getElementById("table_options");
+                options.style.display = "block";
+
+                //hide section
+                if (loaded) {
+                    section.style.display = "none";
+                    loaded = false;
+                }
             }
             
         }
     </script>
     <script>
+        //Load the appropriate table
         function LoadTable(btn) {
             var ordering;
 
@@ -171,6 +187,7 @@
         }
     </script>
     <script>
+        //Set all the buttons back to white
         function SetButtonsWhite() {
             generalbtn.style.background = "#FFFFFF";
             detailedbtn.style.background = "#FFFFFF";

@@ -14,7 +14,6 @@ namespace PingItWebsite.Controllers
     {
         #region Variables
         private List<WebTest> tests;
-
         private static Object wtLock = new Object();
         #endregion
 
@@ -44,6 +43,7 @@ namespace PingItWebsite.Controllers
             int norequests = Convert.ToInt32(requests);
             Driver._requests = norequests;
         }
+
         /// <summary>
         /// Test a user's website
         /// </summary>
@@ -79,6 +79,12 @@ namespace PingItWebsite.Controllers
                 {
                     //Get coordinates using the Geocoding API
                     GeocodingAPI ga = new GeocodingAPI();
+
+                    //Get the proper capitalization of state and city
+                    state = state.ToUpper();
+                    city = city.ToLower();
+
+                    //Get the latitude and longitude of the city and state
                     IList<double> coord = ga.GetLocationCoords(city, state);
                     double lat = coord[0];
                     double lng = coord[1];
@@ -94,7 +100,6 @@ namespace PingItWebsite.Controllers
 
                     System.IO.File.WriteAllText(path, output);
                     driver.LoadDriver(url, city, state, browser, provider, norequests);
-
                 }
             }
             
@@ -115,7 +120,7 @@ namespace PingItWebsite.Controllers
             }
 
             //Get the webtests info
-            tests = wt.GetUserWebTests(HomeController._username, Driver._batch, HomeController._database);
+            tests = wt.GetUserTests(HomeController._username, Driver._batch, HomeController._database);
 
             PageSpeedAPI psa = new PageSpeedAPI();
             GoogleTest gt = new GoogleTest();
@@ -129,7 +134,7 @@ namespace PingItWebsite.Controllers
                 psa.InsertPageSpeed(tests[i].url, tests[i].loadtime.Seconds, tests[i].guid);
 
                 //Find the matching google test
-                GoogleTest test = gt.GetUserGoogleTest(tests[i].guid, HomeController._database);
+                GoogleTest test = gt.GetGoogleUserTests(tests[i].guid, HomeController._database);
                 tests[i].googleTest = test;
             }
 

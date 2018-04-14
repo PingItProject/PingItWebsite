@@ -35,8 +35,6 @@ namespace PingItWebsite.Models
         }
         #endregion
 
-        #region Getters/Setters
-        #endregion
 
         #region Commands
         /// <summary>
@@ -172,17 +170,17 @@ namespace PingItWebsite.Models
         /// <param name="batch"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<WebTest> GetUserWebTests(string username, int batch, Database database)
+        public List<WebTest> GetUserTests(string username, int batch, Database database)
         {
             database.CheckConnection();
             List<WebTest> tests = new List<WebTest>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetUserTestResults", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetUserTests", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@u", username);
-                command.Parameters.AddWithValue("@b", batch);
+                command.Parameters.AddWithValue("@user", username);
+                command.Parameters.AddWithValue("@num", batch);
 
                 //Run stored procedure to get the event dates in asc order of the current month
                 MySqlDataReader reader = command.ExecuteReader();
@@ -205,7 +203,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetUserTestResults.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetUserTests.");
             }
             return tests;
         }
@@ -220,13 +218,13 @@ namespace PingItWebsite.Models
         /// <param name="ordering"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<WebTest> GetWebTests(string city, string state, string browser, string website, bool ordering, Database database)
+        public List<WebTest> GetTests(string city, string state, string browser, string website, bool ordering, Database database)
         {
             database.CheckConnection();
             List<WebTest> tests = new List<WebTest>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetTestResults", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetTests", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 if (String.IsNullOrEmpty(city))
@@ -281,7 +279,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetTestResults.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetTests.");
             }
             return tests;
         }
