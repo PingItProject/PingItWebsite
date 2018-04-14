@@ -11,8 +11,9 @@ namespace PingItWebsite.Controllers
 {
     public class DataAnalyticsController : Controller
     {
-
+        #region Variables
         private long UnixEpochTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
+        #endregion
 
         #region View-Controllers
         /// <summary>
@@ -34,20 +35,20 @@ namespace PingItWebsite.Controllers
             List<UserTestAvgs> tests = wtc.GetUserTestAvgs(HomeController._database);
 
             //Prepare data points
-            List<LoadTimeAvgGraph> data1 = new List<LoadTimeAvgGraph>();
-            List<SpeedAvgGraph> data2 = new List<SpeedAvgGraph>();
-            List<ScoreAvgGraph> data3 = new List<ScoreAvgGraph>();
+            List<LoadTimeAvgGraph> loadtime = new List<LoadTimeAvgGraph>();
+            List<SpeedAvgGraph> speed = new List<SpeedAvgGraph>();
+            List<ScoreAvgGraph> score = new List<ScoreAvgGraph>();
 
             foreach (UserTestAvgs avg in tests)
             {
-                data1.Add(new LoadTimeAvgGraph(avg.key, avg.loadtime));
-                data2.Add(new SpeedAvgGraph(avg.key, avg.speed));
-                data3.Add(new ScoreAvgGraph(avg.key, avg.score));
+                loadtime.Add(new LoadTimeAvgGraph(avg.key, avg.loadtime));
+                speed.Add(new SpeedAvgGraph(avg.key, avg.speed));
+                score.Add(new ScoreAvgGraph(avg.key, avg.score));
             }
 
-            ViewBag.DataPoints1 = JsonConvert.SerializeObject(data1);
-            ViewBag.DataPoints2 = JsonConvert.SerializeObject(data2);
-            ViewBag.DataPoints3 = JsonConvert.SerializeObject(data3);
+            ViewBag.Loadtime = JsonConvert.SerializeObject(loadtime);
+            ViewBag.Speed = JsonConvert.SerializeObject(speed);
+            ViewBag.Score = JsonConvert.SerializeObject(score);
 
             return PartialView(tests);
         }

@@ -30,7 +30,7 @@ namespace PingItWebsite.Models
 
         #region Stored Procedures
         /// <summary>
-        /// Get user averages
+        /// Get user averages for data analytics purpose
         /// </summary>
         /// <param name="database"></param>
         /// <returns></returns>

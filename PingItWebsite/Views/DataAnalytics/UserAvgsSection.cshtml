@@ -3,8 +3,8 @@
 <head>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
+<h6 align="Center">User Performance Test Averages</h6>
 <table>
-    User Web Test Averages
     <tr>
         <td>Key</td>
         <td>URL</td>
@@ -32,24 +32,28 @@
 <p></p>
 <p></p>
 <p></p>
-<div id="loadtimeChart" style="width: 45%; height: 300px;display: inline-block;"></div>
-<div id="speedChart" style="width: 45%; height: 300px;display: inline-block;"></div><br/>
-<div id="scoreChart" style="width: 45%; height: 300px;display: inline-block;"></div><br/>
+<div id="loadtimeChart" style="width: 50%; height: 300px;display: inline-block;"></div>
+<div id="speedChart" style="width: 50%; height: 300px;display: inline-block;"></div><br/>
+<div id="scoreChart" style="width: 50%; height: 300px;display: inline-block;"></div><br/>
 
 <script type="text/javascript">
     var chart1 = new CanvasJS.Chart("loadtimeChart", {
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Avg. Load Times"
+            text: "Average Load Time"
+        },
+        axisX: {
+            title: "Key",
+            interval: 1
         },
         axisY: {
             title: "Load Time (Seconds)"
         },
         data: [
             {
-                type: "column", //change type to bar, line, area, pie, etc
-                dataPoints: @Html.Raw(ViewBag.DataPoints1),
+                type: "column", 
+                dataPoints: @Html.Raw(ViewBag.Loadtime),
             }
         ]
     });
@@ -57,15 +61,19 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Avg. Speed"
+            text: "Average Speed"
+        },
+        axisX: {
+            title: "Key",
+            interval: 1
         },
         axisY: {
             title: "Speed (Mbps)"
         },
         data: [
             {
-                type: "column", //change type to bar, line, area, pie, etc
-                dataPoints: @Html.Raw(ViewBag.DataPoints2),
+                type: "column", 
+                dataPoints: @Html.Raw(ViewBag.Speed),
             }
         ]
     });
@@ -73,15 +81,19 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Avg. Score"
+            text: "Average Score"
+        },
+        axisX: {
+            title: "Key",
+            interval: 1
         },
         axisY: {
             title: "Score (Out of 100)"
         },
         data: [
             {
-                type: "column", //change type to bar, line, area, pie, etc
-                dataPoints: @Html.Raw(ViewBag.DataPoints3),
+                type: "column", 
+                dataPoints: @Html.Raw(ViewBag.Score),
             }
         ]
     });

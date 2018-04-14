@@ -10,15 +10,6 @@
     <link rel="stylesheet" href="~/css/main.css" />
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
-<style>
-    .btn-group button {
-        background-color: #ADD8E6;
-        display: block;
-    }
-    .btn-group button:hover {
-        background-color: #555;
-    }
-</style>
 <body>
     <!-- Wrapper -->
     <div id="wrapper">
@@ -48,23 +39,24 @@
 
 
 
-        
+
         <!-- Main -->
         <div id="main">
             <!--Inner-->
             <div class="inner">
-                <h2 align="center">Test and Compare Broadband Availability</h2>
-                <div class="btn-group" align="center">
+                <h2 align="center">Analyze and Compare Broadband and Test Performance Data</h2>
+                <div align="center">
                     <button id="user_data_btn" onclick="ShowUserButtons()">User Data</button>
                     <button id="crowdsource_data_btn" onclick="ShowCSButtons()">Crowdsource Data</button>
                     <button id="compare_data_btn" onclick="ShowCompareTable()">Compare Data</button>
                 </div>
                 <p></p>
                 <p></p>
+                <!--Set of buttons to compare user test data-->
                 <div id="user_data_options" style="display:none" align="center">
-                    <h6 align="center">View your own website test data</h6>
-                    <input id="useravgs_btn" type="button" value="User Avgs" onclick="LoadUserData(0)" style="background:#F08080; font-size:10px;" />
-                    <input id="usertimeplot_btn" type="button" value="User Time Plots" onclick="LoadUserData(1)" style="background:#F08080; font-size:10px;"/>
+                    <h6 align="center">View and analyze your own website test data</h6>
+                    <input id="useravgs_btn" type="button" value="Test Averages" onclick="LoadUserData(0)" style="background:#F08080; font-size:10px;" />
+                    <input id="usertimeplot_btn" type="button" value="Time Plots Plots" onclick="LoadUserData(1)" style="background:#F08080; font-size:10px;" />
                 </div>
                 <div id="crowdsource_data_options" style="display:none" align="center">
                     <h6 align="center">View crowdsource data</h6>
@@ -74,7 +66,7 @@
                 <p></p>
                 <p></p>
                 <div id="data_section" align="center">
-                    <table id="city_state_table" align="center" style="width:800px; display:none">
+                    <table id="location_table" align="center" style="width:800px; display:none">
                         <tr>
                             <td>
                                 City
@@ -117,25 +109,45 @@
 
     <!-- Scripts -->
     <script>
+        //Get the sub buttons
+        var useroptions = document.getElementById("user_data_options");
+        var csoptions = document.getElementById("crowdsource_data_options");
+
         var avgsbtn = document.getElementById("useravgs_btn");
         var timeplotbtn = document.getElementById("usertimeplot_tbtn");
     </script>
+    <!--User Data Scripts-->
     <script>
+        //Shows the user buttons when the user data button is clicked
         function ShowUserButtons() {
-            var useroptions = document.getElementById("user_data_options");
+            //Make the appropriate options buttons appear
             useroptions.style.display = "block";
+            csoptions.style.display = "none";
         }
     </script>
     <script>
+        function LoadUserData(btn) {
+            switch (btn) {
+                case 0:
+                    $("#data_section").load('@Url.Action("UserAvgsSection", "DataAnalytics")');
+                    break;
+                case 1:
+                    $("#data_section").load('@Url.Action("UserTimePlotSection", "DataAnalytics")');
+                    break;
+            }
+        }
+    </script>
+    <script>
+        //Shows the compare data buttons when the compare button is clicked
         function ShowCSButtons() {
-            var csoptions = document.getElementById("crowdsource_data_options");
-
+            //Make the appropriate options buttons appear
+            useroptions.style.display = "none";
             csoptions.style.display = "block";
         }
     </script>
     <script>
         function ShowCityStateTable() {
-            var cstable = document.getElementById("city_state_table");
+            var cstable = document.getElementById("location_table");
             cstable.style.display = "initial";
         }
     </script>
@@ -149,18 +161,6 @@
         function LoadFCCData() {
             $("#data_section").load('@Url.Action("FCCDataSection", "DataAnalytics")?city=' + $("#city_text").val() +
                         '&state=' + $("#state_text").val());
-        }
-    </script>
-    <script>
-        function LoadUserData(btn) {
-            switch (btn) {
-                case 0:
-                    $("#data_section").load('@Url.Action("UserAvgsSection", "DataAnalytics")');
-                    break;
-                case 1:
-                    $("#data_section").load('@Url.Action("UserTimePlotSection", "DataAnalytics")');
-                    break;
-            }
         }
     </script>
     <script>
