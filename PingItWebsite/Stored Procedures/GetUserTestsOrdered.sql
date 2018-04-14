@@ -1,6 +1,6 @@
-CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTestChron`(IN user VARCHAR(100))
+CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTestsOrdered`(IN user VARCHAR(100))
 BEGIN
-	   SELECT 	chron.*, rt.rank
+	   SELECT 	ordered.*, rt.rank
        FROM
        #Get the user tests chronologically for a chart
        (SELECT  wt.tstamp, 
@@ -37,7 +37,7 @@ BEGIN
 			ON 	b.guid = wt.guid
 		JOIN	googletests gt
 			ON	gt.guid = wt.guid
-		) chron
+		) ordered
         JOIN (
 		#Get the top five state, city, and providers that were tested most
 			SELECT 		    tests.*, 
@@ -56,8 +56,8 @@ BEGIN
 			) tests,
 			(SELECT 		@rank := 0) r
 		) rt
-        ON			chron.state = rt.state
-				AND chron.city  = rt.city
-				AND chron.provider = rt.provider
-		ORDER BY	chron.tstamp ASC;
+        ON			ordered.state = rt.state
+				AND ordered.city  = rt.city
+				AND ordered.provider = rt.provider
+		ORDER BY	ordered.tstamp ASC;
 END

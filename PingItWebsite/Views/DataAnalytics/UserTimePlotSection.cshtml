@@ -1,7 +1,7 @@
 ﻿@using PingItWebsite.Models;
 
+<h3 align="Center">User Performance Tests' Speed and Loadtime Over Time</h3>
 <table>
-    User Web Tests Over Time
     <tr>
         <td>Rank/Key</td>
         <td>Date</td>
@@ -27,31 +27,48 @@
 <p></p>
 <p></p>
 <p></p>
+<h3 align="center">Key 1</h3>
 <div id="chart1" style="width: 45%; height: 300px;display: inline-block;"></div>
-<div id="chart2" style="width: 45%; height: 300px;display: inline-block;"></div>
-<div id="chart3" style="width: 45%; height: 300px;display: inline-block;"></div>
-<div id="chart4" style="width: 45%; height: 300px;display: inline-block;"></div>
-<div id="chart5" style="width: 45%; height: 300px;display: inline-block;"></div>
 <div id="chart6" style="width: 45%; height: 300px;display: inline-block;"></div>
+<p></p>
+<p></p>
+<p></p>
+<h3 align="center">Key 2</h3>
+<div id="chart2" style="width: 45%; height: 300px;display: inline-block;"></div>
 <div id="chart7" style="width: 45%; height: 300px;display: inline-block;"></div>
+<p></p>
+<p></p>
+<p></p>
+<h3 align="center">Key 3</h3>
+<div id="chart3" style="width: 45%; height: 300px;display: inline-block;"></div>
 <div id="chart8" style="width: 45%; height: 300px;display: inline-block;"></div>
+<p></p>
+<p></p>
+<p></p>
+<h3 align="center">Key 4</h3>
+<div id="chart4" style="width: 45%; height: 300px;display: inline-block;"></div>
 <div id="chart9" style="width: 45%; height: 300px;display: inline-block;"></div>
+<p></p>
+<p></p>
+<p></p>
+<h3 align="center">Key 5</h3>
+<div id="chart5" style="width: 45%; height: 300px;display: inline-block;"></div>
 <div id="chart10" style="width: 45%; height: 300px;display: inline-block;"></div>
 <script type="text/javascript">
     var chart1 = new CanvasJS.Chart("chart1", {
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Speed Over Time (Key 1)"
+            text: "Speed Over Time"
         },
         axisY: {
             title: "Speed (Mbps)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints1),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Speed1),
             }
         ]
     });
@@ -59,16 +76,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Speed Over Time (Key 2)"
+            text: "Speed Over Time"
         },
         axisY: {
             title: "Speed (Mbps)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints2),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Speed2),
             }
         ]
     });
@@ -76,16 +93,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Speed Over Time (Key 3)"
+            text: "Speed Over Time"
         },
         axisY: {
             title: "Speed (Mbps)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints3),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Speed3),
             }
         ]
     });
@@ -93,16 +110,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Speed Over Time (Key 4)"
+            text: "Speed Over Time"
         },
         axisY: {
             title: "Speed (Mbps)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints4),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Speed4),
             }
         ]
     });
@@ -110,16 +127,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Speed Over Time (Key 5)"
+            text: "Speed Over Time"
         },
         axisY: {
             title: "Speed (Mbps)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints5),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Speed5),
             }
         ]
     });
@@ -127,16 +144,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Loadtime Over Time (Key 1)"
+            text: "Loadtime Over Time"
         },
         axisY: {
             title: "Loadtime (seconds)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints6),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Loadtime6),
             }
         ]
     });
@@ -144,16 +161,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Loadtime Over Time (Key 2)"
+            text: "Loadtime Over Time"
         },
         axisY: {
             title: "Loadtime (seconds)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints7),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Loadtime7),
             }
         ]
     });
@@ -161,16 +178,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Loadtime Over Time (Key 3)"
+            text: "Loadtime Over Time"
         },
         axisY: {
             title: "Loadtime (seconds)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints8),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Loadtime8),
             }
         ]
     });
@@ -178,16 +195,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Loadtime Over Time (Key 4)"
+            text: "Loadtime Over Time"
         },
         axisY: {
             title: "Loadtime (seconds)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints9),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Loadtime9),
             }
         ]
     });
@@ -195,16 +212,16 @@
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Loadtime Over Time (Key 5)"
+            text: "Loadtime Over Time"
         },
         axisY: {
             title: "Loadtime (seconds)"
         },
-        xValueType: "dateTime",
         data: [
             {
                 type: "line", //change type to bar, line, area, pie, etc
-                dataPoints:  @Html.Raw(ViewBag.DataPoints10),
+                xValueType: "dateTime",
+                dataPoints:  @Html.Raw(ViewBag.Loadtime10),
             }
         ]
     });

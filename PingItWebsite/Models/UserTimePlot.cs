@@ -37,13 +37,13 @@ namespace PingItWebsite.Models
         /// </summary>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<UserTimePlot> GetUserTestChron(Database database)
+        public List<UserTimePlot> GetUserTestsOrdered(Database database)
         {
             database.CheckConnection();
             List<UserTimePlot> tests = new List<UserTimePlot>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetUserTestChron", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetUserTestsOrdered", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 command.Parameters.AddWithValue("@user", HomeController._username);

@@ -11,9 +11,7 @@ namespace PingItWebsite.Controllers
 {
     public class DataAnalyticsController : Controller
     {
-        #region Variables
         private long UnixEpochTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
-        #endregion
 
         #region View-Controllers
         /// <summary>
@@ -35,13 +33,13 @@ namespace PingItWebsite.Controllers
             List<UserTestAvgs> tests = wtc.GetUserTestAvgs(HomeController._database);
 
             //Prepare data points
-            List<LoadTimeAvgGraph> loadtime = new List<LoadTimeAvgGraph>();
+            List<LoadtimeAvgGraph> loadtime = new List<LoadtimeAvgGraph>();
             List<SpeedAvgGraph> speed = new List<SpeedAvgGraph>();
             List<ScoreAvgGraph> score = new List<ScoreAvgGraph>();
 
             foreach (UserTestAvgs avg in tests)
             {
-                loadtime.Add(new LoadTimeAvgGraph(avg.key, avg.loadtime));
+                loadtime.Add(new LoadtimeAvgGraph(avg.key, avg.loadtime));
                 speed.Add(new SpeedAvgGraph(avg.key, avg.speed));
                 score.Add(new ScoreAvgGraph(avg.key, avg.score));
             }
@@ -54,7 +52,7 @@ namespace PingItWebsite.Controllers
         }
 
         /// <summary>
-        /// Load user 
+        /// Load user time plot partial views
         /// </summary>
         /// <param name="city"></param>
         /// <param name="state"></param>
@@ -63,21 +61,19 @@ namespace PingItWebsite.Controllers
         public IActionResult UserTimePlotSection(string city, string state, string provider)
         {
             UserTimePlot utp = new UserTimePlot();
-            List<UserTimePlot> tests = utp.GetUserTestChron(HomeController._database);
+            List<UserTimePlot> tests = utp.GetUserTestsOrdered(HomeController._database);
 
             //Prepare datapoints
-            List<SpeedTimePlotGraph> data1 = new List<SpeedTimePlotGraph>();
-            List<SpeedTimePlotGraph> data2 = new List<SpeedTimePlotGraph>();
-            List<SpeedTimePlotGraph> data3 = new List<SpeedTimePlotGraph>();
-            List<SpeedTimePlotGraph> data4 = new List<SpeedTimePlotGraph>();
-            List<SpeedTimePlotGraph> data5 = new List<SpeedTimePlotGraph>();
-
-            //Prepare datapoints
-            List<LoadtimePlotGraph> data6 = new List<LoadtimePlotGraph>();
-            List<LoadtimePlotGraph> data7 = new List<LoadtimePlotGraph>();
-            List<LoadtimePlotGraph> data8 = new List<LoadtimePlotGraph>();
-            List<LoadtimePlotGraph> data9 = new List<LoadtimePlotGraph>();
-            List<LoadtimePlotGraph> data10 = new List<LoadtimePlotGraph>();
+            List<SpeedTimePlotGraph> speed1 = new List<SpeedTimePlotGraph>();
+            List<SpeedTimePlotGraph> speed2 = new List<SpeedTimePlotGraph>();
+            List<SpeedTimePlotGraph> speed3 = new List<SpeedTimePlotGraph>();
+            List<SpeedTimePlotGraph> speed4 = new List<SpeedTimePlotGraph>();
+            List<SpeedTimePlotGraph> speed5 = new List<SpeedTimePlotGraph>();
+            List<LoadtimePlotGraph> loadtime6 = new List<LoadtimePlotGraph>();
+            List<LoadtimePlotGraph> loadtime7 = new List<LoadtimePlotGraph>();
+            List<LoadtimePlotGraph> loadtime8 = new List<LoadtimePlotGraph>();
+            List<LoadtimePlotGraph> loadtime9 = new List<LoadtimePlotGraph>();
+            List<LoadtimePlotGraph> loadtime10 = new List<LoadtimePlotGraph>();
 
             //Loop through tests and only get those from the top 5
             for (int i = 0; i < tests.Count; i++)
@@ -87,28 +83,27 @@ namespace PingItWebsite.Controllers
                 {
                     //Convert to date to fit JavaScript format
                     long longDate = ToJsonDate(plot.date);
-
                     switch (plot.rank)
                     {
                         case 1:
-                            data1.Add(new SpeedTimePlotGraph(longDate, plot.speed));
-                            data6.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
+                            speed1.Add(new SpeedTimePlotGraph(longDate, plot.speed));
+                            loadtime6.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
                             break;
                         case 2:
-                            data2.Add(new SpeedTimePlotGraph(longDate, plot.speed));
-                            data7.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
+                            speed2.Add(new SpeedTimePlotGraph(longDate, plot.speed));
+                            loadtime7.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
                             break;
                         case 3:
-                            data3.Add(new SpeedTimePlotGraph(longDate, plot.speed));
-                            data8.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
+                            speed3.Add(new SpeedTimePlotGraph(longDate, plot.speed));
+                            loadtime8.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
                             break;
                         case 4:
-                            data4.Add(new SpeedTimePlotGraph(longDate, plot.speed));
-                            data9.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
+                            speed4.Add(new SpeedTimePlotGraph(longDate, plot.speed));
+                            loadtime9.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
                             break;
                         case 5:
-                            data5.Add(new SpeedTimePlotGraph(longDate, plot.speed));
-                            data10.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
+                            speed5.Add(new SpeedTimePlotGraph(longDate, plot.speed));
+                            loadtime10.Add(new LoadtimePlotGraph(longDate, plot.loadtime.Seconds));
                             break;
                     }
                 }
@@ -116,17 +111,17 @@ namespace PingItWebsite.Controllers
             }
 
             //load speed datapoints
-            ViewBag.DataPoints1 = JsonConvert.SerializeObject(data1);
-            ViewBag.DataPoints2 = JsonConvert.SerializeObject(data2);
-            ViewBag.DataPoints3 = JsonConvert.SerializeObject(data3);
-            ViewBag.DataPoints4 = JsonConvert.SerializeObject(data4);
-            ViewBag.DataPoints5 = JsonConvert.SerializeObject(data5);
+            ViewBag.Speed1 = JsonConvert.SerializeObject(speed1);
+            ViewBag.Speed2 = JsonConvert.SerializeObject(speed2);
+            ViewBag.Speed3 = JsonConvert.SerializeObject(speed3);
+            ViewBag.Speed4 = JsonConvert.SerializeObject(speed4);
+            ViewBag.Speed5 = JsonConvert.SerializeObject(speed5);
             //load loadtime datapoints
-            ViewBag.DataPoints6 = JsonConvert.SerializeObject(data6);
-            ViewBag.DataPoints7 = JsonConvert.SerializeObject(data7);
-            ViewBag.DataPoints8 = JsonConvert.SerializeObject(data8);
-            ViewBag.DataPoints9 = JsonConvert.SerializeObject(data9);
-            ViewBag.DataPoints10 = JsonConvert.SerializeObject(data10);
+            ViewBag.Loadtime6 = JsonConvert.SerializeObject(loadtime6);
+            ViewBag.Loadtime7 = JsonConvert.SerializeObject(loadtime7);
+            ViewBag.Loadtime8 = JsonConvert.SerializeObject(loadtime8);
+            ViewBag.Loadtime9 = JsonConvert.SerializeObject(loadtime9);
+            ViewBag.Loadtime10 = JsonConvert.SerializeObject(loadtime10);
             return PartialView(tests);
 
         }
@@ -138,6 +133,7 @@ namespace PingItWebsite.Controllers
         /// <returns></returns>
         private long ToJsonDate(DateTime value)
         {
+            //return ((DateTimeOffset)value).ToUnixTimeSeconds();
             return (value.ToUniversalTime().Ticks - UnixEpochTicks) / 10000;
         }
 
