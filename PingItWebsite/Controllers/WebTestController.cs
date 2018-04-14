@@ -120,7 +120,7 @@ namespace PingItWebsite.Controllers
             }
 
             //Get the webtests info
-            tests = wt.GetUserWebTests(HomeController._username, Driver._batch, HomeController._database);
+            tests = wt.GetUserTests(HomeController._username, Driver._batch, HomeController._database);
 
             PageSpeedAPI psa = new PageSpeedAPI();
             GoogleTest gt = new GoogleTest();
@@ -134,7 +134,7 @@ namespace PingItWebsite.Controllers
                 psa.InsertPageSpeed(tests[i].url, tests[i].loadtime.Seconds, tests[i].guid);
 
                 //Find the matching google test
-                GoogleTest test = gt.GetUserGoogleTest(tests[i].guid, HomeController._database);
+                GoogleTest test = gt.GetGoogleUserTests(tests[i].guid, HomeController._database);
                 tests[i].googleTest = test;
             }
 

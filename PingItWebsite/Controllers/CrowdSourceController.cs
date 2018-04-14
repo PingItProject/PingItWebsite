@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using PingItWebsite.APIs;
@@ -43,8 +44,7 @@ namespace PingItWebsite.Controllers
 
             //Get the default array
             string[] defArr = GetDefault(browser, website);
-
-            List<WebTest> tests = wt.GetWebTests(city, state, defArr[0], defArr[1], order, HomeController._database);
+            List<WebTest> tests = wt.GetTests(city, state, defArr[0], defArr[1], order, HomeController._database);
 
             return PartialView(tests);
         }
@@ -80,34 +80,6 @@ namespace PingItWebsite.Controllers
 
             tests = gt.GetGoogleTests(city, state, defArr[0], defArr[1], order, HomeController._database);
             return PartialView(tests);
-        }
-
-        /// <summary>
-        /// Helper method that sets browser and website
-        /// </summary>
-        /// <param name="browser"></param>
-        /// <param name="website"></param>
-        /// <returns></returns>
-        private string[] GetDefault(string browser, string website)
-        {
-            string[] retArr = new string[2];
-            //Checks if the browser is all, then the query selects all browsers
-            if (browser.Equals("all"))
-            {
-                retArr[0] = null;
-            } else
-            {
-                retArr[0] = browser;
-            }
-
-            string domain = null;
-            if (!String.IsNullOrEmpty(website))
-            {
-                domain = FindWebsiteDomain(website);
-            }
-            retArr[1] = domain;
-            return retArr;
-
         }
 
         /// <summary>
@@ -150,6 +122,7 @@ namespace PingItWebsite.Controllers
         {
 
             string domain = FindWebsiteDomain(website);
+            //Load a different table depending on netflix or not 
             if (domain.Equals("netflix"))
             {
                 return NetflixTable(ordering);
@@ -168,7 +141,7 @@ namespace PingItWebsite.Controllers
         public IActionResult WebsiteTableHelper(string domain, bool ordering)
         {
             Website w = new Website();
-            List<Website> info = w.GetPublicWebsiteInfo(domain, ordering, HomeController._database);
+            List<Website> info = w.GetDomainLoadtimes(domain, ordering, HomeController._database);
             return PartialView(info);
         }
 
@@ -180,12 +153,41 @@ namespace PingItWebsite.Controllers
         public IActionResult NetflixTable(bool ordering)
         {
             Netflix n = new Netflix();
-            List<Netflix> info = n.GetNetflixInfo(ordering, HomeController._database);
+            List<Netflix> info = n.GetNetflixISPs(ordering, HomeController._database);
             return PartialView(info);
         }
         #endregion
 
         #region Shared Helper Methods
+        /// <summary>
+        /// Helper method that sets browser and website
+        /// </summary>
+        /// <param name="browser"></param>
+        /// <param name="website"></param>
+        /// <returns></returns>
+        private string[] GetDefault(string browser, string website)
+        {
+            string[] retArr = new string[2];
+            //Checks if the browser is all, then the query selects all browsers
+            if (browser.Equals("all"))
+            {
+                retArr[0] = null;
+            }
+            else
+            {
+                retArr[0] = browser;
+            }
+
+            string domain = null;
+            if (!String.IsNullOrEmpty(website))
+            {
+                domain = FindWebsiteDomain(website);
+            }
+            retArr[1] = domain;
+            return retArr;
+
+        }
+
         /// <summary>
         /// Given a url, find the website domain
         /// </summary>

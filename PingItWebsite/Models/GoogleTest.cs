@@ -77,13 +77,13 @@ namespace PingItWebsite.Models
         /// <param name="guid"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public GoogleTest GetUserGoogleTest(Guid guid, Database database)
+        public GoogleTest GetGoogleUserTests(Guid guid, Database database)
         {
             database.CheckConnection();
             GoogleTest gt = null;
             try
             {
-                MySqlCommand command = new MySqlCommand("GetUserGoogleTestResults", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetGoogleUserTests", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@guid", guid);
 
@@ -108,7 +108,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetUserGoogleTestResults.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetGoogleUserTests.");
             }
             _complete = true;
             return gt;
@@ -130,7 +130,7 @@ namespace PingItWebsite.Models
             List<GoogleTest> tests = new List<GoogleTest>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetGoogleTestResults", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetGoogleTests", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 if (String.IsNullOrEmpty(city))
@@ -188,7 +188,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetGoogleTestResults.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetGoogleTests.");
             }
             return tests;
         }

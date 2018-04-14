@@ -35,13 +35,13 @@ namespace PingItWebsite.Models
         /// <param name="ordering"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<Website> GetPublicWebsiteInfo(string website, bool ordering, Database database)
+        public List<Website> GetDomainLoadtimes(string website, bool ordering, Database database)
         {
             database.CheckConnection();
             List<Website> info = new List<Website>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetPublicWebsiteInfo", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetDomainLoadtimes", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
 

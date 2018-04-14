@@ -1,20 +1,19 @@
 ﻿using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PingItWebsite.Models
 {
     public class Netflix
     {
+        #region Variables
         public string website { get; set; }
         public string isp { get; set; }
         public string type { get; set; }
         public double speed { get; set; }
         public string date { get; set; }
+        #endregion
 
         #region Constructors
         /// <summary>
@@ -28,18 +27,18 @@ namespace PingItWebsite.Models
 
         #region Stored Procedures
         /// <summary>
-        /// Get the Netflix website info
+        /// Get the Netflix ISPs
         /// </summary>
         /// <param name="ordering"></param>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<Netflix> GetNetflixInfo(bool ordering, Database database)
+        public List<Netflix> GetNetflixISPs(bool ordering, Database database)
         {
             database.CheckConnection();
             List<Netflix> info = new List<Netflix>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetNetflixInfo", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetNetflixISPs", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 if (ordering)

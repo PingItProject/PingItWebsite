@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTestResults`(IN user VARCHAR(50), IN num int)
+CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTests`(IN user VARCHAR(50), IN num int)
 BEGIN
 	SELECT		tstamp, 
 				url, 
