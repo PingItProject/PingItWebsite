@@ -4,11 +4,11 @@ using System.Runtime.Serialization;
 namespace PingItWebsite.Models
 {
     [DataContract]
-    public class AvgWebLoadtimeGraph
+    public class CityLoadtimeAvgGraph
     {
         #region Data Contract Variables
         [DataMember(Name = "label")]
-        public string Website = null;
+        public string Location = null;
 
         [DataMember(Name = "y")]
         public Nullable<double> Loadtime = null;
@@ -16,13 +16,13 @@ namespace PingItWebsite.Models
 
         #region Constructors
         /// <summary>
-        /// Constructor used to create a avg website speed bar graph
+        /// Constructor used to create a avg website with cities loadtime bar graph
         /// </summary>
-        /// <param name="website"></param>
+        /// <param name="location"></param>
         /// <param name="loadtime"></param>
-        public AvgWebLoadtimeGraph(string website, double loadtime)
+        public CityLoadtimeAvgGraph(string location, double loadtime)
         {
-            this.Website = website;
+            this.Location = location;
             this.Loadtime = loadtime;
         }
         #endregion

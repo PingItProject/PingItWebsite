@@ -11,7 +11,9 @@ namespace PingItWebsite.Controllers
 {
     public class DataAnalyticsController : Controller
     {
+        #region Variables
         private long UnixEpochTicks = (new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).Ticks;
+        #endregion
 
         #region View-Controllers
         /// <summary>
@@ -133,66 +135,92 @@ namespace PingItWebsite.Controllers
         /// <returns></returns>
         private long ToJsonDate(DateTime value)
         {
-            //return ((DateTimeOffset)value).ToUnixTimeSeconds();
             return (value.ToUniversalTime().Ticks - UnixEpochTicks) / 10000;
         }
 
         /// <summary>
-        /// Load the FCC Data Section partial view
+        /// Load the compare data partial view
         /// </summary>
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public IActionResult FCCDataSection(string city, string state)
+        public IActionResult CompareDataSection(string city, string state)
         {
-            //Get census code
             County county = new County();
-            string newCity = char.ToUpper(city[0]) + city.Substring(1);
-            int code = county.GetCensusCode(city, state, HomeController._database);
+            Website web = new Website();
 
-            //Get list of broadbands
-            BroadbandAPI ba = new BroadbandAPI();
-            List<Broadband> broadbands = (ba.GetBroadbandSpeed(code, city, state)).OrderByDescending(o => o.provider).ToList();
+            //Prepare the appropriate graphs
+            List<BroadbandSpeedGraph> fccData = PrepareFCCData(city, state, county);
+            List<DomainLoadtimeAvgGraph> loadtimeData = PrepareLoadtimeData(web);
+            List<CityLoadtimeAvgGraph> cityLoadtimeData = PrepareCityLoadtimeData(web);
 
-            List<BroadbandSpeedGraph> data = new List<BroadbandSpeedGraph>();
-            foreach (Broadband b in broadbands)
-            {
-                data.Add(new BroadbandSpeedGraph(b.provider, b.speed));
-            }
-
-            ViewBag.DataPoints = JsonConvert.SerializeObject(data);
+            ViewBag.FCCData = JsonConvert.SerializeObject(fccData);
+            ViewBag.LoadtimeData = JsonConvert.SerializeObject(loadtimeData);
+            ViewBag.CityLoadtimeData = JsonConvert.SerializeObject(cityLoadtimeData);
             return PartialView();
         }
 
         /// <summary>
-        /// Load the website data partial view
+        /// Helper method that prepares FCC data
         /// </summary>
-        /// <param name="website"></param>
+        /// <param name="city"></param>
+        /// <param name="state"></param>
+        /// <param name="county"></param>
         /// <returns></returns>
-        public IActionResult WebsiteDataSection()
+        private List<BroadbandSpeedGraph> PrepareFCCData(string city, string state, County county)
         {
-            //Get avg website speed
-            Website w = new Website();
-            List<Website> avgs = w.GetAvgLoadTime(HomeController._database);
-            List<Website> cityAvgs = w.GetAvgLoadTimeCities(HomeController._database);
+            //Get the census code
+            string newCity = char.ToUpper(city[0]) + city.Substring(1);
+            int code = county.GetCensusCode(city, state, HomeController._database);
 
-            //Loadtime graph
-            List<AvgWebLoadtimeGraph> data = new List<AvgWebLoadtimeGraph>();
-            List<AvgWebLoadtimeCitiesGraph> data1 = new List<AvgWebLoadtimeCitiesGraph>();
+            //Get list of broadbands in that census code
+            BroadbandAPI ba = new BroadbandAPI();
+            List<Broadband> broadbands = (ba.GetBroadbandSpeed(code, city, state)).OrderByDescending(o => o.provider).ToList();
 
-            foreach (Website a in avgs)
+            //Prepare graph data
+            List<BroadbandSpeedGraph> fccData = new List<BroadbandSpeedGraph>();
+            foreach (Broadband b in broadbands)
             {
-                data.Add(new AvgWebLoadtimeGraph(a.website, a.total));
+                fccData.Add(new BroadbandSpeedGraph(b.provider, b.speed));
             }
+
+            return fccData;
+        }
+
+        /// <summary>
+        /// Helper method that prepares domain loadtime data
+        /// </summary>
+        /// <param name="web"></param>
+        /// <returns></returns>
+        private List<DomainLoadtimeAvgGraph> PrepareLoadtimeData(Website web)
+        {
+            List<Website> webAvgs = web.GetAvgDomainLoadtime(HomeController._database);
+            List<DomainLoadtimeAvgGraph> loadtimeData = new List<DomainLoadtimeAvgGraph>();
+
+            foreach (Website w in webAvgs)
+            {
+                loadtimeData.Add(new DomainLoadtimeAvgGraph(w.website, w.total));
+            }
+
+            return loadtimeData;
+        }
+
+        /// <summary>
+        /// Helper method that prepares city loadtime data
+        /// </summary>
+        /// <param name="web"></param>
+        /// <returns></returns>
+        private List<CityLoadtimeAvgGraph> PrepareCityLoadtimeData(Website web)
+        {
+            List<Website> cityAvgs = web.GetAvgCityLoadtime(HomeController._database);
+            List<CityLoadtimeAvgGraph> cityLoadtimeData = new List<CityLoadtimeAvgGraph>();
 
             foreach (Website c in cityAvgs)
             {
-                data1.Add(new AvgWebLoadtimeCitiesGraph(c.location, c.total));
+                cityLoadtimeData.Add(new CityLoadtimeAvgGraph(c.location, c.total));
             }
 
-            ViewBag.DataPoints = JsonConvert.SerializeObject(data);
-            ViewBag.DataPoints1 = JsonConvert.SerializeObject(data1);
-            return PartialView();
+            return cityLoadtimeData;
         }
 
         /// <summary>
@@ -202,7 +230,7 @@ namespace PingItWebsite.Controllers
         /// <param name="state"></param>
         /// <param name="domain"></param>
         /// <returns></returns>
-        public IActionResult CompareDataSection(string city, string state, string domain)
+        public IActionResult CompareDataSectionXXX(string city, string state, string domain)
         {
             //Compare speed
             UserTestAvgs wtc = new UserTestAvgs();

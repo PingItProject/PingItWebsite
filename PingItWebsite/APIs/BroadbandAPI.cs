@@ -60,6 +60,8 @@ namespace PingItWebsite.APIs
                     //Deserialize in this format because there are many tuples of broadband
                     var json = JsonConvert.DeserializeObject<List<JsonModels.Broadband>>(data);
 
+                    //Create a dictionary with the following: key (provider) and value (dictionary)
+                    //Dictionary value with the following: key (speed) and value (total values) [There is only 1 item in this dict]
                     Dictionary<String, Dictionary<double, int>> providers = new Dictionary<String, Dictionary<double, int>>();
 
                     foreach (var j in json)
@@ -89,7 +91,7 @@ namespace PingItWebsite.APIs
                             }
                         } else
                         {
-                            //the dictionary is only of size 0
+                            //the dictionary is only of size 1
                             Dictionary<double, int> tempSpeed = providers[j.provider];
 
                             //update the total evaluated and the total speed

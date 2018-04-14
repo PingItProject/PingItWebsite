@@ -1,4 +1,4 @@
-CREATE DEFINER=`root`@`%` PROCEDURE `GetAvgWebLoadtime`()
+CREATE DEFINER=`root`@`%` PROCEDURE `GetAvgDomainLoadtime`()
 BEGIN
 	SELECT 		website, AVG(total) as total
 	FROM 		PingIt.websites

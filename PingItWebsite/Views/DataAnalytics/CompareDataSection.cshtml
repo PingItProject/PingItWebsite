@@ -1,35 +1,18 @@
 ﻿<head>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
-<table>
-    User Web Test Averages
-    <tr>
-        <td>Key</td>
-        <td>URL</td>
-        <td>Provider</td>
-        <td>State</td>
-        <td>City</td>
-        <td>Speed (Mbps)</td>
-    </tr>
-    @foreach (UserTestAvgs uta in Model)
-    {
-        <tr>
-            <td>@uta.key.ToString()</td>
-            <td>@uta.url</td>
-            <td>@uta.provider</td>
-            <td>@uta.state</td>
-            <td>@uta.city</td>
-            <td>@uta.speed</td>
-        </tr>
-    }
-</table>
-<div id="speedChart" style="width: 45%; height: 300px;display: inline-block;"></div><br />
+<div id="fccSpeedChart" style="width: 100%; height: 300px;display: inline-block;"></div>
+<div id="loadtimeChart" style="width: 50%; height: 300px;display: inline-block;"></div>
+<div id="cityLoadtimeChart" style="width: 50%; height: 300px;display: inline-block;"></div>
 <script type="text/javascript">
-    var chart = new CanvasJS.Chart("speedChart", {
+    var chart1 = new CanvasJS.Chart("fccSpeedChart", {
         theme: "theme2",
         animationEnabled: true,
         title: {
-            text: "Avg. Speed"
+            text: "Speed of Different Providers in Selected Location"
+        },
+        axisX: {
+            interval: 1
         },
         axisY: {
             title: "Speed (Mbps)"
@@ -37,13 +20,50 @@
         data: [
             {
                 type: "column", //change type to bar, line, area, pie, etc
-                dataPoints: @Html.Raw(ViewBag.DataPoints),
-            },
-            {
-                type: "line",
-                dataPoints: @Html.Raw(ViewBag.DataPoints1)
+                dataPoints: @Html.Raw(ViewBag.FCCData),
             }
         ]
     });
-    chart.render();
+    var chart2 = new CanvasJS.Chart("loadtimeChart", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Avg. Loadtime of Various Domains"
+        },
+        axisX: {
+            interval: 1
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        data: [
+            {
+                type: "column", //change type to bar, line, area, pie, etc
+                dataPoints: @Html.Raw(ViewBag.LoadtimeData),
+            }
+        ]
+    });
+    var chart3 = new CanvasJS.Chart("cityLoadtimeChart", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Avg. Loadtime Across Different Locations"
+        },
+        axisX: {
+            interval: 1
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        data: [
+            {
+                type: "column", //change type to bar, line, area, pie, etc
+                dataPoints: @Html.Raw(ViewBag.CityLoadtimeData),
+            }
+        ]
+    });
+    chart1.render();
+    chart2.render();
+    chart3.render();
 </script>
+

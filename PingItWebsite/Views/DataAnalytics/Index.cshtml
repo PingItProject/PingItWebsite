@@ -24,7 +24,6 @@
                 </nav>
             </div>
         </header>
-
         <!-- Menu -->
         <nav id="menu">
             <h2>Menu</h2>
@@ -47,62 +46,44 @@
                 <h2 align="center">Analyze and Compare Broadband and Test Performance Data</h2>
                 <div align="center">
                     <button id="user_data_btn" onclick="ShowUserButtons()">User Data</button>
-                    <button id="crowdsource_data_btn" onclick="ShowCSButtons()">Crowdsource Data</button>
                     <button id="compare_data_btn" onclick="ShowCompareTable()">Compare Data</button>
                 </div>
                 <p></p>
                 <p></p>
                 <!--Set of buttons to compare user test data-->
                 <div id="user_data_options" style="display:none" align="center">
-                    <h6 align="center">View and analyze your own website test data</h6>
+                    <h6 align="center">View and analyze your own test performance data</h6>
                     <input id="useravgs_btn" type="button" value="Test Averages" onclick="LoadUserData(0)" style="background:#F08080; font-size:10px;" />
                     <input id="usertimeplot_btn" type="button" value="Test Time Plots" onclick="LoadUserData(1)" style="background:#F08080; font-size:10px;" />
                 </div>
-                <div id="crowdsource_data_options" style="display:none" align="center">
-                    <h6 align="center">View crowdsource data</h6>
-                    <input id="fcc_stats_btn" type="button" onclick="ShowCityStateTable()" value="FCC Stats" style="background:#F08080; font-size:10px;" />
-                    <input id="website_stats_btn" type="button" onclick="LoadWebsiteData()" value="Website Stats" style="background:#F08080; font-size:10px;" />
-                </div>
-                <p></p>
-                <p></p>
-                <div id="data_section" align="center">
-                    <table id="location_table" align="center" style="width:800px; display:none">
+                <div id="compare_data_options" style="display:none" align="center">
+                    <h6 align="center">Compare your own test performance data with the crowdsourced data.</h6>
+                    <h6 align="center">All fields are required.</h6>
+                    <table id="compare_table" align="center" style="width:800px;">
                         <tr>
                             <td>
                                 City
-                                <textarea id="city_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                                <textarea id="city_text" style="width: 300px; height: 20px"></textarea>
                             </td>
                             <td>
                                 State
-                                <textarea id="state_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
-                            </td>
-                            <td>
-                                <input type="button" value="Display" id="display_btn" style="width: 150px" onclick="LoadFCCData()" />
-                            </td>
-                        </tr>
-                    </table>
-                    <table id="compare_table" align="center" style="width:800px; display:none">
-                        <tr>
-                            <td>
-                                City
-                                <textarea id="city_compare_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
-                            </td>
-                            <td>
-                                State
-                                <textarea id="state_compare_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                                <textarea id="state_text" placeholder="(i.e. GA)" style="width: 300px; height: 20px"></textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Domain
-                                <textarea id="domain_text" placeholder="all" style="width: 300px; height: 20px"></textarea>
+                                <textarea id="domain_text" style="width: 300px; height: 20px"></textarea>
                             </td>
                             <td>
-                                <input type="button" value="Display" id="display_compare_btn" style="width: 150px" onclick="LoadCompareData()" />
+                                <input type="button" value="Compare" id="compare_btn" style="width: 150px" onclick="LoadCompareData()" />
                             </td>
                         </tr>
                     </table>
                 </div>
+                <p></p>
+                <p></p>
+                <div id="data_section" align="center"/>
             </div>
         </div>
     </div>
@@ -111,7 +92,7 @@
     <script>
         //Get the sub buttons
         var useroptions = document.getElementById("user_data_options");
-        var csoptions = document.getElementById("crowdsource_data_options");
+        var compoptions = document.getElementById("compare_data_options");
 
         var avgsbtn = document.getElementById("useravgs_btn");
         var timeplotbtn = document.getElementById("usertimeplot_tbtn");
@@ -122,10 +103,11 @@
         function ShowUserButtons() {
             //Make the appropriate options buttons appear
             useroptions.style.display = "block";
-            csoptions.style.display = "none";
+            compoptions.style.display = "none";
         }
     </script>
     <script>
+        //Load user graphs and charts depending on what button chosen
         function LoadUserData(btn) {
             switch (btn) {
                 case 0:
@@ -138,29 +120,38 @@
         }
     </script>
     <script>
-        //Shows the compare data buttons when the compare button is clicked
-        function ShowCSButtons() {
+        //Shows the compare table  when the compare button is clicked
+        function ShowCompareTable() {
             //Make the appropriate options buttons appear
             useroptions.style.display = "none";
-            csoptions.style.display = "block";
+            compoptions.style.display = "block";
         }
     </script>
     <script>
-        function ShowCityStateTable() {
-            var cstable = document.getElementById("location_table");
-            cstable.style.display = "initial";
-        }
-    </script>
-    <script>
-        function ShowCompareTable() {
-            var comparetable = document.getElementById("compare_table");
-            comparetable.style.display = "initial";
-        }
-    </script>
-    <script>
-        function LoadFCCData() {
-            $("#data_section").load('@Url.Action("FCCDataSection", "DataAnalytics")?city=' + $("#city_text").val() +
+        //Loads the comparison data
+        function LoadCompareData() {
+            var pass = true;
+            //Check to see if any values were left empty
+            if (!$("#city_text").val()) {
+                pass = false;
+                alert("No city chosen.");
+            }
+            if (!$("#state_text").val()) {
+                pass = false;
+                alert("No state entered.");
+            }
+            if (!$("#domain_text").val()) {
+                pass = false;
+                alert("No domain text entered.");
+            }
+            if ($("#state_text").val() && $("#state_text").val().length != 2) {
+                pass = false;
+                alert("State must be in abbreviation form.");
+            }
+            if (pass) {
+                $("#data_section").load('@Url.Action("CompareDataSection", "DataAnalytics")?city=' + $("#city_text").val() +
                         '&state=' + $("#state_text").val());
+            }
         }
     </script>
     <script>
@@ -169,7 +160,7 @@
         }
     </script>
     <script>
-        function LoadCompareData() {
+        function LoadCompareDataaaa() {
             $("#data_section").load('@Url.Action("CompareDataSection", "DataAnalytics")?city=' + $("#city_compare_text").val() +
                 '&state=' + $("#state_compare_text").val() + '&domain=' + $("#domain_text").val());
         }

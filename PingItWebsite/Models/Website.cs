@@ -81,17 +81,17 @@ namespace PingItWebsite.Models
         }
 
         /// <summary>
-        /// Get the public website info
+        /// Get the average domain loadtimes
         /// </summary>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<Website> GetAvgLoadTime(Database database)
+        public List<Website> GetAvgDomainLoadtime(Database database)
         {
             database.CheckConnection();
             List<Website> info = new List<Website>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetAvgWebLoadtime", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetAvgDomainLoadtime", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 //Run stored procedure to get the event dates in asc order of the current month
@@ -109,7 +109,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetAvgWebLoadtime.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetAvgDomainLoadtime.");
             }
             return info;
         }
@@ -119,13 +119,13 @@ namespace PingItWebsite.Models
         /// </summary>
         /// <param name="database"></param>
         /// <returns></returns>
-        public List<Website> GetAvgLoadTimeCities(Database database)
+        public List<Website> GetAvgCityLoadtime(Database database)
         {
             database.CheckConnection();
             List<Website> info = new List<Website>();
             try
             {
-                MySqlCommand command = new MySqlCommand("GetWebLoadtimeCities", database.Connection);
+                MySqlCommand command = new MySqlCommand("GetAvgCityLoadtime", database.Connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 //Run stored procedure to get the event dates in asc order of the current month
@@ -143,7 +143,7 @@ namespace PingItWebsite.Models
             }
             catch (MySqlException)
             {
-                Debug.WriteLine("Stored Procedure: Cannot perform GetWebLoadtimeCities.");
+                Debug.WriteLine("Stored Procedure: Cannot perform GetAvgCityLoadtime.");
             }
             return info;
         }
