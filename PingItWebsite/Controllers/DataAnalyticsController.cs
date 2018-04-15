@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PingItWebsite.APIs;
+using PingItWebsite.Graphs;
 using PingItWebsite.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace PingItWebsite.Controllers
@@ -153,10 +153,14 @@ namespace PingItWebsite.Controllers
             List<BroadbandSpeedGraph> fccData = PrepareFCCData(city, state, domain, county);
             List<DomainLoadtimeAvgGraph> loadtimeData = PrepareLoadtimeData(web);
             List<CityLoadtimeAvgGraph> cityLoadtimeData = PrepareCityLoadtimeData(web);
+            List<DomainLoadtimeAvgGraph> compareLoadtimeData = PrepareCompareLoadtimeData(domain, web);
+            List<CityLoadtimeAvgGraph> compareCityLoadtimeData = PrepareCompareCityLoadtimeData(domain, web);
 
             ViewBag.FCCData = JsonConvert.SerializeObject(fccData);
             ViewBag.LoadtimeData = JsonConvert.SerializeObject(loadtimeData);
             ViewBag.CityLoadtimeData = JsonConvert.SerializeObject(cityLoadtimeData);
+            ViewBag.CompareLoadtimeData = JsonConvert.SerializeObject(compareLoadtimeData);
+            ViewBag.CompareCityLoadtimeData = JsonConvert.SerializeObject(compareCityLoadtimeData);
             return PartialView();
         }
 
@@ -206,7 +210,7 @@ namespace PingItWebsite.Controllers
         /// <returns></returns>
         private List<DomainLoadtimeAvgGraph> PrepareLoadtimeData(Website web)
         {
-            List<Website> webAvgs = web.GetAvgDomainLoadtime(HomeController._database);
+            List<Website> webAvgs = web.GetAvgDomainLoadtime("null", HomeController._database);
             List<DomainLoadtimeAvgGraph> loadtimeData = new List<DomainLoadtimeAvgGraph>();
 
             foreach (Website w in webAvgs)
@@ -224,7 +228,7 @@ namespace PingItWebsite.Controllers
         /// <returns></returns>
         private List<CityLoadtimeAvgGraph> PrepareCityLoadtimeData(Website web)
         {
-            List<Website> cityAvgs = web.GetAvgCityLoadtime(HomeController._database);
+            List<Website> cityAvgs = web.GetAvgCityLoadtime("null", HomeController._database);
             List<CityLoadtimeAvgGraph> cityLoadtimeData = new List<CityLoadtimeAvgGraph>();
 
             foreach (Website c in cityAvgs)
@@ -236,49 +240,44 @@ namespace PingItWebsite.Controllers
         }
 
         /// <summary>
-        /// Load compare data section partial view
+        /// Prepare domain loadtime data for 
         /// </summary>
-        /// <param name="city"></param>
-        /// <param name="state"></param>
         /// <param name="domain"></param>
+        /// <param name="web"></param>
         /// <returns></returns>
-        public IActionResult CompareDataSectionXXX(string city, string state, string domain)
+        private List<DomainLoadtimeAvgGraph> PrepareCompareLoadtimeData(string domain, Website web)
         {
-            //Compare speed
-            UserTestAvgs wtc = new UserTestAvgs();
-            List<UserTestAvgs> tests = wtc.GetUserTestAvgsFiltered(city, state, domain, HomeController._database);
+            List<Website> webAvgs = web.GetAvgDomainLoadtime(domain, HomeController._database);
+            List<DomainLoadtimeAvgGraph> loadtimeData = new List<DomainLoadtimeAvgGraph>();
+            loadtimeData.Add(new DomainLoadtimeAvgGraph("Global", webAvgs[0].total));
+            loadtimeData.Add(new DomainLoadtimeAvgGraph("User", web.GetUserAvgDomainLoadtime(domain, HomeController._database).total));
+            return loadtimeData;
+        }
 
-            //Load the speeds in the data
-            List<SpeedAvgGraph> data = new List<SpeedAvgGraph>();
-            List<SpeedAvgGraph> basis = new List<SpeedAvgGraph>();
+        /// <summary>
+        /// Helper method that prepares compare city loadtime data
+        /// </summary>
+        /// <param name="domain"></param>
+        /// <param name="web"></param>
+        /// <returns></returns>
+        private List<CityLoadtimeAvgGraph> PrepareCompareCityLoadtimeData(string domain, Website web)
+        {
+            List<Website> cityAvgs = web.GetAvgCityLoadtime(domain, HomeController._database);
+            List<Website> userCityAvgs = web.GetDomainLoadtimeByLocation(domain, HomeController._database);
 
-            //Get census code
-            County county = new County();
-            string newCity = char.ToUpper(city[0]) + city.Substring(1);
-            int code = county.GetCensusCode(city, state, HomeController._database);
+            List<CityLoadtimeAvgGraph> cityLoadtimeData = new List<CityLoadtimeAvgGraph>();
 
-            //Get list of broadbands
-            BroadbandAPI ba = new BroadbandAPI();
-            List<Broadband> broadbands = ba.GetBroadbandSpeed(code, city, state);
-            //Get average
-            double avg = GetAverage(broadbands);
-
-            foreach (UserTestAvgs t in tests)
+            foreach (Website c in cityAvgs)
             {
-                if (t.city.Equals(city) && t.state.Equals(state) && FindWebsiteDomain(t.url).Equals(domain))
-                {
-                    data.Add(new SpeedAvgGraph(t.key, t.speed));
-                }
+                cityLoadtimeData.Add(new CityLoadtimeAvgGraph(c.location, c.total));
             }
 
-            for (int i = 0; i < tests.Count; i++)
+            foreach (Website uc in userCityAvgs)
             {
-                basis.Add(new SpeedAvgGraph(i, avg));
+                cityLoadtimeData.Add(new CityLoadtimeAvgGraph(uc.location, uc.total));
             }
 
-            ViewBag.DataPoints = JsonConvert.SerializeObject(data);
-            ViewBag.DataPoints1 = JsonConvert.SerializeObject(basis);
-            return PartialView(tests);
+            return cityLoadtimeData;
         }
         #endregion
 

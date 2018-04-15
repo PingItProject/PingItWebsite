@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace PingItWebsite.Models
+namespace PingItWebsite.Graphs
 {
     [DataContract]
     public class SpeedTimePlotGraph

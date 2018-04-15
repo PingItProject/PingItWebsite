@@ -2,8 +2,10 @@
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <div id="fccSpeedChart" style="width: 75%; height: 300px;display: inline-block;"></div>
-<div id="loadtimeChart" style="width: 45%; height: 300px;display: inline-block;"></div>
-<div id="cityLoadtimeChart" style="width: 45%; height: 300px;display: inline-block;"></div>
+<div id="loadtimeChart" style="width: 75%; height: 300px;display: inline-block;"></div>
+<div id="cityLoadtimeChart" style="width: 75%; height: 300px;display: inline-block;"></div>
+<div id="compareLoadtimeChart" style="width: 75%; height: 300px;display: inline-block;"></div>
+<div id="compareCityLoadtimeChart" style="width: 75%; height: 300px;display: inline-block;"></div>
 <script type="text/javascript">
     var chart1 = new CanvasJS.Chart("fccSpeedChart", {
         theme: "theme2",
@@ -62,8 +64,48 @@
             }
         ]
     });
+    var chart4 = new CanvasJS.Chart("compareLoadtimeChart", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Average Loadtime for Selected Domain: Global vs. User Data"
+        },
+        axisX: {
+            interval: 1
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        data: [
+            {
+                type: "column", //change type to bar, line, area, pie, etc
+                dataPoints: @Html.Raw(ViewBag.CompareLoadtimeData),
+            }
+        ]
+    });
+    var chart5 = new CanvasJS.Chart("compareCityLoadtimeChart", {
+        theme: "theme2",
+        animationEnabled: true,
+        title: {
+            text: "Avg. Loadtime Across Different Locations"
+        },
+        axisX: {
+            interval: 1
+        },
+        axisY: {
+            title: "Loadtime (seconds)"
+        },
+        data: [
+            {
+                type: "column", //change type to bar, line, area, pie, etc
+                dataPoints: @Html.Raw(ViewBag.CompareCityLoadtimeData),
+            }
+        ]
+    });
     chart1.render();
     chart2.render();
     chart3.render();
+    chart4.render();
+    chart5.render();
 </script>
 
