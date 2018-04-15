@@ -17,6 +17,8 @@ namespace PingItWebsite.Models
         public double speed { get; set; }
         public double loadtime { get; set; }
         public int score { get; set; }
+
+        public UserPlotKey userKey { get; set; }
         #endregion
 
         #region Constructors

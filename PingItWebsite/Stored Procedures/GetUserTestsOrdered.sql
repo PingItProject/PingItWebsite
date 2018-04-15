@@ -1,6 +1,7 @@
 CREATE DEFINER=`root`@`%` PROCEDURE `GetUserTestsOrdered`(IN user VARCHAR(100))
 BEGIN
-	   SELECT 	ordered.*, rt.rank
+	   SELECT 	ordered.*, 
+				rt.rank
        FROM
        #Get the user tests chronologically for a chart
        (SELECT  wt.tstamp, 

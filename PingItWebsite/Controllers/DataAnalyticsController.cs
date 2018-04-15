@@ -39,11 +39,22 @@ namespace PingItWebsite.Controllers
             List<SpeedAvgGraph> speed = new List<SpeedAvgGraph>();
             List<ScoreAvgGraph> score = new List<ScoreAvgGraph>();
 
+            UserPlotKey upk = new UserPlotKey();
+            List<UserPlotKey> keys = upk.GetPlotKeys(HomeController._database);
+
+            int i = 0; 
             foreach (UserTestAvgs avg in tests)
             {
+                if (i < keys.Count)
+                {
+                    avg.userKey = keys[i];
+                }
+
                 loadtime.Add(new LoadtimeAvgGraph(avg.key, avg.loadtime));
                 speed.Add(new SpeedAvgGraph(avg.key, avg.speed));
                 score.Add(new ScoreAvgGraph(avg.key, avg.score));
+
+                i++;
             }
 
             ViewBag.Loadtime = JsonConvert.SerializeObject(loadtime);
@@ -77,10 +88,19 @@ namespace PingItWebsite.Controllers
             List<LoadtimePlotGraph> loadtime9 = new List<LoadtimePlotGraph>();
             List<LoadtimePlotGraph> loadtime10 = new List<LoadtimePlotGraph>();
 
+            UserPlotKey upk = new UserPlotKey();
+            List<UserPlotKey> keys = upk.GetPlotKeys(HomeController._database);
+
             //Loop through tests and only get those from the top 5
             for (int i = 0; i < tests.Count; i++)
             {
+                //Hack version to allow 2 models at once-- not the best coding practice, but for the scope of project ok
                 UserTimePlot plot = tests[i];
+                if (i < keys.Count)
+                {
+                    plot.key = keys[i];
+                }
+
                 if (plot.rank < 6)
                 {
                     //Convert to date to fit JavaScript format
@@ -124,6 +144,7 @@ namespace PingItWebsite.Controllers
             ViewBag.Loadtime8 = JsonConvert.SerializeObject(loadtime8);
             ViewBag.Loadtime9 = JsonConvert.SerializeObject(loadtime9);
             ViewBag.Loadtime10 = JsonConvert.SerializeObject(loadtime10);
+
             return PartialView(tests);
 
         }

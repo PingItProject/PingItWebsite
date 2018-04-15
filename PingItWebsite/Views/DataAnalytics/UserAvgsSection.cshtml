@@ -3,6 +3,32 @@
 <head>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
+<h3 align="Center">Key Table</h3>
+<table>
+    <tr>
+        <td>Key</td>
+        <td>City</td>
+        <td>State</td>
+        <td>Provider</td>
+    </tr>
+    @foreach (UserTestAvgs uta in Model)
+    {
+        if (uta.userKey != null)
+        {
+
+            <tr>
+                <td>@uta.userKey.key.ToString()</td>
+                <td>@uta.userKey.city</td>
+                <td>@uta.userKey.state</td>
+                <td>@uta.userKey.provider</td>
+            </tr>
+        }
+
+    }
+</table>
+<p></p>
+<p></p>
+<p></p>
 <h3 align="Center">User Performance Test Averages</h3>
 <table>
     <tr>
@@ -32,9 +58,9 @@
 <p></p>
 <p></p>
 <p></p>
-<div id="loadtimeChart" style="width: 50%; height: 300px;display: inline-block;"></div>
-<div id="speedChart" style="width: 50%; height: 300px;display: inline-block;"></div><br/>
-<div id="scoreChart" style="width: 50%; height: 300px;display: inline-block;"></div><br/>
+<div id="loadtimeChart" align="center" style="width: 50%; height: 300px;display: inline-block;"></div>
+<div id="speedChart" align="center" style="width: 50%; height: 300px;display: inline-block;"></div><br />
+<div id="scoreChart" align="center" style="width: 50%; height: 300px;display: inline-block;"></div><br />
 
 <script type="text/javascript">
     var chart1 = new CanvasJS.Chart("loadtimeChart", {
@@ -52,7 +78,7 @@
         },
         data: [
             {
-                type: "column", 
+                type: "column",
                 dataPoints: @Html.Raw(ViewBag.Loadtime),
             }
         ]
@@ -72,7 +98,7 @@
         },
         data: [
             {
-                type: "column", 
+                type: "column",
                 dataPoints: @Html.Raw(ViewBag.Speed),
             }
         ]
@@ -92,7 +118,7 @@
         },
         data: [
             {
-                type: "column", 
+                type: "column",
                 dataPoints: @Html.Raw(ViewBag.Score),
             }
         ]

@@ -1,5 +1,31 @@
 ﻿@using PingItWebsite.Models;
 
+<h3 align="Center">Key Table</h3>
+<table>
+    <tr>
+        <td>Key</td>
+        <td>City</td>
+        <td>State</td>
+        <td>Provider</td>
+    </tr>
+    @foreach (UserTimePlot utp in Model)
+    {
+        if (utp.key != null)
+        {
+
+            <tr>
+                <td>@utp.key.key.ToString()</td>
+                <td>@utp.key.city</td>
+                <td>@utp.key.state</td>
+                <td>@utp.key.provider</td>
+            </tr>
+        }
+
+    }
+</table>
+<p></p>
+<p></p>
+<p></p>
 <h3 align="Center">User Performance Tests' Speed and Loadtime Over Time</h3>
 <table>
     <tr>

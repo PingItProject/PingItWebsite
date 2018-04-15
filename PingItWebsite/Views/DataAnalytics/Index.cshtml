@@ -35,10 +35,6 @@
                 <li><a href="~/About/Index"> About </a></li>
             </ul>
         </nav>
-
-
-
-
         <!-- Main -->
         <div id="main">
             <!--Inner-->
@@ -90,17 +86,36 @@
 
     <!-- Scripts -->
     <script>
-        //Get the sub buttons
+        //Get main buttons
+        var userbtn = document.getElementById("user_data_btn");
+        var compbtn = document.getElementById("compare_data_btn");
+
+        //Get user buttons
+        var avgsbtn = document.getElementById("useravgs_btn");
+        var timeplotbtn = document.getElementById("usertimeplot_btn");
+
+        //Get the div sections
         var useroptions = document.getElementById("user_data_options");
         var compoptions = document.getElementById("compare_data_options");
 
-        var avgsbtn = document.getElementById("useravgs_btn");
-        var timeplotbtn = document.getElementById("usertimeplot_tbtn");
+        var section = document.getElementById("data_section");
+
+        var loaded = false;
     </script>
     <!--User Data Scripts-->
     <script>
         //Shows the user buttons when the user data button is clicked
         function ShowUserButtons() {
+            if (loaded) {
+                section.style.display = "none";
+                loaded = false;
+            }
+
+            SetButtonsWhite();
+            SetButtonsPink();
+
+            userbtn.style.background = "#ADD8E6";
+
             //Make the appropriate options buttons appear
             useroptions.style.display = "block";
             compoptions.style.display = "none";
@@ -109,11 +124,19 @@
     <script>
         //Load user graphs and charts depending on what button chosen
         function LoadUserData(btn) {
+            if (!loaded) {
+                section.style.display = "block";
+                loaded = true;
+            }
+
+            SetButtonsPink();
             switch (btn) {
                 case 0:
+                    avgsbtn.style.background = "#ADD8E6";
                     $("#data_section").load('@Url.Action("UserAvgsSection", "DataAnalytics")');
                     break;
                 case 1:
+                    timeplotbtn.style.background = "#ADD8E6";
                     $("#data_section").load('@Url.Action("UserTimePlotSection", "DataAnalytics")');
                     break;
             }
@@ -122,6 +145,13 @@
     <script>
         //Shows the compare table  when the compare button is clicked
         function ShowCompareTable() {
+            if (loaded) {
+                section.style.display = "none";
+                loaded = false;
+            }
+            SetButtonsWhite();
+            compbtn.style.background = "#ADD8E6";
+
             //Make the appropriate options buttons appear
             useroptions.style.display = "none";
             compoptions.style.display = "block";
@@ -130,6 +160,11 @@
     <script>
         //Loads the comparison data
         function LoadCompareData() {
+            if (!loaded) {
+                section.style.display = "block";
+                loaded = true;
+            }
+
             var pass = true;
             //Check to see if any values were left empty
             if (!$("#city_text").val()) {
@@ -155,9 +190,17 @@
         }
     </script>
     <script>
-        function LoadCompareDataaaa() {
-            $("#data_section").load('@Url.Action("CompareDataSection", "DataAnalytics")?city=' + $("#city_compare_text").val() +
-                '&state=' + $("#state_compare_text").val() + '&domain=' + $("#domain_text").val());
+        //Set all the buttons back to white
+        function SetButtonsWhite() {
+            userbtn.style.background = "#FFFFFF";
+            compbtn.style.background = "#FFFFFF";
+        }
+    </script>
+    <script>
+        //Set all the buttons back to pink
+        function SetButtonsPink() {
+            avgsbtn.style.background = "#F08080";
+            timeplotbtn.style.background = "#F08080";
         }
     </script>
     <script src="~/js/jquery.min.js"></script>
