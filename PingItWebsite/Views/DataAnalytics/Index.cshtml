@@ -150,13 +150,8 @@
             }
             if (pass) {
                 $("#data_section").load('@Url.Action("CompareDataSection", "DataAnalytics")?city=' + $("#city_text").val() +
-                        '&state=' + $("#state_text").val());
+                    '&state=' + $("#state_text").val() + '&domain=' + $("#domain_text").val());
             }
-        }
-    </script>
-    <script>
-        function LoadWebsiteData() {
-            $("#data_section").load('@Url.Action("WebsiteDataSection", "DataAnalytics")');
         }
     </script>
     <script>

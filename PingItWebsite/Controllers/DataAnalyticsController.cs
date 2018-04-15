@@ -144,13 +144,13 @@ namespace PingItWebsite.Controllers
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <returns></returns>
-        public IActionResult CompareDataSection(string city, string state)
+        public IActionResult CompareDataSection(string city, string state, string domain)
         {
             County county = new County();
             Website web = new Website();
 
             //Prepare the appropriate graphs
-            List<BroadbandSpeedGraph> fccData = PrepareFCCData(city, state, county);
+            List<BroadbandSpeedGraph> fccData = PrepareFCCData(city, state, domain, county);
             List<DomainLoadtimeAvgGraph> loadtimeData = PrepareLoadtimeData(web);
             List<CityLoadtimeAvgGraph> cityLoadtimeData = PrepareCityLoadtimeData(web);
 
@@ -166,8 +166,9 @@ namespace PingItWebsite.Controllers
         /// <param name="city"></param>
         /// <param name="state"></param>
         /// <param name="county"></param>
+        /// <param name="domain"></param>
         /// <returns></returns>
-        private List<BroadbandSpeedGraph> PrepareFCCData(string city, string state, County county)
+        private List<BroadbandSpeedGraph> PrepareFCCData(string city, string state, string domain, County county)
         {
             //Get the census code
             string newCity = char.ToUpper(city[0]) + city.Substring(1);
@@ -179,9 +180,20 @@ namespace PingItWebsite.Controllers
 
             //Prepare graph data
             List<BroadbandSpeedGraph> fccData = new List<BroadbandSpeedGraph>();
-            foreach (Broadband b in broadbands)
+            foreach (Broadband br in broadbands)
             {
-                fccData.Add(new BroadbandSpeedGraph(b.provider, b.speed));
+                if (br.speed != 0)
+                {
+                    fccData.Add(new BroadbandSpeedGraph(br.provider, br.speed));
+                }
+            }
+
+            //Add user broadband
+            Broadband b = new Broadband();
+            List<Broadband> userBroadband = b.GetUserProviderData(city, state, domain, HomeController._database);
+            foreach (Broadband br in userBroadband)
+            {
+                fccData.Add(new BroadbandSpeedGraph(br.provider, br.speed));
             }
 
             return fccData;

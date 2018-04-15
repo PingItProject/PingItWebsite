@@ -134,7 +134,7 @@ namespace PingItWebsite.Models
                 {
                     Website w = new Website
                     {
-                        location = reader.GetString("city") + ", " + reader.GetString("country"),
+                        location = reader.GetString("city"),
                         total = reader.GetDouble("total")
                     };
                     info.Add(w);
