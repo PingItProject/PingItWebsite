@@ -10,7 +10,7 @@ namespace PingItWebsite.APIs
     public class GeocodingAPI
     {
         #region Variables
-        string _APIkey = "AIzaSyCAzl15LKxYFwt-EYi_hbISEslHrDTlW2s";
+        string _APIkey = "[INSERT CREDENTIALS]";
         string _url = "https://maps.googleapis.com/maps/api/geocode/json?&address={0}%2C%20{1}&key={2}";
         #endregion
 

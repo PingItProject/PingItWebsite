@@ -11,7 +11,7 @@ namespace PingItWebsite.APIs
     public class PageSpeedAPI
     {
         #region Variables
-        string _APIkey = "AIzaSyBuJEUbGXKZ_DH76YM8uY4RQGzIK7dojxI";
+        string _APIkey = "[INSERT CREDENTIALS]";
         string _url = "https://www.googleapis.com/pagespeedonline/v4/runPagespeed?url={0}&strategy=desktop&key={1}";
         #endregion
 
